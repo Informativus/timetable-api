@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Pool, QueryConfig } from 'pg';
+import { Pool } from 'pg';
 import { ConfigService } from '../../config/config.service';
 import { IRelationDatabase } from './relationDatabase.interface';
 import * as console from 'node:console';

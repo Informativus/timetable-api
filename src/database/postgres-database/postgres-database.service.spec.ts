@@ -12,7 +12,15 @@ describe('PostgresDatabaseService', () => {
     service = module.get<PostgresDatabaseService>(PostgresDatabaseService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('sendData', () => {
+    it('should send query to database', async () => {
+      jest.spyOn(service, 'sendQuery');
+      expect(
+        await service.sendQuery({
+          text: 'SELECT * FROM student_groups',
+          values: [],
+        }),
+      );
+    });
   });
 });
