@@ -12,7 +12,10 @@ describe('GroupService', () => {
     service = module.get<GroupService>(GroupService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('getAllGroups', () => {
+    it('should return all groups', async () => {
+      jest.spyOn(service, 'getAllGroups');
+      expect(await service.getAllGroups());
+    });
   });
 });

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostgresDatabaseService } from './postgres-database.service';
+import { PostgresDatabaseService } from './postgresDatabase.service';
 
 describe('PostgresDatabaseService', () => {
   let service: PostgresDatabaseService;

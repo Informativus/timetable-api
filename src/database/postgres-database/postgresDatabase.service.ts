@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
 import { ConfigService } from '../../config/config.service';
-import { IRelationDatabase } from './relationDatabase.interface';
+import { IRelationDatabase } from '../relationDatabase.interface';
 import * as console from 'node:console';
 import { RelationDatabaseDto } from '../../dto/relationDatabase.dto';
 
@@ -27,6 +27,7 @@ export class PostgresDatabaseService implements IRelationDatabase {
       const fullQuery = this.interpolateQuery(text, values);
       console.log(`Full request it is: ${fullQuery}`);
       const result = await this.pool.query(query);
+      console.debug(`Database response: ${JSON.stringify(result.rows)}`);
       return result.rows;
     } catch (err) {
       throw new Error(`Database query failed: ${err.message}`);

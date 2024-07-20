@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { ConfigService } from '../../config/config.service';
-import { INoRelationDatabase } from './no-relation-database.interface';
+import { INoRelationDatabase } from '../noRelationDatabase.interface';
 
 @Injectable()
 export class RedisDatabaseService implements INoRelationDatabase {
