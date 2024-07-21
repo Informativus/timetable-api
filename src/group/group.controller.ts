@@ -14,7 +14,7 @@ export class GroupController {
   @Get('/group_info')
   @UsePipes(new ValidationPipe({ transform: true }))
   async getGroupWithId(@Query() groupData: GroupDto) {
-    return await this.groupService.getWithId(groupData);
+    return await this.groupService.getGroupWithId(groupData);
   }
   @Get('/groups')
   async getAllGroups() {

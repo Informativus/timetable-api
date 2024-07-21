@@ -11,7 +11,8 @@ export class TimetableService implements ITimetable {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
-    @Inject('IGroup') private readonly groupService: IGroup,
+    @Inject('IGroup')
+    private readonly groupService: IGroup,
   ) {}
 
   async setTimetable(
