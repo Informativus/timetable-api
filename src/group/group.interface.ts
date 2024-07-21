@@ -3,6 +3,7 @@ import { groupType } from './types/group.type';
 import { infoAllGroupType } from './types/infoAllGroup.type';
 
 export interface IGroup {
-  getWithId(groupData: GroupDto): Promise<groupType>;
+  getGroupWithId(groupData: GroupDto): Promise<groupType>;
   getAllGroups(): Promise<infoAllGroupType>;
+  setGroup(groupType: groupType): Promise<void>;
 }

@@ -6,5 +6,6 @@ import { ConfigModule } from '../config/config.module';
 @Module({
   imports: [ConfigModule],
   providers: [RedisDatabaseService, PostgresDatabaseService],
+  exports: [PostgresDatabaseService, RedisDatabaseService],
 })
 export class DatabaseModule {}

@@ -22,6 +22,7 @@ export class PostgresDatabaseService implements IRelationDatabase {
   }
 
   async sendQuery(query: RelationDatabaseDto): Promise<any> {
+    console.debug('Send query');
     try {
       const { text, values } = query;
       const fullQuery = this.interpolateQuery(text, values);
