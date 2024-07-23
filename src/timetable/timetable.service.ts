@@ -25,20 +25,15 @@ export class TimetableService implements ITimetable {
     const group: GetGroupDto = await this.groupService.getGroupWithId({
       textId: groupDto.groupTextId,
     });
+
     const existingTimetable: CreateTimetableDto =
-      await this.relationDatabase.sendQuery({
-        text: 'SELECT timetable FROM timetables WHERE groupId = $1',
-        values: [group.group_id],
-      });
+      await this.timetableRepository.getTimetableWithGroupId(group.group_id);
+
     if (existingTimetable[0]) {
       throw new Error('Timetable already exists');
     }
-    console.debug('Timetable set');
 
-    await this.relationDatabase.sendQuery({
-      text: 'INSERT INTO timetables (group_id, timetable) VALUES ($1, $2)',
-      values: [group.group_id, JSON.stringify(timetable)],
-    });
+    await this.timetableRepository.setTimetable(group.group_id, timetable);
   }
 
   async getTimetable(groupDto: TimetableDto): Promise<CreateTimetableDto> {
