@@ -3,7 +3,7 @@ import { CacheService } from 'src/cash/cache.service';
 import { IReplacement } from './replacement.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { IReplacementRepository } from './repositories/replacementRepository.interface';
-import { ReplacementsIsEmty } from './types/replacementsIsEmty.type';
+import { ReplacementsEmptyDto } from '../dto/replacement/replacementsEmpty.dto';
 import { GetReplacementDTO } from 'src/dto/replacement/getReplacement.dto';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ReplacementService implements IReplacement {
 
   async getReplacementsWithGroup(
     replacementsDto: GetReplacementDTO,
-  ): Promise<CreateReplacementDto | ReplacementsIsEmty> {
+  ): Promise<CreateReplacementDto | ReplacementsEmptyDto> {
     const cacheKey = replacementsDto.group;
     const cachedReplacements = await this.cacheService.get(cacheKey);
 
@@ -40,7 +40,7 @@ export class ReplacementService implements IReplacement {
 
   async getReplacementsWithDate(
     replacementDto: GetReplacementDTO,
-  ): Promise<CreateReplacementDto | ReplacementsIsEmty> {
+  ): Promise<CreateReplacementDto | ReplacementsEmptyDto> {
     const replacements: CreateReplacementDto[] =
       await this.replacementRepository.getReplacementWithDate(replacementDto);
 
@@ -57,7 +57,7 @@ export class ReplacementService implements IReplacement {
     replacementsDto: GetReplacementDTO,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    const cacheKey = replacementsDto.group;
+    const cacheKey: string = replacementsDto.group;
     await this.cacheService.set(cacheKey, replacements);
 
     await this.replacementRepository.setReplacement(

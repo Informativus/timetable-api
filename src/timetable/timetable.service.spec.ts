@@ -3,8 +3,8 @@ import { TimetableService } from './timetable.service';
 import { IRelationDatabase } from '../database/relationDatabase.interface';
 import { IGroup } from '../group/group.interface';
 import { BadRequestException } from '@nestjs/common';
-import { TimetableDto } from '../dto/timetable.dto';
-import { timetableType } from './types/timetable.type';
+import { TimetableDto } from '../dto/timetable/timetable.dto';
+import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 
 describe('TimetableService', () => {
   let service: TimetableService;
@@ -18,7 +18,7 @@ describe('TimetableService', () => {
       sendQuery: jest.fn(),
     };
     mockGroupService = {
-      getWithId: jest.fn(),
+      getGroupWithId: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -35,7 +35,7 @@ describe('TimetableService', () => {
   describe('setTimetable', () => {
     it('should set timetable in database', async () => {
       // Mock the methods
-      mockGroupService.getWithId = jest
+      mockGroupService.getGroupWithId = jest
         .fn()
         .mockResolvedValue({ group_id: groupIdInDatabase });
       mockRelationDatabase.sendQuery = jest
@@ -43,7 +43,7 @@ describe('TimetableService', () => {
         .mockResolvedValueOnce([]) // For checking existing timetable
         .mockResolvedValueOnce(null); // For inserting new timetable
 
-      const timetableData: timetableType = {
+      const timetableData: CreateTimetableDto = {
         lessons: [
           ['', '', '', ''],
           ['Разговоры о важном', '105', 'Чернышева|А|М|', ''],
@@ -111,7 +111,7 @@ describe('TimetableService', () => {
         timetableData,
       );
 
-      expect(mockGroupService.getWithId).toHaveBeenCalledWith({
+      expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith({
         textId: groupToDatabase,
       });
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledTimes(2);
@@ -126,7 +126,7 @@ describe('TimetableService', () => {
     });
 
     it('should throw an error if timetable already exists', async () => {
-      mockGroupService.getWithId = jest
+      mockGroupService.getGroupWithId = jest
         .fn()
         .mockResolvedValue({ group_id: groupIdInDatabase });
       mockRelationDatabase.sendQuery = jest
@@ -137,7 +137,7 @@ describe('TimetableService', () => {
         service.setTimetable({ groupTextId: groupToDatabase }, {} as any),
       ).rejects.toThrow('Timetable already exists');
 
-      expect(mockGroupService.getWithId).toHaveBeenCalledWith({
+      expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith({
         textId: groupToDatabase,
       });
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledTimes(1);

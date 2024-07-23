@@ -1,5 +1,5 @@
-import { timetableType } from '../types/timetable.type';
+import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
 
 export interface ITimetableRepository {
-  getTimetableWithGroupId(groupId: string): Promise<timetableType>;
+  getTimetableWithGroupId(groupId: string): Promise<CreateTimetableDto>;
 }

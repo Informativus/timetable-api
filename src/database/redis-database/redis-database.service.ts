@@ -15,26 +15,36 @@ export class RedisDatabaseService implements INoRelationDatabase {
       this.config.get({ property: 'REDIS_HOST' }),
     );
   }
+
   async set(key: string, value: any): Promise<void> {
-    await this.redis.set(key, value, (error) => {
-      if (error) {
-        throw new Error(`Redis method set returned error: ${error}`);
-      }
-    });
+    console.log(`Inserted key: ${key}, inserted value: ${value}`);
+    try {
+      await this.redis.set(key, value);
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Redis method set returned error: ${error}`);
+    }
   }
-  async get(key: string): Promise<any> {
-    return this.redis.get(key, (error, res) => {
-      if (error) {
-        throw new Error(`Redis method get returned error: ${error}`);
-      }
-      return res;
-    });
+
+  async get(key: string): Promise<any | null> {
+    try {
+      return this.redis.get(key);
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Redis method get returned error: ${error}`);
+    }
   }
+
   async delete(key: string): Promise<void> {
-    await this.redis.del(key, (error) => {
-      if (error) {
-        throw new Error(`Redis method delete returned error: ${error}`);
-      }
-    });
+    try {
+      await this.redis.del(key, (error) => {
+        if (error) {
+          throw new Error(`Redis method delete returned error: ${error}`);
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      throw new Error(`Redis method delete returned error: ${error}`);
+    }
   }
 }

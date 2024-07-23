@@ -1,14 +1,14 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { ReplacementsIsEmty } from './types/replacementsIsEmty.type';
+import { ReplacementsEmptyDto } from '../dto/replacement/replacementsEmpty.dto';
 import { GetReplacementDTO } from 'src/dto/replacement/getReplacement.dto';
 
 export interface IReplacement {
   getReplacementsWithGroup(
     replacementsDto: GetReplacementDTO,
-  ): Promise<CreateReplacementDto | ReplacementsIsEmty>;
+  ): Promise<CreateReplacementDto | ReplacementsEmptyDto>;
   getReplacementsWithDate(
     replacementDto: GetReplacementDTO,
-  ): Promise<CreateReplacementDto | ReplacementsIsEmty>;
+  ): Promise<CreateReplacementDto | ReplacementsEmptyDto>;
   setReplacements(
     replacementsDto: GetReplacementDTO,
     replacements: CreateReplacementDto,

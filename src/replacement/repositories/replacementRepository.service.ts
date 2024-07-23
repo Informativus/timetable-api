@@ -23,7 +23,7 @@ export class ReplacementRepositoryService implements IReplacementRepository {
       return await this.relationDatabase.sendQuery({
         text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE sg.text_id = $1',
         values: [group],
-      })[0];
+      });
     } catch (error) {
       console.error('Error getting replacement: ', error);
       throw new InternalServerErrorException('Failed to get replacement');

@@ -9,8 +9,9 @@ import { GroupDto } from '../dto/group/group.dto';
 import { GroupService } from './group.service';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
 import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('group')
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}

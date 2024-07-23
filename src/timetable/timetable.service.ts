@@ -1,8 +1,8 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ITimetable } from './timetable.interface';
-import { timetableType } from './types/timetable.type';
+import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
-import { TimetableDto } from 'src/dto/timetable.dto';
+import { TimetableDto } from 'src/dto/timetable/timetable.dto';
 import { IGroup } from 'src/group/group.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
@@ -20,12 +20,12 @@ export class TimetableService implements ITimetable {
 
   async setTimetable(
     groupDto: TimetableDto,
-    timetable: timetableType,
+    timetable: CreateTimetableDto,
   ): Promise<void> {
     const group: GetGroupDto = await this.groupService.getGroupWithId({
       textId: groupDto.groupTextId,
     });
-    const existingTimetable: timetableType =
+    const existingTimetable: CreateTimetableDto =
       await this.relationDatabase.sendQuery({
         text: 'SELECT timetable FROM timetables WHERE groupId = $1',
         values: [group.group_id],
@@ -41,11 +41,13 @@ export class TimetableService implements ITimetable {
     });
   }
 
-  async getTimetable(groupDto: TimetableDto): Promise<timetableType> {
-    const timetable: timetableType = await this.relationDatabase.sendQuery({
-      text: 'SELECT tb.timetable FROM timetables tb JOIN student_groups sg ON tb.group_id = sg.group_id where sg.text_id = $1',
-      values: [groupDto.groupTextId],
-    });
+  async getTimetable(groupDto: TimetableDto): Promise<CreateTimetableDto> {
+    const timetable: CreateTimetableDto = await this.relationDatabase.sendQuery(
+      {
+        text: 'SELECT tb.timetable FROM timetables tb JOIN student_groups sg ON tb.group_id = sg.group_id where sg.text_id = $1',
+        values: [groupDto.groupTextId],
+      },
+    );
     if (!timetable[0]) {
       throw new BadRequestException('Timetable not found');
     }

@@ -10,7 +10,7 @@ export class CacheService<T> {
 
   async set(key: string, value: T): Promise<void> {
     try {
-      await this.noRelationDatabase.set(key, JSON.stringify(value));
+      await this.noRelationDatabase.set(key, value);
     } catch (error) {
       console.error(error);
       throw new Error('Error saving data to cache');
