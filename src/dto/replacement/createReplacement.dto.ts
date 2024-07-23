@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { ReplacementDto } from './replacement.dto';
-import { IsReplacementArray } from './isReplacementArray.validator';
+import { IsReplacementArray } from '../../validators/isReplacementArray.validator';
 
 export class CreateReplacementDto {
   @IsBoolean()

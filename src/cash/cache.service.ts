@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RedisDatabaseService } from 'src/database/redis-database/redis-database.service';
+import { INoRelationDatabase } from '../database/noRelationDatabase.interface';
 
 @Injectable()
 export class CacheService<T> {
   constructor(
     @Inject('INoRelationDatabase')
-    private readonly noRelationDatabase: RedisDatabaseService,
+    private readonly noRelationDatabase: INoRelationDatabase,
   ) {}
 
   async set(key: string, value: T): Promise<void> {

@@ -5,6 +5,7 @@ import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { TimetableDto } from 'src/dto/timetable.dto';
 import { IGroup } from 'src/group/group.interface';
 import { groupType } from 'src/group/types/group.type';
+import { ITimetableRepository } from './repositories/timetableRepository.interface';
 
 @Injectable()
 export class TimetableService implements ITimetable {
@@ -13,6 +14,8 @@ export class TimetableService implements ITimetable {
     private readonly relationDatabase: IRelationDatabase,
     @Inject('IGroup')
     private readonly groupService: IGroup,
+    @Inject('ITimetableRepository')
+    private readonly timetableRepository: ITimetableRepository,
   ) {}
 
   async setTimetable(

@@ -4,7 +4,7 @@ import {
   registerDecorator,
   ValidationOptions,
 } from 'class-validator';
-import { ReplacementDto } from './replacement.dto'; // замените на правильный путь к вашему ReplacementDto
+import { ReplacementDto } from '../dto/replacement/replacement.dto';
 import { validateSync } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
