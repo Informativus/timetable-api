@@ -26,7 +26,7 @@ export class TimetableService implements ITimetable {
       id: groupDto.group,
     });
 
-    const existingTimetable: CreateTimetableDto =
+    const existingTimetable: CreateTimetableDto[] =
       await this.timetableRepository.getTimetableWithGroupId(group.group_id);
 
     if (existingTimetable[0]) {
