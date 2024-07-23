@@ -24,6 +24,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.4.0",
     "@types/dotenv": "^8.2.0",
     "@types/ioredis": "^5.0.0",
     "@types/pg": "^8.11.6",

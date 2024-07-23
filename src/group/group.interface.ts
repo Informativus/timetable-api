@@ -1,9 +1,9 @@
-import { GroupDto } from 'src/dto/group.dto';
-import { groupType } from './types/group.type';
-import { infoAllGroupType } from './types/infoAllGroup.type';
+import { GroupDto } from 'src/dto/group/group.dto';
+import { GetGroupDto } from '../dto/group/getGroup.dto';
+import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 
 export interface IGroup {
-  getGroupWithId(groupData: GroupDto): Promise<groupType>;
-  getAllGroups(): Promise<infoAllGroupType>;
-  setGroup(groupType: groupType): Promise<void>;
+  getGroupWithId(groupData: GroupDto): Promise<GetGroupDto>;
+  getAllGroups(): Promise<InfoAllGroupDto>;
+  setGroup(groupType: GetGroupDto): Promise<void>;
 }

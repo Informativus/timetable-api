@@ -1,9 +1,9 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { IGroup } from './group.interface';
-import { GroupDto } from 'src/dto/group.dto';
+import { GroupDto } from 'src/dto/group/group.dto';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
-import { groupType } from './types/group.type';
-import { infoAllGroupType } from './types/infoAllGroup.type';
+import { GetGroupDto } from '../dto/group/getGroup.dto';
+import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 
 @Injectable()
 export class GroupService implements IGroup {
@@ -12,8 +12,8 @@ export class GroupService implements IGroup {
     private readonly relationDatabase: IRelationDatabase,
   ) {}
 
-  async getGroupWithId(groupData: GroupDto): Promise<groupType> {
-    const group: groupType = await this.relationDatabase.sendQuery({
+  async getGroupWithId(groupData: GroupDto): Promise<GetGroupDto> {
+    const group: GetGroupDto = await this.relationDatabase.sendQuery({
       text: 'SELECT * FROM student_groups WHERE text_id = $1 LIMIT 1',
       values: [groupData.textId],
     });
@@ -24,8 +24,8 @@ export class GroupService implements IGroup {
     return group[0];
   }
 
-  async getAllGroups(): Promise<infoAllGroupType> {
-    const groups: groupType[] = await this.relationDatabase.sendQuery({
+  async getAllGroups(): Promise<InfoAllGroupDto> {
+    const groups: GetGroupDto[] = await this.relationDatabase.sendQuery({
       text: 'SELECT text_id, title FROM student_groups',
     });
 
@@ -34,7 +34,7 @@ export class GroupService implements IGroup {
     };
   }
 
-  async setGroup(groupType: groupType): Promise<void> {
+  async setGroup(groupType: GetGroupDto): Promise<void> {
     const existingGroup = await this.relationDatabase.sendQuery({
       text: 'SELECT group_id FROM student_groups WHERE text_id = $1 LIMIT 1',
       values: [groupType.text_id],

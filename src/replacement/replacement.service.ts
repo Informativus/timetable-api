@@ -13,7 +13,8 @@ export class ReplacementService implements IReplacement {
     private readonly replacementRepository: IReplacementRepository,
     private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}
-  async getReplacements(
+
+  async getReplacementsWithGroup(
     replacementsDto: GetReplacementDTO,
   ): Promise<CreateReplacementDto | ReplacementsIsEmty> {
     const cacheKey = replacementsDto.group;
@@ -23,13 +24,13 @@ export class ReplacementService implements IReplacement {
       return cachedReplacements;
     }
 
-    const replacements =
+    const replacements: CreateReplacementDto[] =
       await this.replacementRepository.getReplacementWithGroup(
         replacementsDto.group,
       );
 
     if (replacements[0]) {
-      return replacements;
+      return replacements[0];
     }
 
     return {
@@ -37,7 +38,31 @@ export class ReplacementService implements IReplacement {
     };
   }
 
-  setReplacements(replacements: CreateReplacementDto): Promise<void> {
-    throw new Error('Method not implemented.');
+  async getReplacementsWithDate(
+    replacementDto: GetReplacementDTO,
+  ): Promise<CreateReplacementDto | ReplacementsIsEmty> {
+    const replacements: CreateReplacementDto[] =
+      await this.replacementRepository.getReplacementWithDate(replacementDto);
+
+    if (replacements[0]) {
+      return replacements[0];
+    }
+
+    return {
+      success: false,
+    };
+  }
+
+  async setReplacements(
+    replacementsDto: GetReplacementDTO,
+    replacements: CreateReplacementDto,
+  ): Promise<void> {
+    const cacheKey = replacementsDto.group;
+    await this.cacheService.set(cacheKey, replacements);
+
+    await this.replacementRepository.setReplacement(
+      replacementsDto.group,
+      replacements,
+    );
   }
 }

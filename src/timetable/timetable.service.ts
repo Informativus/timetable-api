@@ -4,7 +4,7 @@ import { timetableType } from './types/timetable.type';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { TimetableDto } from 'src/dto/timetable.dto';
 import { IGroup } from 'src/group/group.interface';
-import { groupType } from 'src/group/types/group.type';
+import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class TimetableService implements ITimetable {
     groupDto: TimetableDto,
     timetable: timetableType,
   ): Promise<void> {
-    const group: groupType = await this.groupService.getGroupWithId({
+    const group: GetGroupDto = await this.groupService.getGroupWithId({
       textId: groupDto.groupTextId,
     });
     const existingTimetable: timetableType =

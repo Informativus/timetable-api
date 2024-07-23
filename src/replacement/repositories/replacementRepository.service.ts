@@ -16,12 +16,14 @@ export class ReplacementRepositoryService implements IReplacementRepository {
     private readonly relationDatabase: IRelationDatabase,
   ) {}
 
-  async getReplacementWithGroup(group: string): Promise<CreateReplacementDto> {
+  async getReplacementWithGroup(
+    group: string,
+  ): Promise<CreateReplacementDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
         text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE sg.text_id = $1',
         values: [group],
-      });
+      })[0];
     } catch (error) {
       console.error('Error getting replacement: ', error);
       throw new InternalServerErrorException('Failed to get replacement');
@@ -30,7 +32,7 @@ export class ReplacementRepositoryService implements IReplacementRepository {
 
   async getReplacementWithDate(
     replacementDto: GetReplacementDTO,
-  ): Promise<CreateReplacementDto> {
+  ): Promise<CreateReplacementDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
         text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE rp.replacement_date = $1 AND sg.text_id = $2;',

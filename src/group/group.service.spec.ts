@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GroupService } from './group.service';
 import { IRelationDatabase } from '../database/relationDatabase.interface';
-import { GroupDto } from 'src/dto/group.dto';
+import { GroupDto } from 'src/dto/group/group.dto';
 import { BadRequestException } from '@nestjs/common';
-import { infoAllGroupType } from './types/infoAllGroup.type';
-import { groupType } from './types/group.type';
+import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
+import { GetGroupDto } from '../dto/group/getGroup.dto';
 
 describe('GroupService', () => {
   let service: GroupService;
@@ -29,7 +29,7 @@ describe('GroupService', () => {
       const mockGroup = [{ group_id: 1, text_id: '1I-1-23', title: '1I-1-23' }];
       const sentGroupTextId: string = '1I-1-23';
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(mockGroup);
-      const result: groupType = await service.getGroupWithId({
+      const result: GetGroupDto = await service.getGroupWithId({
         textId: sentGroupTextId,
       } as GroupDto);
 
@@ -71,12 +71,12 @@ describe('GroupService', () => {
         },
       ];
 
-      const resultGroups: infoAllGroupType = {
+      const resultGroups: InfoAllGroupDto = {
         groups: mockGroups,
       };
 
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(mockGroups);
-      const result: infoAllGroupType = await service.getAllGroups();
+      const result: InfoAllGroupDto = await service.getAllGroups();
 
       expect(result).toEqual(resultGroups);
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
@@ -88,7 +88,7 @@ describe('GroupService', () => {
   describe('setGroup', () => {
     it('should set group in database', async () => {
       const mockGroup = [];
-      const groupType: groupType = {
+      const groupType: GetGroupDto = {
         text_id: '1I-3-23',
         title: '1И-3-23',
       };
