@@ -30,7 +30,7 @@ describe('GroupService', () => {
       const sentGroupTextId: string = '1I-1-23';
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(mockGroup);
       const result: GetGroupDto = await service.getGroupWithId({
-        textId: sentGroupTextId,
+        id: sentGroupTextId,
       } as GroupDto);
 
       expect(result).toEqual(mockGroup[0]);
@@ -46,7 +46,7 @@ describe('GroupService', () => {
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue([]);
 
       await expect(
-        service.getGroupWithId({ textId: '1I-1-23' } as GroupDto),
+        service.getGroupWithId({ id: '1I-1-23' } as GroupDto),
       ).rejects.toThrow(BadRequestException);
 
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
@@ -89,7 +89,7 @@ describe('GroupService', () => {
     it('should set group in database', async () => {
       const mockGroup = [];
       const groupType: GetGroupDto = {
-        text_id: '1I-3-23',
+        id: '1I-3-23',
         title: '1И-3-23',
       };
 
@@ -98,7 +98,7 @@ describe('GroupService', () => {
 
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
         text: 'INSERT INTO student_groups (text_id, title) VALUES ($1, $2)',
-        values: [groupType.text_id, groupType.title],
+        values: [groupType.id, groupType.title],
       });
     });
 
@@ -108,7 +108,7 @@ describe('GroupService', () => {
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(mockGroup);
 
       await expect(
-        service.setGroup({ text_id: '1I-1-23', title: '1I-1-23' }),
+        service.setGroup({ id: '1I-1-23', title: '1I-1-23' }),
       ).rejects.toThrow(BadRequestException);
 
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({

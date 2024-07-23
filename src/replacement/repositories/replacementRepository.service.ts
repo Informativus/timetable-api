@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Inject,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, InternalServerErrorException } from '@nestjs/common';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { IReplacementRepository } from './replacementRepository.interface';
@@ -14,7 +10,8 @@ export class ReplacementRepositoryService implements IReplacementRepository {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
-  ) {}
+  ) {
+  }
 
   async getReplacementWithGroup(
     group: string,

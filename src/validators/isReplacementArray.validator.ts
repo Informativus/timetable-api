@@ -1,16 +1,15 @@
 import {
+  registerDecorator,
+  validateSync,
+  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  registerDecorator,
-  ValidationOptions,
 } from 'class-validator';
 import { ReplacementDto } from '../dto/replacement/replacement.dto';
-import { validateSync } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
 export class IsReplacementArrayConstraint
-  implements ValidatorConstraintInterface
-{
+  implements ValidatorConstraintInterface {
   validate(replacements: any[]) {
     if (!Array.isArray(replacements)) {
       return false;
@@ -34,7 +33,7 @@ export class IsReplacementArrayConstraint
 }
 
 export function IsReplacementArray(validationOptions?: ValidationOptions) {
-  return function (object: object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

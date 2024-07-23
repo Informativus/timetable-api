@@ -23,7 +23,7 @@ export class TimetableService implements ITimetable {
     timetable: CreateTimetableDto,
   ): Promise<void> {
     const group: GetGroupDto = await this.groupService.getGroupWithId({
-      textId: groupDto.groupTextId,
+      id: groupDto.groupTextId,
     });
 
     const existingTimetable: CreateTimetableDto =

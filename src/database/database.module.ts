@@ -8,4 +8,5 @@ import { ConfigModule } from '../config/config.module';
   providers: [RedisDatabaseService, PostgresDatabaseService],
   exports: [PostgresDatabaseService, RedisDatabaseService],
 })
-export class DatabaseModule {}
+export class DatabaseModule {
+}

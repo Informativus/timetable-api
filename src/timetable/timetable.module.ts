@@ -18,4 +18,5 @@ import { TimetableRepositoryService } from './repositories/timetableRepository.s
   ],
   exports: [TimetableService],
 })
-export class TimetableModule {}
+export class TimetableModule {
+}

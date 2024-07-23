@@ -12,7 +12,7 @@ import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('group')
-@Controller('group')
+@Controller()
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 

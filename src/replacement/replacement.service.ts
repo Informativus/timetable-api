@@ -12,7 +12,8 @@ export class ReplacementService implements IReplacement {
     @Inject('IReplacementRepository')
     private readonly replacementRepository: IReplacementRepository,
     private readonly cacheService: CacheService<CreateReplacementDto>,
-  ) {}
+  ) {
+  }
 
   async getReplacementsWithGroup(
     replacementsDto: GetReplacementDTO,

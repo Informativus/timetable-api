@@ -18,8 +18,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: [CreateReplacementDto, ReplacementsEmptyDto],
   });
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(8080);
 }
+
 bootstrap();

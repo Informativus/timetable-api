@@ -6,6 +6,7 @@ import { ConfigDto } from '../dto/config.dto';
 @Injectable()
 export class ConfigService implements IConfigService {
   private readonly config: DotenvParseOutput;
+
   constructor() {
     const { error, parsed } = config();
     if (error) {

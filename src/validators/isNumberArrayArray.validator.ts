@@ -1,14 +1,13 @@
 import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
   registerDecorator,
   ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
 } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
 export class IsNumberArrayArrayConstraint
-  implements ValidatorConstraintInterface
-{
+  implements ValidatorConstraintInterface {
   validate(value: number[][]): boolean {
     if (!Array.isArray(value)) {
       return false;
@@ -25,13 +24,14 @@ export class IsNumberArrayArrayConstraint
 
     return true;
   }
+
   defaultMessage() {
     return 'Each element in the array must be an array of numbers';
   }
 }
 
 export function IsNumberArrayArray(validationOptions?: ValidationOptions) {
-  return function (object: object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

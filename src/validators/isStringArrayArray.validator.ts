@@ -1,15 +1,13 @@
 import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
   registerDecorator,
   ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
 } from 'class-validator';
-import { validateSync } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
 export class IsStringArrayArrayConstraint
-  implements ValidatorConstraintInterface
-{
+  implements ValidatorConstraintInterface {
   validate(value: string[][]): boolean {
     if (!Array.isArray(value)) {
       return false;
@@ -26,13 +24,14 @@ export class IsStringArrayArrayConstraint
 
     return true;
   }
+
   defaultMessage() {
     return 'Each element in the array must be an array of strings';
   }
 }
 
 export function IsStringArrayArray(validationOptions?: ValidationOptions) {
-  return function (object: object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

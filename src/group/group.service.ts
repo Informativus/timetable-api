@@ -14,8 +14,8 @@ export class GroupService implements IGroup {
 
   async getGroupWithId(groupData: GroupDto): Promise<GetGroupDto> {
     const group: GetGroupDto = await this.relationDatabase.sendQuery({
-      text: 'SELECT * FROM student_groups WHERE text_id = $1 LIMIT 1',
-      values: [groupData.textId],
+      text: 'SELECT * FROM student_groups WHERE id = $1 LIMIT 1',
+      values: [groupData.id],
     });
 
     if (!group[0]) {
@@ -26,7 +26,7 @@ export class GroupService implements IGroup {
 
   async getAllGroups(): Promise<InfoAllGroupDto> {
     const groups: GetGroupDto[] = await this.relationDatabase.sendQuery({
-      text: 'SELECT text_id, title FROM student_groups',
+      text: 'SELECT id, title FROM student_groups',
     });
 
     return {
@@ -36,8 +36,8 @@ export class GroupService implements IGroup {
 
   async setGroup(groupType: GetGroupDto): Promise<void> {
     const existingGroup = await this.relationDatabase.sendQuery({
-      text: 'SELECT group_id FROM student_groups WHERE text_id = $1 LIMIT 1',
-      values: [groupType.text_id],
+      text: 'SELECT group_id FROM student_groups WHERE id = $1 LIMIT 1',
+      values: [groupType.id],
     });
 
     if (existingGroup[0]) {
@@ -45,8 +45,8 @@ export class GroupService implements IGroup {
     }
 
     await this.relationDatabase.sendQuery({
-      text: 'INSERT INTO student_groups (text_id, title) VALUES ($1, $2)',
-      values: [groupType.text_id, groupType.title],
+      text: 'INSERT INTO student_groups (id, title) VALUES ($1, $2)',
+      values: [groupType.id, groupType.title],
     });
   }
 }

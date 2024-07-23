@@ -7,14 +7,17 @@ export class TimetableRepositoryService implements ITimetableRepository {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
-  ) {}
+  ) {
+  }
+
   async getTimetableWithGroupId(groupId: number): Promise<CreateTimetableDto> {
     try {
       return await this.relationDatabase.sendQuery({
         text: 'SELECT timetable FROM timetables WHERE group_id = $1',
         values: [groupId],
       });
-    } catch (error) {}
+    } catch (error) {
+    }
   }
 
   async setTimetable(

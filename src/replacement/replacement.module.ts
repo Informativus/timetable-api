@@ -19,4 +19,5 @@ import { CacheModule } from 'src/cash/cache.module';
     { provide: 'IRelationDatabase', useClass: PostgresDatabaseService },
   ],
 })
-export class ReplacementModule {}
+export class ReplacementModule {
+}

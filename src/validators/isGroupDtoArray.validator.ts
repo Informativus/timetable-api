@@ -1,11 +1,11 @@
 import {
+  registerDecorator,
+  validateSync,
+  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  registerDecorator,
-  ValidationOptions,
 } from 'class-validator';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
-import { validateSync } from 'class-validator';
 
 @ValidatorConstraint({ async: false })
 export class IsGroupArrayConstraint implements ValidatorConstraintInterface {
@@ -23,6 +23,7 @@ export class IsGroupArrayConstraint implements ValidatorConstraintInterface {
 
     return true;
   }
+
   defaultMessage(): string {
     return 'Each group in $property must be a valid GetGroupDto object';
   }

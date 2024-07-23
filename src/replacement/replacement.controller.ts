@@ -10,15 +10,15 @@ import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDTO } from '../dto/replacement/getReplacement.dto';
 import { ReplacementsEmptyDto } from '../dto/replacement/replacementsEmpty.dto';
 import {
-  ApiOkResponse,
-  ApiTags,
-  ApiOperation,
-  getSchemaPath,
   ApiBadRequestResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  getSchemaPath,
 } from '@nestjs/swagger';
 
 @ApiTags('replacement')
-@Controller('replacement')
+@Controller()
 export class ReplacementController {
   constructor(private readonly replacementService: ReplacementService) {}
 

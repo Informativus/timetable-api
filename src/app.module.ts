@@ -19,4 +19,5 @@ import { CacheModule } from './cash/cache.module';
   providers: [],
   exports: [],
 })
-export class AppModule {}
+export class AppModule {
+}

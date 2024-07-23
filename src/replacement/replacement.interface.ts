@@ -6,9 +6,11 @@ export interface IReplacement {
   getReplacementsWithGroup(
     replacementsDto: GetReplacementDTO,
   ): Promise<CreateReplacementDto | ReplacementsEmptyDto>;
+
   getReplacementsWithDate(
     replacementDto: GetReplacementDTO,
   ): Promise<CreateReplacementDto | ReplacementsEmptyDto>;
+
   setReplacements(
     replacementsDto: GetReplacementDTO,
     replacements: CreateReplacementDto,

@@ -9,4 +9,5 @@ import { RedisDatabaseService } from 'src/database/redis-database/redis-database
   ],
   exports: [CacheService],
 })
-export class CacheModule {}
+export class CacheModule {
+}

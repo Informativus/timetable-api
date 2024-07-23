@@ -8,7 +8,7 @@ export class GetGroupDto {
   group_id?: number;
   @ApiProperty({ example: '1I-1-23' })
   @IsString()
-  text_id: string;
+  id: string;
   @ApiProperty({ example: '1И-1-23' })
   @IsString()
   title: string;
