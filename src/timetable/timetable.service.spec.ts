@@ -107,7 +107,7 @@ describe('TimetableService', () => {
         ],
       };
       await service.setTimetable(
-        { groupTextId: groupToDatabase },
+        { group: groupToDatabase },
         timetableData,
       );
 
@@ -134,7 +134,7 @@ describe('TimetableService', () => {
         .mockResolvedValueOnce([{ timetable: 'existing timetable' }]); // For checking existing timetable
 
       await expect(
-        service.setTimetable({ groupTextId: groupToDatabase }, {} as any),
+        service.setTimetable({ group: groupToDatabase }, {} as any),
       ).rejects.toThrow('Timetable already exists');
 
       expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith({
@@ -156,7 +156,7 @@ describe('TimetableService', () => {
         .mockResolvedValue(mockTimetable);
 
       const result = await service.getTimetable({
-        groupTextId: groupToDatabase,
+        group: groupToDatabase,
       } as TimetableDto);
 
       expect(result).toEqual(mockTimetable[0]);
@@ -170,7 +170,7 @@ describe('TimetableService', () => {
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue([]);
 
       await expect(
-        service.getTimetable({ groupTextId: groupToDatabase } as TimetableDto),
+        service.getTimetable({ group: groupToDatabase } as TimetableDto),
       ).rejects.toThrow(BadRequestException);
 
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({

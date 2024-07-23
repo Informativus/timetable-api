@@ -8,7 +8,7 @@ import {
 import { ReplacementService } from './replacement.service';
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDTO } from '../dto/replacement/getReplacement.dto';
-import { ReplacementsEmptyDto } from '../dto/replacement/replacementsEmpty.dto';
+import { SuccessStatusDto } from '../dto/successStatus.dto';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
@@ -31,7 +31,7 @@ export class ReplacementController {
     description: 'Replacements was received successfully',
     schema: {
       oneOf: [
-        { $ref: getSchemaPath(ReplacementsEmptyDto) },
+        { $ref: getSchemaPath(SuccessStatusDto) },
         { $ref: getSchemaPath(CreateReplacementDto) },
       ],
     },
@@ -39,7 +39,7 @@ export class ReplacementController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async getReplacements(
     @Query() replacementsDto: GetReplacementDTO,
-  ): Promise<CreateReplacementDto | ReplacementsEmptyDto> {
+  ): Promise<CreateReplacementDto | SuccessStatusDto> {
     if (replacementsDto.date) {
       return await this.replacementService.getReplacementsWithDate(
         replacementsDto,

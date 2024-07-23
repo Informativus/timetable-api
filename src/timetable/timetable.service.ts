@@ -23,7 +23,7 @@ export class TimetableService implements ITimetable {
     timetable: CreateTimetableDto,
   ): Promise<void> {
     const group: GetGroupDto = await this.groupService.getGroupWithId({
-      id: groupDto.groupTextId,
+      id: groupDto.group,
     });
 
     const existingTimetable: CreateTimetableDto =
@@ -39,8 +39,8 @@ export class TimetableService implements ITimetable {
   async getTimetable(groupDto: TimetableDto): Promise<CreateTimetableDto> {
     const timetable: CreateTimetableDto = await this.relationDatabase.sendQuery(
       {
-        text: 'SELECT tb.timetable FROM timetables tb JOIN student_groups sg ON tb.group_id = sg.group_id where sg.text_id = $1',
-        values: [groupDto.groupTextId],
+        text: 'SELECT tb.timetable FROM timetables tb JOIN student_groups sg ON tb.group_id = sg.group_id where sg.id = $1',
+        values: [groupDto.group],
       },
     );
     if (!timetable[0]) {

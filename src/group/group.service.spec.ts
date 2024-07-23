@@ -26,7 +26,7 @@ describe('GroupService', () => {
 
   describe('getGroupWithId', () => {
     it('should return group with id from database', async () => {
-      const mockGroup = [{ group_id: 1, text_id: '1I-1-23', title: '1I-1-23' }];
+      const mockGroup = [{ group_id: 1, id: '1I-1-23', title: '1I-1-23' }];
       const sentGroupTextId: string = '1I-1-23';
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(mockGroup);
       const result: GetGroupDto = await service.getGroupWithId({
@@ -50,7 +50,7 @@ describe('GroupService', () => {
       ).rejects.toThrow(BadRequestException);
 
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
-        text: 'SELECT * FROM student_groups WHERE text_id = $1 LIMIT 1',
+        text: 'SELECT * FROM student_groups WHERE tid = $1 LIMIT 1',
         values: ['1I-1-23'],
       });
     });
@@ -61,12 +61,12 @@ describe('GroupService', () => {
       const mockGroups = [
         {
           group_id: 1,
-          text_id: '1I-1-23',
+          id: '1I-1-23',
           title: '1И-1-23',
         },
         {
           group_id: 2,
-          text_id: '1I-2-23',
+          id: '1I-2-23',
           title: '1И-2-23',
         },
       ];

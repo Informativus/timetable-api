@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ReplacementsEmptyDto } from './dto/replacement/replacementsEmpty.dto';
+import { SuccessStatusDto } from './dto/successStatus.dto';
 import { CreateReplacementDto } from './dto/replacement/createReplacement.dto';
 
 async function bootstrap() {
@@ -16,7 +16,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config, {
-    extraModels: [CreateReplacementDto, ReplacementsEmptyDto],
+    extraModels: [CreateReplacementDto, SuccessStatusDto],
   });
   SwaggerModule.setup('api', app, document);
 

@@ -5,6 +5,7 @@ import { GroupModule } from './group/group.module';
 import { TimetableModule } from './timetable/timetable.module';
 import { ReplacementModule } from './replacement/replacement.module';
 import { CacheModule } from './cash/cache.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -15,9 +16,7 @@ import { CacheModule } from './cash/cache.module';
     ReplacementModule,
     CacheModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
-  exports: [],
 })
-export class AppModule {
-}
+export class AppModule {}

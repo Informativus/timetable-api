@@ -1,4 +1,8 @@
-import { BadRequestException, Inject, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { IReplacementRepository } from './replacementRepository.interface';
@@ -10,15 +14,14 @@ export class ReplacementRepositoryService implements IReplacementRepository {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
-  ) {
-  }
+  ) {}
 
   async getReplacementWithGroup(
     group: string,
   ): Promise<CreateReplacementDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
-        text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE sg.text_id = $1',
+        text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE sg.id = $1',
         values: [group],
       });
     } catch (error) {
@@ -32,7 +35,7 @@ export class ReplacementRepositoryService implements IReplacementRepository {
   ): Promise<CreateReplacementDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
-        text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE rp.replacement_date = $1 AND sg.text_id = $2;',
+        text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE rp.replacement_date = $1 AND sg.id = $2;',
         values: [formatDateToSql(replacementDto.date), replacementDto.group],
       });
     } catch (error) {
