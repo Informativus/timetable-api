@@ -1,7 +1,10 @@
 import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
 
 export interface ITimetableRepository {
-  getTimetableWithGroupId(groupId: number): Promise<CreateTimetableDto[]>;
+  getTimetableWithGroup(groupTextId: string): Promise<CreateTimetableDto[]>;
 
-  setTimetable(groupId: number, timetable: CreateTimetableDto): Promise<void>;
+  setTimetable(
+    groupTextId: string,
+    timetable: CreateTimetableDto,
+  ): Promise<void>;
 }

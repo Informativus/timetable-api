@@ -1,52 +1,53 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { IGroup } from './group.interface';
 import { GroupDto } from 'src/dto/group/group.dto';
-import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
 import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
+import { IGroupRepository } from './repository/groupRepository.interface';
 
 @Injectable()
 export class GroupService implements IGroup {
   constructor(
-    @Inject('IRelationDatabase')
-    private readonly relationDatabase: IRelationDatabase,
+    @Inject('IGroupRepository') private readonly groupRe: IGroupRepository,
   ) {}
 
   async getGroupWithId(groupData: GroupDto): Promise<GetGroupDto> {
-    const group: GetGroupDto = await this.relationDatabase.sendQuery({
-      text: 'SELECT * FROM student_groups WHERE id = $1 LIMIT 1',
-      values: [groupData.id],
-    });
+    const group: GetGroupDto[] = await this.groupRe.getGroupWithId(groupData);
 
     if (!group[0]) {
-      throw new BadRequestException({ message: 'Group does not exist' });
+      throw new Error('Group does not exist');
     }
+
     return group[0];
   }
 
   async getAllGroups(): Promise<InfoAllGroupDto> {
-    const groups: GetGroupDto[] = await this.relationDatabase.sendQuery({
-      text: 'SELECT id, title FROM student_groups',
-    });
+    const groups: InfoAllGroupDto[] = await this.groupRe.getAllGroups();
 
-    return {
-      groups: groups,
-    };
+    if (!groups[0]) {
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
+    }
+
+    return groups[0];
   }
 
-  async setGroup(groupType: GetGroupDto): Promise<void> {
-    const existingGroup = await this.relationDatabase.sendQuery({
-      text: 'SELECT group_id FROM student_groups WHERE id = $1 LIMIT 1',
-      values: [groupType.id],
-    });
-
-    if (existingGroup[0]) {
+  async setGroup(groupDto: GetGroupDto): Promise<void> {
+    if (await this.isExistsGroup(groupDto)) {
       throw new BadRequestException({ message: 'Group already exists' });
     }
 
-    await this.relationDatabase.sendQuery({
-      text: 'INSERT INTO student_groups (id, title) VALUES ($1, $2)',
-      values: [groupType.id, groupType.title],
-    });
+    await this.groupRe.setGroup(groupDto);
+  }
+
+  async isExistsGroup(groupData: GroupDto): Promise<boolean> {
+    const group: GetGroupDto = await this.getGroupWithId(groupData);
+    return group ? true : false;
   }
 }

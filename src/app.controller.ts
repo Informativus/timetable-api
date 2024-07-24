@@ -6,7 +6,7 @@ import { SuccessStatusDto } from './dto/successStatus.dto';
 @Controller()
 export class AppController {
   @Get('example')
-  @ApiOperation({ summary: 'It is example query' })
+  @ApiOperation({ summary: 'This is a request for a server health test' })
   @ApiOkResponse({ type: SuccessStatusDto })
   getExample() {
     return { success: true };

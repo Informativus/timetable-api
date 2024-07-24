@@ -2,10 +2,9 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ITimetable } from './timetable.interface';
 import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
-import { TimetableDto } from 'src/dto/timetable/timetable.dto';
-import { IGroup } from 'src/group/group.interface';
-import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
+import { GroupDto } from 'src/dto/group/group.dto';
+import { IGroup } from 'src/group/group.interface';
 
 @Injectable()
 export class TimetableService implements ITimetable {
@@ -19,28 +18,21 @@ export class TimetableService implements ITimetable {
   ) {}
 
   async setTimetable(
-    groupDto: TimetableDto,
+    groupDto: GroupDto,
     timetable: CreateTimetableDto,
   ): Promise<void> {
-    const group: GetGroupDto = await this.groupService.getGroupWithId({
-      id: groupDto.group,
-    });
-
-    const existingTimetable: CreateTimetableDto[] =
-      await this.timetableRepository.getTimetableWithGroupId(group.group_id);
-
-    if (existingTimetable[0]) {
-      throw new Error('Timetable already exists');
+    if (!(await this.groupService.isExistsGroup(groupDto))) {
+      throw new BadRequestException('Group not found');
     }
 
-    await this.timetableRepository.setTimetable(group.group_id, timetable);
+    await this.timetableRepository.setTimetable(groupDto.id, timetable);
   }
 
-  async getTimetable(groupDto: TimetableDto): Promise<CreateTimetableDto> {
+  async getTimetable(groupDto: GroupDto): Promise<CreateTimetableDto> {
     const timetable: CreateTimetableDto = await this.relationDatabase.sendQuery(
       {
         text: 'SELECT tb.timetable FROM timetables tb JOIN student_groups sg ON tb.group_id = sg.group_id where sg.id = $1',
-        values: [groupDto.group],
+        values: [groupDto.id],
       },
     );
     if (!timetable[0]) {

@@ -21,7 +21,7 @@ export class ReplacementRepositoryService implements IReplacementRepository {
   ): Promise<CreateReplacementDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
-        text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE sg.id = $1',
+        text: 'SELECT replacement FROM data_on_day WHERE id = $1 AND date = current_date',
         values: [group],
       });
     } catch (error) {
@@ -35,7 +35,7 @@ export class ReplacementRepositoryService implements IReplacementRepository {
   ): Promise<CreateReplacementDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
-        text: 'SELECT rp.replacement FROM replacements rp JOIN student_groups sg ON sg.group_id = rp.group_id WHERE rp.replacement_date = $1 AND sg.id = $2;',
+        text: 'SELECT replacement FROM data_on_day WHERE date = $1 AND id = $2',
         values: [formatDateToSql(replacementDto.date), replacementDto.group],
       });
     } catch (error) {

@@ -8,4 +8,6 @@ export interface IGroup {
   getAllGroups(): Promise<InfoAllGroupDto>;
 
   setGroup(groupType: GetGroupDto): Promise<void>;
+
+  isExistsGroup(groupData: GroupDto): Promise<boolean>;
 }

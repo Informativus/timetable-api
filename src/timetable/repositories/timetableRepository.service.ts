@@ -9,13 +9,13 @@ export class TimetableRepositoryService implements ITimetableRepository {
     private readonly relationDatabase: IRelationDatabase,
   ) {}
 
-  async getTimetableWithGroupId(
-    groupId: number,
+  async getTimetableWithGroup(
+    groupTextId: string,
   ): Promise<CreateTimetableDto[]> {
     try {
       return await this.relationDatabase.sendQuery({
         text: 'SELECT timetable FROM timetables WHERE group_id = $1',
-        values: [groupId],
+        values: [groupTextId],
       });
     } catch (error) {
       console.error(error);
@@ -24,13 +24,13 @@ export class TimetableRepositoryService implements ITimetableRepository {
   }
 
   async setTimetable(
-    groupId: number,
+    groupTextId: string,
     timetable: CreateTimetableDto,
   ): Promise<void> {
     try {
       await this.relationDatabase.sendQuery({
         text: 'INSERT INTO timetables (group_id, timetable) VALUES ($1, $2)',
-        values: [groupId, JSON.stringify(timetable)],
+        values: [groupTextId, JSON.stringify(timetable)],
       });
     } catch (error) {
       console.error(error);
