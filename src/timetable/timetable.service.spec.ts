@@ -3,7 +3,6 @@ import { TimetableService } from './timetable.service';
 import { IRelationDatabase } from '../database/relationDatabase.interface';
 import { IGroup } from '../group/group.interface';
 import { BadRequestException } from '@nestjs/common';
-import { TimetableDto } from '../dto/timetable/timetable.dto';
 import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 
 describe('TimetableService', () => {
@@ -106,10 +105,7 @@ describe('TimetableService', () => {
           ['16', '10', '17', '40'],
         ],
       };
-      await service.setTimetable(
-        { group: groupToDatabase },
-        timetableData,
-      );
+      await service.setTimetable({ group: groupToDatabase }, timetableData);
 
       expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith({
         textId: groupToDatabase,

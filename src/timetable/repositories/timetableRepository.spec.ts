@@ -30,11 +30,11 @@ describe('TimetableRepository', () => {
         .fn()
         .mockResolvedValue(mockTimetable);
 
-      const result = await service.getTimetableWithGroupId(1);
+      const result = await service.getTimetableWithGroup('1I-1-23');
       expect(result).toEqual(mockTimetable);
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
         text: 'SELECT timetable FROM timetables WHERE group_id = $1',
-        values: [1],
+        values: ['1I-1-23'],
       });
     });
   });

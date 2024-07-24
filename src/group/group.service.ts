@@ -27,7 +27,7 @@ export class GroupService implements IGroup {
   }
 
   async getAllGroups(): Promise<InfoAllGroupDto> {
-    const groups: InfoAllGroupDto[] = await this.groupRe.getAllGroups();
+    const groups: GetGroupDto[] = await this.groupRe.getAllGroups();
 
     if (!groups[0]) {
       throw new InternalServerErrorException({
@@ -35,7 +35,9 @@ export class GroupService implements IGroup {
       });
     }
 
-    return groups[0];
+    return {
+      groups: groups,
+    };
   }
 
   async setGroup(groupDto: GetGroupDto): Promise<void> {

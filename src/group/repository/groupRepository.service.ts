@@ -1,6 +1,5 @@
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
-import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { IGroupRepository } from './groupRepository.interface';
@@ -16,7 +15,7 @@ export class GroupRepository implements IGroupRepository {
       values: [groupData.id],
     });
   }
-  async getAllGroups(): Promise<InfoAllGroupDto[]> {
+  async getAllGroups(): Promise<GetGroupDto[]> {
     return await this.relationDatabase.sendQuery({
       text: 'SELECT id, title FROM student_groups',
     });
