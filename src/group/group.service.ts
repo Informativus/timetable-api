@@ -41,7 +41,7 @@ export class GroupService implements IGroup {
   }
 
   async setGroup(groupDto: GetGroupDto): Promise<void> {
-    if (await this.isExistsGroup(groupDto)) {
+    if (await this.isExistsGroup({ id: groupDto.id })) {
       throw new BadRequestException({ message: 'Group already exists' });
     }
 

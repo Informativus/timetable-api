@@ -6,7 +6,7 @@ import { IsGroupArray } from 'src/validators/isGroupDtoArray.validator';
 export class InfoAllGroupDto {
   @IsNotEmpty()
   @ApiProperty({
-    example: [{ group_id: 1, id: '1I-1-23', title: '1И-1-23' }],
+    example: [{ id: '1I-1-23', title: '1И-1-23' }],
   })
   @IsGroupArray({ message: 'Must be an array of groups' })
   groups: GetGroupDto[];
