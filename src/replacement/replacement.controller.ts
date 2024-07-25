@@ -31,8 +31,8 @@ export class ReplacementController {
     description: 'Replacements was received successfully',
     schema: {
       oneOf: [
-        { $ref: getSchemaPath(SuccessStatusDto) },
         { $ref: getSchemaPath(CreateReplacementDto) },
+        { $ref: getSchemaPath(SuccessStatusDto) },
       ],
     },
   })

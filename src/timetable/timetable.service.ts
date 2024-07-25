@@ -29,12 +29,8 @@ export class TimetableService implements ITimetable {
   }
 
   async getTimetable(groupDto: GroupDto): Promise<CreateTimetableDto> {
-    const timetable: CreateTimetableDto = await this.relationDatabase.sendQuery(
-      {
-        text: 'SELECT tb.timetable FROM timetables tb JOIN student_groups sg ON tb.group_id = sg.group_id where sg.id = $1',
-        values: [groupDto.id],
-      },
-    );
+    const timetable: CreateTimetableDto[] =
+      await this.timetableRepository.getTimetableWithGroup(groupDto.id);
     if (!timetable[0]) {
       throw new BadRequestException('Timetable not found');
     }
