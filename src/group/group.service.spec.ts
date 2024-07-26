@@ -84,16 +84,19 @@ describe('GroupService', () => {
       mockGroupRepository.setGroup = jest.fn();
 
       await service.setGroup(mockGroup);
+
       expect(service.isExistsGroup).toHaveBeenCalledWith(mockGroupDto);
+
       expect(mockGroupRepository.setGroup).toHaveBeenCalledTimes(1);
       expect(mockGroupRepository.setGroup).toHaveBeenCalledWith(mockGroup);
     });
 
-    it('should throw error "group already exists"', async () => {
+    it('should throw error group already exists"', async () => {
       const mockGroup: GetGroupDto = {
         id: '1I-1-23',
         title: 'mock group',
       };
+
       const mockGroupDto: GroupDto = {
         id: '1I-1-23',
       };
@@ -112,6 +115,7 @@ describe('GroupService', () => {
 
   describe('isExistsGroup', () => {
     it('should be get info about the existence of the group', async () => {
+      jest.spyOn(service, 'isExistsGroup');
       const mockGroups: GetGroupDto[] = [
         {
           group_id: 1,
@@ -127,8 +131,13 @@ describe('GroupService', () => {
       const mockGroup: GroupDto = {
         id: '1I-1-23',
       };
+
       const result: boolean = await service.isExistsGroup(mockGroup);
       expect(result).toEqual(true);
+
+      expect(service.isExistsGroup).toHaveBeenCalledWith(mockGroup);
+      expect(service.isExistsGroup).toHaveBeenCalledTimes(1);
+
       expect(mockGroupRepository.getGroupWithId).toHaveBeenCalledTimes(1);
       expect(mockGroupRepository.getGroupWithId).toHaveBeenCalledWith(
         mockGroup,
