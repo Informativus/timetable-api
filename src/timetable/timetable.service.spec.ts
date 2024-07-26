@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TimetableService } from './timetable.service';
 import { IRelationDatabase } from '../database/relationDatabase.interface';
-import { IGroup } from '../group/group.interface';
+import { IGroupService } from '../group/groupService.interface';
 import { BadRequestException } from '@nestjs/common';
 import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 
 describe('TimetableService', () => {
   let service: TimetableService;
   let mockRelationDatabase: Partial<IRelationDatabase>;
-  let mockGroupService: Partial<IGroup>;
+  let mockGroupService: Partial<IGroupService>;
   const groupToDatabase: string = '1I-1-23';
   const groupIdInDatabase: number = 2;
 

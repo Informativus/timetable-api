@@ -1,5 +1,6 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDTO } from 'src/dto/replacement/getReplacement.dto';
+import { GroupId } from 'src/group/types/groupId.type';
 
 export interface IReplacementRepository {
   getReplacementWithGroup(group: string): Promise<CreateReplacementDto[]>;
@@ -9,7 +10,7 @@ export interface IReplacementRepository {
   ): Promise<CreateReplacementDto[]>;
 
   setReplacement(
-    group: string,
+    group: GroupId,
     replacement: CreateReplacementDto,
   ): Promise<void>;
 }

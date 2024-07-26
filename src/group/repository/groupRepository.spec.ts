@@ -25,7 +25,9 @@ describe('GroupRepository', () => {
 
   describe('getGroupWithId', () => {
     it('should get group info from database', async () => {
-      const mockGroup: GetGroupDto[] = [{ id: '1I-1-23', title: 'mock group' }];
+      const mockGroup: GetGroupDto[] = [
+        { group_id: 1, id: '1I-1-23', title: '1И-1-23' },
+      ];
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(mockGroup);
 
       const result = await service.getGroupWithId({

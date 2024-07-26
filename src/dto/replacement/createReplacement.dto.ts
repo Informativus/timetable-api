@@ -10,15 +10,17 @@ export class CreateReplacementDto {
   success: boolean;
 
   @ApiProperty({
-    example: {
-      index: '1',
-      cancelled: false,
-      teacher: 'Иванов|Иван',
-      room: '101',
-      title: 'Математика',
-      class: '10А',
-      teacher_original: 'Иванов|Иван',
-    },
+    example: [
+      {
+        index: '1',
+        cancelled: false,
+        teacher: 'Иванов|Иван',
+        room: '101',
+        title: 'Математика',
+        class: '10А',
+        teacher_original: 'Иванов|Иван',
+      },
+    ],
     type: [ReplacementDto],
   })
   @IsArray()

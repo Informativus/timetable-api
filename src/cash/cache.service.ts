@@ -6,8 +6,7 @@ export class CacheService<T> {
   constructor(
     @Inject('INoRelationDatabase')
     private readonly noRelationDatabase: INoRelationDatabase,
-  ) {
-  }
+  ) {}
 
   async set(key: string, value: T): Promise<void> {
     try {

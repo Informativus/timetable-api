@@ -5,6 +5,8 @@ import { DatabaseModule } from '../database/database.module';
 import { PostgresDatabaseService } from '../database/postgres-database/postgresDatabase.service';
 import { TimetableRepositoryService } from './repositories/timetableRepository.service';
 import { GroupModule } from 'src/group/group.module';
+import { GroupService } from '../group/group.service';
+import { GroupRepository } from '../group/repository/groupRepository.service';
 
 @Module({
   imports: [DatabaseModule, GroupModule],
@@ -12,7 +14,8 @@ import { GroupModule } from 'src/group/group.module';
   providers: [
     TimetableService,
     { provide: 'IRelationDatabase', useClass: PostgresDatabaseService },
-    { provide: 'IGroup', useClass: GroupModule },
+    { provide: 'IGroupService', useClass: GroupService },
+    { provide: 'IGroupRepository', useClass: GroupRepository },
     { provide: 'ITimetableRepository', useClass: TimetableRepositoryService },
   ],
   exports: [TimetableService],

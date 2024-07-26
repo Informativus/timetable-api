@@ -2,7 +2,7 @@ import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ReplacementDto {
-  @ApiProperty({ example: '1' })
+  @ApiProperty({ example: 1 })
   @IsNumber()
   index: number;
 

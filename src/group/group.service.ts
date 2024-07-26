@@ -4,14 +4,14 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { IGroup } from './group.interface';
+import { IGroupService } from './groupService.interface';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
 import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { IGroupRepository } from './repository/groupRepository.interface';
 
 @Injectable()
-export class GroupService implements IGroup {
+export class GroupService implements IGroupService {
   constructor(
     @Inject('IGroupRepository') private readonly groupRe: IGroupRepository,
   ) {}
@@ -24,6 +24,20 @@ export class GroupService implements IGroup {
     }
 
     return group[0];
+  }
+
+  async getGroupsWithExistsTimetable(): Promise<InfoAllGroupDto> {
+    const groups: GetGroupDto[] =
+      await this.groupRe.getGroupsWithExistsTimetable();
+    if (!groups[0]) {
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
+    }
+
+    return {
+      groups: groups,
+    };
   }
 
   async getAllGroups(): Promise<InfoAllGroupDto> {

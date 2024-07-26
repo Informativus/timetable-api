@@ -1,18 +1,15 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ITimetable } from './timetable.interface';
 import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
-import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
 import { GroupDto } from 'src/dto/group/group.dto';
-import { IGroup } from 'src/group/group.interface';
+import { IGroupService } from 'src/group/groupService.interface';
 
 @Injectable()
 export class TimetableService implements ITimetable {
   constructor(
-    @Inject('IRelationDatabase')
-    private readonly relationDatabase: IRelationDatabase,
-    @Inject('IGroup')
-    private readonly groupService: IGroup,
+    @Inject('IGroupService')
+    private readonly groupService: IGroupService,
     @Inject('ITimetableRepository')
     private readonly timetableRepository: ITimetableRepository,
   ) {}

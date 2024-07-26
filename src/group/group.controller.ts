@@ -28,6 +28,6 @@ export class GroupController {
   @ApiOkResponse({ type: InfoAllGroupDto })
   @ApiOperation({ summary: 'Get all groups' })
   async getAllGroups(): Promise<InfoAllGroupDto> {
-    return await this.groupService.getAllGroups();
+    return await this.groupService.getGroupsWithExistsTimetable();
   }
 }

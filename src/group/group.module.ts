@@ -7,6 +7,7 @@ import { GroupRepository } from './repository/groupRepository.service';
 @Module({
   providers: [
     GroupService,
+    GroupRepository,
     { provide: 'IGroupRepository', useClass: GroupRepository },
     { provide: 'IRelationDatabase', useClass: PostgresDatabaseService },
   ],

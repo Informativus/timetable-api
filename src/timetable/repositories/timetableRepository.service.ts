@@ -2,6 +2,7 @@ import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './timetableRepository.interface';
 import { IRelationDatabase } from '../../database/relationDatabase.interface';
+import { validateAndMapDto } from 'src/validators/validateAndMapDto.validator';
 
 export class TimetableRepositoryService implements ITimetableRepository {
   constructor(
@@ -13,10 +14,16 @@ export class TimetableRepositoryService implements ITimetableRepository {
     groupTextId: string,
   ): Promise<CreateTimetableDto[]> {
     try {
-      return await this.relationDatabase.sendQuery({
+      const result = await this.relationDatabase.sendQuery({
         text: 'SELECT timetable, date FROM data_on_year where id = $1 order by date DESC LIMIT 1',
         values: [groupTextId],
       });
+
+      const timetables = result.map(
+        (data: { timetable: CreateTimetableDto }) => data.timetable,
+      );
+
+      return validateAndMapDto(timetables, CreateTimetableDto);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Failed to get timetable');

@@ -1,24 +1,24 @@
 import {
   registerDecorator,
-  validateSync,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { ReplacementDto } from '../dto/replacement/replacement.dto';
+import { validate } from 'class-validator';
 
-@ValidatorConstraint({ async: false })
+@ValidatorConstraint({ async: true })
 export class IsReplacementArrayConstraint
-  implements ValidatorConstraintInterface {
-  validate(replacements: any[]) {
+  implements ValidatorConstraintInterface
+{
+  async validate(replacements: any[]): Promise<boolean> {
     if (!Array.isArray(replacements)) {
       return false;
     }
 
     for (const replacement of replacements) {
-      const errors = validateSync(
-        Object.assign(new ReplacementDto(), replacement),
-      );
+      const instance = Object.assign(new ReplacementDto(), replacement);
+      const errors = await validate(instance);
       if (errors.length > 0) {
         return false;
       }
@@ -33,7 +33,7 @@ export class IsReplacementArrayConstraint
 }
 
 export function IsReplacementArray(validationOptions?: ValidationOptions) {
-  return function(object: object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
