@@ -20,7 +20,7 @@ export class GroupService implements IGroupService {
     const group: GetGroupDto[] = await this.groupRe.getGroupWithId(groupData);
 
     if (!group[0]) {
-      throw new Error('Group does not exist');
+      throw new BadRequestException('Group does not exist');
     }
 
     return group[0];

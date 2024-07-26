@@ -10,6 +10,7 @@ export class GroupRepository implements IGroupRepository {
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
   ) {}
+
   async getGroupWithId(groupData: GroupDto): Promise<GetGroupDto[]> {
     const data = await this.relationDatabase.sendQuery({
       text: 'SELECT * FROM student_groups WHERE id = $1 LIMIT 1',
