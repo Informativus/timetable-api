@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { IReplacementRepository } from './repositories/replacementRepository.interface';
 import { IGroupService } from 'src/group/groupService.interface';
 import { ReplacementService } from './replacement.service';
-import { ReplacementRepositoryService } from './repositories/replacementRepository.service';
+import { ReplacementRepository } from './repositories/replacementRepository.service';
 import { GroupService } from 'src/group/group.service';
 import { CacheService } from 'src/cash/cache.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
-import { GetReplacementDTO } from 'src/dto/replacement/getReplacement.dto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 
 describe('ReplacementService', () => {
   let service: ReplacementService;
@@ -33,7 +33,7 @@ describe('ReplacementService', () => {
       providers: [
         {
           provide: 'IReplacementRepository',
-          useClass: ReplacementRepositoryService,
+          useClass: ReplacementRepository,
         },
         { provide: 'IGroup', useClass: GroupService },
       ],
@@ -53,7 +53,7 @@ describe('ReplacementService', () => {
         group_id: 1,
       };
 
-      const mockReplacementDto: GetReplacementDTO = {
+      const mockReplacementDto: GetReplacementDto = {
         group: '1I-1-23',
       };
 

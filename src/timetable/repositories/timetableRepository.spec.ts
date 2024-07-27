@@ -1,9 +1,13 @@
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
-import { TimetableRepositoryService } from './timetableRepository.service';
+import { TimetableRepository } from './timetableRepository.service';
 import { Test, TestingModule } from '@nestjs/testing';
+import { validateAndMapDto } from '../../utils/validateAndMapDto.util';
+import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
+
+jest.mock('src/utils/validateAndMapDto.util');
 
 describe('TimetableRepository', () => {
-  let service: TimetableRepositoryService;
+  let service: TimetableRepository;
   let mockRelationDatabase: Partial<IRelationDatabase>;
 
   beforeEach(async () => {
@@ -13,28 +17,71 @@ describe('TimetableRepository', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        TimetableRepositoryService,
+        TimetableRepository,
         { provide: 'IRelationDatabase', useValue: mockRelationDatabase },
       ],
     }).compile();
 
-    service = module.get<TimetableRepositoryService>(
-      TimetableRepositoryService,
-    );
+    service = module.get<TimetableRepository>(TimetableRepository);
   });
 
-  describe('getTimetableWithGroupId', () => {
+  describe('getTimetableWithGroup', () => {
     it('should get timetable from database', async () => {
-      const mockTimetable = [{ timetable: 'mock timetable' }];
+      const mockDatabaseResult = [
+        {
+          timetable: {
+            lessons: [['', '', '', '', '']],
+            even: [[0, 0, 0, 0, 0]],
+            odd: [[0, 0, 0, 0, 0]],
+            times: [['', '', '', '', '']],
+          },
+        },
+      ];
+      const mockTimetable = [
+        {
+          lessons: [['', '', '', '', '']],
+          even: [[0, 0, 0, 0, 0]],
+          odd: [[0, 0, 0, 0, 0]],
+          times: [['', '', '', '', '']],
+        },
+      ];
       mockRelationDatabase.sendQuery = jest
         .fn()
-        .mockResolvedValue(mockTimetable);
+        .mockResolvedValue(mockDatabaseResult);
+
+      (validateAndMapDto as jest.Mock).mockReturnValue(mockTimetable);
 
       const result = await service.getTimetableWithGroup('1I-1-23');
+
       expect(result).toEqual(mockTimetable);
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
-        text: 'SELECT timetable FROM timetables WHERE group_id = $1',
+        text: 'SELECT timetable FROM data_on_year where id = $1 order by date DESC LIMIT 1',
         values: ['1I-1-23'],
+      });
+
+      expect(validateAndMapDto).toHaveBeenCalledWith(
+        mockTimetable,
+        CreateTimetableDto,
+      );
+    });
+  });
+
+  describe('setTimetable', () => {
+    it('should set timetable to database', async () => {
+      const mockTimetable: CreateTimetableDto = {
+        lessons: [['', '', '', '', '']],
+        even: [[0, 0, 0, 0, 0]],
+        odd: [[0, 0, 0, 0, 0]],
+        times: [['', '', '', '', '']],
+      };
+      mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(null);
+
+      await service.setTimetable('1I-1-23', mockTimetable);
+
+      expect(mockRelationDatabase.sendQuery).toHaveBeenCalledTimes(1);
+      expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
+        text: 'INSERT INTO timetables (id, timetable) VALUES ($1, $2)',
+        values: ['1I-1-23', JSON.stringify(mockTimetable)],
       });
     });
   });

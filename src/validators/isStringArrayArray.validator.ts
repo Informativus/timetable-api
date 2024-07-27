@@ -7,7 +7,8 @@ import {
 
 @ValidatorConstraint({ async: false })
 export class IsStringArrayArrayConstraint
-  implements ValidatorConstraintInterface {
+  implements ValidatorConstraintInterface
+{
   validate(value: string[][]): boolean {
     if (!Array.isArray(value)) {
       return false;
@@ -15,9 +16,11 @@ export class IsStringArrayArrayConstraint
 
     for (const arr of value) {
       if (!Array.isArray(arr)) {
+        console.log('1 If');
         return false;
       }
       if (!arr.every((item) => typeof item === 'string')) {
+        console.log('2 If');
         return false;
       }
     }

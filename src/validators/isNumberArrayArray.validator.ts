@@ -31,7 +31,7 @@ export class IsNumberArrayArrayConstraint
 }
 
 export function IsNumberArrayArray(validationOptions?: ValidationOptions) {
-  return function(object: object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

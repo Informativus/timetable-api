@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ReplacementService } from './replacement.service';
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
-import { GetReplacementDTO } from '../dto/replacement/getReplacement.dto';
+import { GetReplacementDto } from '../dto/replacement/getReplacementDto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
 import {
   ApiBadRequestResponse,
@@ -38,7 +38,7 @@ export class ReplacementController {
   })
   @UsePipes(new ValidationPipe({ transform: true }))
   async getReplacements(
-    @Query() replacementsDto: GetReplacementDTO,
+    @Query() replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     if (replacementsDto.date) {
       return await this.replacementService.getReplacementsWithDate(

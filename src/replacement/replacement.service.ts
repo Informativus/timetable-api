@@ -4,9 +4,10 @@ import { IReplacement } from './replacement.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { IReplacementRepository } from './repositories/replacementRepository.interface';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
-import { GetReplacementDTO } from 'src/dto/replacement/getReplacement.dto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { IGroupService } from 'src/group/groupService.interface';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
 
 @Injectable()
 export class ReplacementService implements IReplacement {
@@ -19,12 +20,12 @@ export class ReplacementService implements IReplacement {
   ) {}
 
   async getReplacementsWithGroup(
-    replacementsDto: GetReplacementDTO,
+    replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     if (
-      await this.groupService.isExistsGroup({
+      !(await this.groupService.isExistsGroup({
         id: replacementsDto.group,
-      })
+      }))
     ) {
       throw new BadRequestException('Group not found');
     }
@@ -51,7 +52,7 @@ export class ReplacementService implements IReplacement {
   }
 
   async getReplacementsWithDate(
-    replacementDto: GetReplacementDTO,
+    replacementDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     const replacements: CreateReplacementDto[] =
       await this.replacementRepository.getReplacementWithDate(replacementDto);
@@ -65,8 +66,9 @@ export class ReplacementService implements IReplacement {
     };
   }
 
+  @ValidateAndMapDto(GetReplacementDto, CreateReplacementDto)
   async setReplacements(
-    replacementsDto: GetReplacementDTO,
+    replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
     const group: GetGroupDto = await this.groupService.getGroupWithId({

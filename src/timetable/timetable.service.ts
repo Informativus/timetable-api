@@ -4,6 +4,7 @@ import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { IGroupService } from 'src/group/groupService.interface';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
 
 @Injectable()
 export class TimetableService implements ITimetable {
@@ -14,6 +15,18 @@ export class TimetableService implements ITimetable {
     private readonly timetableRepository: ITimetableRepository,
   ) {}
 
+  async getTimetable(groupDto: GroupDto): Promise<CreateTimetableDto> {
+    const timetable: CreateTimetableDto[] =
+      await this.timetableRepository.getTimetableWithGroup(groupDto.id);
+
+    if (!timetable[0]) {
+      throw new BadRequestException('Timetable not found');
+    }
+
+    return timetable[0];
+  }
+
+  @ValidateAndMapDto(GroupDto, CreateTimetableDto)
   async setTimetable(
     groupDto: GroupDto,
     timetable: CreateTimetableDto,
@@ -23,14 +36,5 @@ export class TimetableService implements ITimetable {
     }
 
     await this.timetableRepository.setTimetable(groupDto.id, timetable);
-  }
-
-  async getTimetable(groupDto: GroupDto): Promise<CreateTimetableDto> {
-    const timetable: CreateTimetableDto[] =
-      await this.timetableRepository.getTimetableWithGroup(groupDto.id);
-    if (!timetable[0]) {
-      throw new BadRequestException('Timetable not found');
-    }
-    return timetable[0];
   }
 }

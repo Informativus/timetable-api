@@ -1,8 +1,9 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ReplacementDto {
   @ApiProperty({ example: 1 })
+  @IsNotEmpty()
   @IsNumber()
   index: number;
 

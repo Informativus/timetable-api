@@ -3,30 +3,30 @@ import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { IReplacementRepository } from './replacementRepository.interface';
 import { formatDateToSql } from 'src/utils/date.util';
-import { GetReplacementDTO } from 'src/dto/replacement/getReplacement.dto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { GroupId } from 'src/group/types/groupId.type';
-import { validateAndMapDto } from 'src/validators/validateAndMapDto.validator';
+import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 
-export class ReplacementRepositoryService implements IReplacementRepository {
+export class ReplacementRepository implements IReplacementRepository {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
   ) {}
 
   async getReplacementWithGroup(
-    group: string,
+    groupTextId: string,
   ): Promise<CreateReplacementDto[]> {
     try {
       const result = await this.relationDatabase.sendQuery({
         text: 'SELECT replacement FROM data_on_year WHERE id = $1 AND date = current_date',
-        values: [group],
+        values: [groupTextId],
       });
 
-      const replacements = result.map(
+      const replacement = result.map(
         (data: { replacement: CreateReplacementDto }) => data.replacement,
       );
 
-      return await validateAndMapDto(replacements, CreateReplacementDto);
+      return validateAndMapDto(replacement, CreateReplacementDto);
     } catch (error) {
       console.error('Error getting replacement: ', error);
       throw new InternalServerErrorException('Failed to get replacement');
@@ -34,7 +34,7 @@ export class ReplacementRepositoryService implements IReplacementRepository {
   }
 
   async getReplacementWithDate(
-    replacementDto: GetReplacementDTO,
+    replacementDto: GetReplacementDto,
   ): Promise<CreateReplacementDto[]> {
     try {
       const result = await this.relationDatabase.sendQuery({
@@ -42,11 +42,11 @@ export class ReplacementRepositoryService implements IReplacementRepository {
         values: [formatDateToSql(replacementDto.date), replacementDto.group],
       });
 
-      const replacements = result.map(
+      const replacement = result.map(
         (data: { replacement: CreateReplacementDto }) => data.replacement,
       );
 
-      return await validateAndMapDto(replacements, CreateReplacementDto);
+      return validateAndMapDto(replacement, CreateReplacementDto);
     } catch (error) {
       console.error('Error getting replacement with date: ', error);
       throw new InternalServerErrorException(

@@ -3,7 +3,7 @@ import { GroupDto } from 'src/dto/group/group.dto';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { IGroupRepository } from './groupRepository.interface';
-import { validateAndMapDto } from 'src/validators/validateAndMapDto.validator';
+import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 
 export class GroupRepository implements IGroupRepository {
   constructor(
@@ -12,28 +12,28 @@ export class GroupRepository implements IGroupRepository {
   ) {}
 
   async getGroupWithId(groupData: GroupDto): Promise<GetGroupDto[]> {
-    const data = await this.relationDatabase.sendQuery({
+    const result = await this.relationDatabase.sendQuery({
       text: 'SELECT * FROM student_groups WHERE id = $1 LIMIT 1',
       values: [groupData.id],
     });
 
-    return validateAndMapDto(data, GetGroupDto);
+    return validateAndMapDto(result, GetGroupDto);
   }
 
   async getGroupsWithExistsTimetable(): Promise<GetGroupDto[]> {
-    const data = await this.relationDatabase.sendQuery({
+    const result = await this.relationDatabase.sendQuery({
       text: 'SELECT id, title FROM student_groups sg JOIN timetables tb ON sg.group_id = tb.group_id',
     });
 
-    return validateAndMapDto(data, GetGroupDto);
+    return validateAndMapDto(result, GetGroupDto);
   }
 
   async getAllGroups(): Promise<GetGroupDto[]> {
-    const data = await this.relationDatabase.sendQuery({
+    const result = await this.relationDatabase.sendQuery({
       text: 'SELECT id, title FROM student_groups',
     });
 
-    return validateAndMapDto(data, GetGroupDto);
+    return validateAndMapDto(result, GetGroupDto);
   }
 
   async setGroup(groupDto: GetGroupDto): Promise<void> {

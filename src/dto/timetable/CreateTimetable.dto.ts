@@ -11,6 +11,7 @@ export class CreateTimetableDto {
   })
   @IsStringArrayArray()
   lessons: string[][];
+
   @ApiProperty({
     example: [[1, 2, 3, 4, 0, 0]],
   })
@@ -22,6 +23,7 @@ export class CreateTimetableDto {
   })
   @IsNumberArrayArray()
   odd: number[][];
+
   @ApiProperty({
     example: [['8', '10', '8', '55']],
   })

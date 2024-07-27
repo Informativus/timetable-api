@@ -12,7 +12,7 @@ export class CreateReplacementDto {
   @ApiProperty({
     example: [
       {
-        index: '1',
+        index: 1,
         cancelled: false,
         teacher: 'Иванов|Иван',
         room: '101',

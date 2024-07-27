@@ -2,9 +2,9 @@ import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './timetableRepository.interface';
 import { IRelationDatabase } from '../../database/relationDatabase.interface';
-import { validateAndMapDto } from 'src/validators/validateAndMapDto.validator';
+import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 
-export class TimetableRepositoryService implements ITimetableRepository {
+export class TimetableRepository implements ITimetableRepository {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,
@@ -15,15 +15,15 @@ export class TimetableRepositoryService implements ITimetableRepository {
   ): Promise<CreateTimetableDto[]> {
     try {
       const result = await this.relationDatabase.sendQuery({
-        text: 'SELECT timetable, date FROM data_on_year where id = $1 order by date DESC LIMIT 1',
+        text: 'SELECT timetable FROM data_on_year where id = $1 order by date DESC LIMIT 1',
         values: [groupTextId],
       });
 
-      const timetables = result.map(
+      const timetable = result.map(
         (data: { timetable: CreateTimetableDto }) => data.timetable,
       );
 
-      return validateAndMapDto(timetables, CreateTimetableDto);
+      return validateAndMapDto(timetable, CreateTimetableDto);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Failed to get timetable');

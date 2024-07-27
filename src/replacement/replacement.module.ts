@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ReplacementService } from './replacement.service';
 import { ReplacementController } from './replacement.controller';
 import { DatabaseModule } from 'src/database/database.module';
-import { ReplacementRepositoryService } from './repositories/replacementRepository.service';
+import { ReplacementRepository } from './repositories/replacementRepository.service';
 import { PostgresDatabaseService } from 'src/database/postgres-database/postgresDatabase.service';
 import { CacheModule } from 'src/cash/cache.module';
 import { GroupService } from '../group/group.service';
@@ -15,7 +15,7 @@ import { RedisDatabaseService } from 'src/database/redis-database/redis-database
   controllers: [ReplacementController],
   providers: [
     ReplacementService,
-    ReplacementRepositoryService,
+    ReplacementRepository,
     CacheService,
     {
       provide: 'INoRelationDatabase',
@@ -23,7 +23,7 @@ import { RedisDatabaseService } from 'src/database/redis-database/redis-database
     },
     {
       provide: 'IReplacementRepository',
-      useClass: ReplacementRepositoryService,
+      useClass: ReplacementRepository,
     },
     { provide: 'IRelationDatabase', useClass: PostgresDatabaseService },
     { provide: 'IGroupService', useClass: GroupService },

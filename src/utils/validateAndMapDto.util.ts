@@ -7,6 +7,7 @@ export async function validateAndMapDto<T extends object>(
   dtoClass: new () => T,
 ): Promise<T[]> {
   const validatedResults: T[] = [];
+  console.debug(`Data: `, data);
 
   for (const item of data) {
     const dto = plainToInstance(dtoClass, item);

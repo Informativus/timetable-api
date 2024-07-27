@@ -3,7 +3,7 @@ import { TimetableService } from './timetable.service';
 import { TimetableController } from './timetable.controller';
 import { DatabaseModule } from '../database/database.module';
 import { PostgresDatabaseService } from '../database/postgres-database/postgresDatabase.service';
-import { TimetableRepositoryService } from './repositories/timetableRepository.service';
+import { TimetableRepository } from './repositories/timetableRepository.service';
 import { GroupModule } from 'src/group/group.module';
 import { GroupService } from '../group/group.service';
 import { GroupRepository } from '../group/repository/groupRepository.service';
@@ -16,7 +16,7 @@ import { GroupRepository } from '../group/repository/groupRepository.service';
     { provide: 'IRelationDatabase', useClass: PostgresDatabaseService },
     { provide: 'IGroupService', useClass: GroupService },
     { provide: 'IGroupRepository', useClass: GroupRepository },
-    { provide: 'ITimetableRepository', useClass: TimetableRepositoryService },
+    { provide: 'ITimetableRepository', useClass: TimetableRepository },
   ],
   exports: [TimetableService],
 })

@@ -9,6 +9,7 @@ import { GroupDto } from 'src/dto/group/group.dto';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
 import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { IGroupRepository } from './repository/groupRepository.interface';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
 
 @Injectable()
 export class GroupService implements IGroupService {
@@ -54,6 +55,7 @@ export class GroupService implements IGroupService {
     };
   }
 
+  @ValidateAndMapDto(GetGroupDto)
   async setGroup(groupDto: GetGroupDto): Promise<void> {
     if (await this.isExistsGroup({ id: groupDto.id })) {
       throw new BadRequestException({ message: 'Group already exists' });
@@ -63,6 +65,7 @@ export class GroupService implements IGroupService {
   }
 
   async isExistsGroup(groupData: GroupDto): Promise<boolean> {
+    console.debug(groupData);
     const group: GetGroupDto = await this.getGroupWithId(groupData);
     return group ? true : false;
   }

@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class GetReplacementDTO {
+export class GetReplacementDto {
   @ApiProperty({ example: '1I-1-23' })
   @IsString()
   group: string;
