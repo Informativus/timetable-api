@@ -1,6 +1,6 @@
 import { GroupDto } from 'src/dto/group/group.dto';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
-import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
+import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
 
 export interface IGroupService {
   getGroupWithId(groupData: GroupDto): Promise<GetGroupDto>;

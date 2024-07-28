@@ -7,9 +7,10 @@ import {
 import { IGroupService } from './groupService.interface';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
-import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { IGroupRepository } from './repository/groupRepository.interface';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
+import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
+import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
 
 @Injectable()
 export class GroupService implements IGroupService {
@@ -20,7 +21,7 @@ export class GroupService implements IGroupService {
   async getGroupWithId(groupData: GroupDto): Promise<GetGroupDto> {
     const group: GetGroupDto[] = await this.groupRe.getGroupWithId(groupData);
 
-    if (!group[0]) {
+    if (!isDataNotEmpty(group[0])) {
       throw new BadRequestException('Group does not exist');
     }
 
@@ -30,7 +31,8 @@ export class GroupService implements IGroupService {
   async getGroupsWithExistsTimetable(): Promise<InfoAllGroupDto> {
     const groups: GetGroupDto[] =
       await this.groupRe.getGroupsWithExistsTimetable();
-    if (!groups[0]) {
+
+    if (!isDataNotEmpty(groups[0])) {
       throw new InternalServerErrorException({
         message: 'Something went wrong',
       });
@@ -44,7 +46,7 @@ export class GroupService implements IGroupService {
   async getAllGroups(): Promise<InfoAllGroupDto> {
     const groups: GetGroupDto[] = await this.groupRe.getAllGroups();
 
-    if (!groups[0]) {
+    if (!isDataNotEmpty(groups[0])) {
       throw new InternalServerErrorException({
         message: 'Something went wrong',
       });
@@ -57,7 +59,7 @@ export class GroupService implements IGroupService {
 
   @ValidateAndMapDto(GetGroupDto)
   async setGroup(groupDto: GetGroupDto): Promise<void> {
-    if (await this.isExistsGroup({ id: groupDto.id })) {
+    if (await this.isExistsGroup(groupDto)) {
       throw new BadRequestException({ message: 'Group already exists' });
     }
 
@@ -65,8 +67,7 @@ export class GroupService implements IGroupService {
   }
 
   async isExistsGroup(groupData: GroupDto): Promise<boolean> {
-    console.debug(groupData);
-    const group: GetGroupDto = await this.getGroupWithId(groupData);
-    return group ? true : false;
+    const group: GetGroupDto[] = await this.groupRe.getGroupWithId(groupData);
+    return isDataNotEmpty(group[0]);
   }
 }

@@ -76,16 +76,12 @@ describe('GroupService', () => {
         id: '1I-1-23',
         title: 'mock group',
       };
-      const mockGroupDto: GroupDto = {
-        id: '1I-1-23',
-      };
 
       service.isExistsGroup = jest.fn().mockReturnValue(false);
       mockGroupRepository.setGroup = jest.fn();
 
       await service.setGroup(mockGroup);
-
-      expect(service.isExistsGroup).toHaveBeenCalledWith(mockGroupDto);
+      expect(service.isExistsGroup).toHaveBeenCalledWith(mockGroup);
 
       expect(mockGroupRepository.setGroup).toHaveBeenCalledTimes(1);
       expect(mockGroupRepository.setGroup).toHaveBeenCalledWith(mockGroup);
@@ -97,10 +93,6 @@ describe('GroupService', () => {
         title: 'mock group',
       };
 
-      const mockGroupDto: GroupDto = {
-        id: '1I-1-23',
-      };
-
       service.isExistsGroup = jest.fn().mockReturnValue(true);
       mockGroupRepository.setGroup = jest.fn();
 
@@ -108,7 +100,7 @@ describe('GroupService', () => {
         'Group already exists',
       );
 
-      expect(service.isExistsGroup).toHaveBeenCalledWith(mockGroupDto);
+      expect(service.isExistsGroup).toHaveBeenCalledWith(mockGroup);
       expect(mockGroupRepository.setGroup).toHaveBeenCalledTimes(0);
     });
   });

@@ -3,6 +3,7 @@ import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './timetableRepository.interface';
 import { IRelationDatabase } from '../../database/relationDatabase.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
+import { GroupId } from 'src/group/types/groupId.type';
 
 export class TimetableRepository implements ITimetableRepository {
   constructor(
@@ -31,13 +32,13 @@ export class TimetableRepository implements ITimetableRepository {
   }
 
   async setTimetable(
-    groupTextId: string,
+    groupId: GroupId,
     timetable: CreateTimetableDto,
   ): Promise<void> {
     try {
       await this.relationDatabase.sendQuery({
         text: 'INSERT INTO timetables (id, timetable) VALUES ($1, $2)',
-        values: [groupTextId, JSON.stringify(timetable)],
+        values: [groupId.group_id, JSON.stringify(timetable)],
       });
     } catch (error) {
       console.error(error);

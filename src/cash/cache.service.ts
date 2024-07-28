@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { INoRelationDatabase } from '../database/noRelationDatabase.interface';
 
 @Injectable()
-export class CacheService<T> {
+export class CacheService<T extends object> {
   constructor(
     @Inject('INoRelationDatabase')
     private readonly noRelationDatabase: INoRelationDatabase,
@@ -10,7 +10,7 @@ export class CacheService<T> {
 
   async set(key: string, value: T): Promise<void> {
     try {
-      await this.noRelationDatabase.set(key, value);
+      await this.noRelationDatabase.set(key, JSON.stringify(value));
     } catch (error) {
       console.error(error);
       throw new Error('Error saving data to cache');
@@ -20,6 +20,7 @@ export class CacheService<T> {
   async get(key: string): Promise<T | null> {
     try {
       const data = await this.noRelationDatabase.get(key);
+      console.log(data);
       return data ? JSON.parse(data) : null;
     } catch (error) {
       console.error(error);

@@ -80,7 +80,6 @@ describe('TimetableService', () => {
         times: [['', '', '', '', '']],
       };
       mockTimetableRepository.setTimetable = jest.fn().mockResolvedValue(null);
-      mockGroupService.isExistsGroup = jest.fn().mockResolvedValue(true);
       jest.spyOn(service, 'setTimetable');
 
       await service.setTimetable(groupDto, mockTimetableDto);

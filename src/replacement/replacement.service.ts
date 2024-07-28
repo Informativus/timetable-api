@@ -1,4 +1,8 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CacheService } from 'src/cash/cache.service';
 import { IReplacement } from './replacement.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
@@ -6,8 +10,10 @@ import { IReplacementRepository } from './repositories/replacementRepository.int
 import { SuccessStatusDto } from '../dto/successStatus.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { IGroupService } from 'src/group/groupService.interface';
-import { GetGroupDto } from '../dto/group/getGroup.dto';
+import { GroupId } from 'src/group/types/groupId.type';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
+import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
+import { ensureGroupExists } from 'src/utils/group.util';
 
 @Injectable()
 export class ReplacementService implements IReplacement {
@@ -22,16 +28,11 @@ export class ReplacementService implements IReplacement {
   async getReplacementsWithGroup(
     replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
-    if (
-      !(await this.groupService.isExistsGroup({
-        id: replacementsDto.group,
-      }))
-    ) {
-      throw new BadRequestException('Group not found');
-    }
+    await ensureGroupExists(this.groupService, { id: replacementsDto.group });
 
     const cacheKey = replacementsDto.group;
-    const cachedReplacements = await this.cacheService.get(cacheKey);
+    const cachedReplacements: CreateReplacementDto =
+      await this.cacheService.get(cacheKey);
 
     if (cachedReplacements) {
       return cachedReplacements;
@@ -42,7 +43,7 @@ export class ReplacementService implements IReplacement {
         replacementsDto.group,
       );
 
-    if (replacements[0]) {
+    if (isDataNotEmpty(replacements[0])) {
       return replacements[0];
     }
 
@@ -52,12 +53,14 @@ export class ReplacementService implements IReplacement {
   }
 
   async getReplacementsWithDate(
-    replacementDto: GetReplacementDto,
+    replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
-    const replacements: CreateReplacementDto[] =
-      await this.replacementRepository.getReplacementWithDate(replacementDto);
+    await ensureGroupExists(this.groupService, { id: replacementsDto.group });
 
-    if (replacements[0]) {
+    const replacements: CreateReplacementDto[] =
+      await this.replacementRepository.getReplacementWithDate(replacementsDto);
+
+    if (isDataNotEmpty(replacements[0])) {
       return replacements[0];
     }
 
@@ -71,12 +74,18 @@ export class ReplacementService implements IReplacement {
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    const group: GetGroupDto = await this.groupService.getGroupWithId({
-      id: replacementsDto.group,
-    });
-    if (!group) {
-      throw new BadRequestException('Group not found');
+    let group: GroupId;
+    try {
+      group = <GroupId>await this.groupService.getGroupWithId({
+        id: replacementsDto.group,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed get group from group service',
+      );
     }
+    console.log(group);
+
     const cacheKey: string = replacementsDto.group;
 
     await this.cacheService.set(cacheKey, replacements);
