@@ -8,38 +8,17 @@ import { GroupId } from 'src/group/types/groupId.type';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 
-class MockCacheService implements Partial<CacheService<CreateReplacementDto>> {
-  set = jest.fn().mockImplementation(async (key: string, value: any) => {
-    console.log(`Set data ok: ${key}, ${JSON.stringify(value)}`);
-  });
-
-  get = jest.fn().mockImplementation(async (key: string) => {
-    console.log('Get data from cache with key ' + key);
-    return {
-      success: false,
-      replacements: [
-        {
-          index: 1,
-          cancelled: false,
-          teacher: 'Иванов|Иван',
-          room: '101',
-          title: 'Математика',
-          class: '10А',
-          teacher_original: 'Иванов|Иван',
-        },
-      ],
-    };
-  });
-}
-
 describe('ReplacementService', () => {
   let service: ReplacementService;
-  let mockCacheService: MockCacheService;
+
+  let mockCacheService: Partial<CacheService<CreateReplacementDto>>;
   let mockReplacementRepository: Partial<IReplacementRepository>;
   let mockGroupService: Partial<IGroupService>;
-
   beforeEach(async () => {
-    mockCacheService = new MockCacheService();
+    mockCacheService = {
+      get: jest.fn(),
+      set: jest.fn(),
+    };
 
     mockReplacementRepository = {
       getReplacementWithGroup: jest.fn(),
@@ -54,11 +33,7 @@ describe('ReplacementService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReplacementService,
-        { provide: CacheService, useClass: MockCacheService },
-        {
-          provide: 'INoRelationDatabase',
-          useClass: MockCacheService,
-        },
+        { provide: CacheService, useValue: mockCacheService },
         {
           provide: 'IReplacementRepository',
           useValue: mockReplacementRepository,
@@ -101,7 +76,6 @@ describe('ReplacementService', () => {
         ],
       };
 
-      // Убедимся, что mockGroupService возвращает правильное значение
       (mockGroupService.getGroupWithId as jest.Mock).mockResolvedValue(
         mockGroup,
       );
@@ -112,6 +86,12 @@ describe('ReplacementService', () => {
         id: mockReplacementDto.group,
       });
 
+      expect(mockCacheService.set).toHaveBeenCalledTimes(1);
+      expect(mockCacheService.set).toHaveBeenCalledWith(
+        mockGroup.id,
+        mockReplacement,
+      );
+
       expect(mockReplacementRepository.setReplacement).toHaveBeenCalledTimes(1);
       expect(mockReplacementRepository.setReplacement).toHaveBeenCalledWith(
         mockGroupId,
@@ -121,13 +101,12 @@ describe('ReplacementService', () => {
   });
 
   describe('getReplacementsWithGroup', () => {
-    it('should get replacement from database', async () => {
-      const mockGroup: GetGroupDto = {
-        id: '1I-1-23',
-        title: 'mock group',
+    it('should get replacement from cache', async () => {
+      const mockReplacementDto: GetReplacementDto = {
+        group: '1I-1-23',
       };
 
-      const mockReplacement: CreateReplacementDto = {
+      const mockCreateReplacement: CreateReplacementDto = {
         success: false,
         replacements: [
           {
@@ -141,6 +120,17 @@ describe('ReplacementService', () => {
           },
         ],
       };
+
+      mockCacheService.get = jest.fn().mockResolvedValue(mockCreateReplacement);
+
+      const result = await service.getReplacementsWithGroup(mockReplacementDto);
+
+      expect(result).toEqual(mockCreateReplacement);
+
+      expect(mockCacheService.get).toHaveBeenCalledTimes(1);
+      expect(mockCacheService.get).toHaveBeenCalledWith(
+        mockReplacementDto.group,
+      );
     });
   });
 });
