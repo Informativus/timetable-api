@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { IReplacementRepository } from './repositories/replacementsRepository.interface';
+import { IGetReplaceWithDate } from '../repositories/Interfaces/IGetReplacWithDate.interface';
 import { IGroupService } from 'src/group/groupService.interface';
-import { ReplacementsFacade } from './replacement.service';
+import { ReplacementsFacade } from './replacementsFacade.service';
 import { CacheService } from 'src/cache/cache.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
@@ -13,7 +13,7 @@ describe('ReplacementsFacade', () => {
   let service: ReplacementsFacade;
 
   let mockCacheService: Partial<CacheService<CreateReplacementDto>>;
-  let mockReplacementRepository: Partial<IReplacementRepository>;
+  let mockReplacementRepository: Partial<IGetReplaceWithDate>;
   let mockGroupService: Partial<IGroupService>;
 
   beforeEach(async () => {
@@ -73,7 +73,6 @@ describe('ReplacementsFacade', () => {
             room: '101',
             title: 'Математика',
             class: '1I-1-23',
-            teacher_original: 'Иванов|Иван',
           },
         ],
       };
@@ -118,7 +117,6 @@ describe('ReplacementsFacade', () => {
             room: '101',
             title: 'Математика',
             class: '1I-1-23',
-            teacher_original: 'Иванов|Иван',
           },
         ],
       };
@@ -151,7 +149,6 @@ describe('ReplacementsFacade', () => {
               room: '101',
               title: 'Математика',
               class: '1I-1-23',
-              teacher_original: 'Иванов|Иван',
             },
           ],
         },

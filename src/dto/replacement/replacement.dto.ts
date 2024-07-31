@@ -26,8 +26,4 @@ export class ReplacementDto {
   @ApiProperty({ example: '10А' })
   @IsString()
   class: string;
-
-  @ApiProperty({ example: 'Иванов|Иван' })
-  @IsString()
-  teacher_original: string;
 }

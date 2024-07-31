@@ -11,7 +11,7 @@ export class GetReplacementsWithDate {
   constructor(
     @Inject('IGetReplaceWithDate')
     private readonly replacementRepository: IReplacementRepository,
-    @Inject('IGroupRepository') private readonly groupService: IGroupService,
+    @Inject('IGroupService') private readonly groupService: IGroupService,
   ) {}
 
   async getReplacementsWithDate(

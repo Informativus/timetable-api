@@ -6,7 +6,7 @@ export class CreateTimetableDto {
   @ApiProperty({
     example: [
       ['', '', '', ''],
-      ['Разговоры о важном', '105', 'Чернышева|А|М|', ''],
+      ['Разговоры о важном|Полное название', '105', 'Чернышева|А|М|', ''],
     ],
   })
   @IsStringArrayArray()
