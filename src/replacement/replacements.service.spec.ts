@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { IReplacementRepository } from './repositories/replacementsRepository.interface';
 import { IGroupService } from 'src/group/groupService.interface';
-import { ReplacementService } from './replacement.service';
+import { ReplacementsFacade } from './replacement.service';
 import { CacheService } from 'src/cache/cache.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
@@ -9,8 +9,8 @@ import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { BadRequestException } from '@nestjs/common';
 
-describe('ReplacementService', () => {
-  let service: ReplacementService;
+describe('ReplacementsFacade', () => {
+  let service: ReplacementsFacade;
 
   let mockCacheService: Partial<CacheService<CreateReplacementDto>>;
   let mockReplacementRepository: Partial<IReplacementRepository>;
@@ -34,7 +34,7 @@ describe('ReplacementService', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ReplacementService,
+        ReplacementsFacade,
         { provide: CacheService, useValue: mockCacheService },
         {
           provide: 'IReplacementRepository',
@@ -44,7 +44,7 @@ describe('ReplacementService', () => {
       ],
     }).compile();
 
-    service = module.get<ReplacementService>(ReplacementService);
+    service = module.get<ReplacementsFacade>(ReplacementsFacade);
   });
 
   describe('setReplacement', () => {

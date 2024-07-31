@@ -9,7 +9,7 @@ import { Inject } from '@nestjs/common';
 
 export class SetReplacements {
   constructor(
-    @Inject('IReplacementRepository')
+    @Inject('ISerReplaceInStorage')
     private readonly replacementRepository: IReplacementRepository,
     @Inject('IGroupService')
     private readonly groupService: IGroupService,

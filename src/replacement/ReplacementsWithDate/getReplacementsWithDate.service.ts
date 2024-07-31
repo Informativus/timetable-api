@@ -9,7 +9,7 @@ import { IGroupService } from 'src/group/groupService.interface';
 
 export class GetReplacementsWithDate {
   constructor(
-    @Inject('IReplacementRepository')
+    @Inject('IGetReplaceWithDate')
     private readonly replacementRepository: IReplacementRepository,
     @Inject('IGroupRepository') private readonly groupService: IGroupService,
   ) {}

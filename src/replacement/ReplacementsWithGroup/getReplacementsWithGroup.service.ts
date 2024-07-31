@@ -10,7 +10,7 @@ import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 
 export class GetReplacementsWithGroup {
   constructor(
-    @Inject('IReplacementRepository')
+    @Inject('IGetReplaceWithGroup')
     private readonly replacementRepository: IReplacementRepository,
     @Inject('IGroupService')
     private readonly groupService: IGroupService,

@@ -15,12 +15,7 @@ export class ReplacementsFacade implements IReplecementsFacade {
     private readonly getReplacementsDate: GetReplacementsWithDate,
     @Inject()
     private readonly setReplacementsInDatabase: SetReplacements,
-  ) {
-    console.log(
-      'ReplacementsFacade initialized with getReplacementsDate:',
-      !!getReplacementsDate,
-    );
-  }
+  ) {}
 
   getReplacementsWithGroup(
     replacementsDto: GetReplacementDto,
