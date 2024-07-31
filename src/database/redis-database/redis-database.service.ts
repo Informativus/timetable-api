@@ -11,7 +11,7 @@ export class RedisDatabaseService implements INoRelationDatabase {
   constructor() {
     this.config = new ConfigService();
     this.redis = new Redis(
-      <number>(<any>this.config.get({ property: 'REDIS_PORT' })),
+      Number(this.config.get({ property: 'REDIS_PORT' })),
       this.config.get({ property: 'REDIS_HOST' }),
     );
   }

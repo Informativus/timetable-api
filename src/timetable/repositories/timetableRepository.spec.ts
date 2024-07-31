@@ -76,12 +76,12 @@ describe('TimetableRepository', () => {
       };
       mockRelationDatabase.sendQuery = jest.fn().mockResolvedValue(null);
 
-      await service.setTimetable('1I-1-23', mockTimetable);
+      await service.setTimetable({ group_id: 1 }, mockTimetable);
 
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledTimes(1);
       expect(mockRelationDatabase.sendQuery).toHaveBeenCalledWith({
         text: 'INSERT INTO timetables (id, timetable) VALUES ($1, $2)',
-        values: ['1I-1-23', JSON.stringify(mockTimetable)],
+        values: [1, JSON.stringify(mockTimetable)],
       });
     });
   });

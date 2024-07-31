@@ -4,6 +4,7 @@ import { IGroupService } from '../group/groupService.interface';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
+import { GroupId } from 'src/group/types/groupId.type';
 
 describe('TimetableService', () => {
   let service: TimetableService;
@@ -79,8 +80,14 @@ describe('TimetableService', () => {
         odd: [[0, 0, 0, 0, 0]],
         times: [['', '', '', '', '']],
       };
-      mockTimetableRepository.setTimetable = jest.fn().mockResolvedValue(null);
+
+      const groupId: GroupId = {
+        group_id: 1,
+      };
+
       jest.spyOn(service, 'setTimetable');
+
+      mockGroupService.getGroupWithId = jest.fn().mockResolvedValue(groupId);
 
       await service.setTimetable(groupDto, mockTimetableDto);
 
@@ -90,9 +97,12 @@ describe('TimetableService', () => {
         mockTimetableDto,
       );
 
+      expect(mockGroupService.getGroupWithId).toHaveBeenCalledTimes(1);
+      expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith(groupDto);
+
       expect(mockTimetableRepository.setTimetable).toHaveBeenCalledTimes(1);
       expect(mockTimetableRepository.setTimetable).toHaveBeenCalledWith(
-        groupDto.id,
+        groupId,
         mockTimetableDto,
       );
     });

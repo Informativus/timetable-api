@@ -1,13 +1,13 @@
 import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { IReplacementRepository } from './replacementRepository.interface';
+import { IReplacementRepository } from './replacementsRepository.interface';
 import { formatDateToSql } from 'src/utils/date.util';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 
-export class ReplacementRepository implements IReplacementRepository {
+export class ReplacementsRepository implements IReplacementRepository {
   constructor(
     @Inject('IRelationDatabase')
     private readonly relationDatabase: IRelationDatabase,

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ReplacementRepository } from './replacementRepository.service';
+import { ReplacementsRepository } from './replacementsRepository.service';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
@@ -9,7 +9,7 @@ import { formatDateToSql } from 'src/utils/date.util';
 jest.mock('src/utils/validateAndMapDto.util');
 
 describe('ReplacementRepository', () => {
-  let service: ReplacementRepository;
+  let service: ReplacementsRepository;
   let mockRelationDatabase: Partial<IRelationDatabase>;
 
   beforeEach(async () => {
@@ -19,12 +19,12 @@ describe('ReplacementRepository', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ReplacementRepository,
+        ReplacementsRepository,
         { provide: 'IRelationDatabase', useValue: mockRelationDatabase },
       ],
     }).compile();
 
-    service = module.get<ReplacementRepository>(ReplacementRepository);
+    service = module.get<ReplacementsRepository>(ReplacementsRepository);
   });
 
   describe('getReplacementWithGroup', () => {

@@ -5,7 +5,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ReplacementService } from './replacement.service';
+import { ReplacementsFacade } from './replacementsFacade.service';
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from '../dto/replacement/getReplacementDto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
@@ -19,8 +19,8 @@ import {
 
 @ApiTags('replacement')
 @Controller()
-export class ReplacementController {
-  constructor(private readonly replacementService: ReplacementService) {}
+export class ReplacementsController {
+  constructor(private readonly replacementService: ReplacementsFacade) {}
 
   @Get('/replacements')
   @ApiOperation({ summary: 'give replacements' })

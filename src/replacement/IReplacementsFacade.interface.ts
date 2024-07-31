@@ -1,16 +1,14 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { SuccessStatusDto } from '../dto/successStatus.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 
-export interface IReplacement {
+export interface IReplecementsFacade {
   getReplacementsWithGroup(
     replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto>;
-
   getReplacementsWithDate(
-    replacementDto: GetReplacementDto,
+    replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto>;
-
   setReplacements(
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
