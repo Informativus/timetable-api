@@ -5,13 +5,18 @@ import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto'
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 import { ensureGroupExists } from 'src/utils/group.util';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
-import { IGroupService } from 'src/group/groupService.interface';
+import {
+  GET_GROUP_WITH_DATA,
+  GET_REPLACEMENTS_WITH_DATE,
+} from 'src/config/constants';
+import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 export class GetReplacementsWithDate {
   constructor(
-    @Inject('IGetReplaceWithDate')
+    @Inject(GET_REPLACEMENTS_WITH_DATE)
     private readonly replacementRepository: IReplacementRepository,
-    @Inject('IGroupService') private readonly groupService: IGroupService,
+    @Inject(GET_GROUP_WITH_DATA)
+    private readonly groupService: IGetGroupWithData,
   ) {}
 
   async getReplacementsWithDate(

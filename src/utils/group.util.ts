@@ -1,8 +1,8 @@
 import { GroupDto } from 'src/dto/group/group.dto';
-import { IGroupService } from 'src/group/groupService.interface';
+import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 export async function ensureGroupExists(
-  groupService: IGroupService,
+  groupService: IGetGroupWithData,
   groupDto: GroupDto,
 ): Promise<void> {
   await groupService.getGroupWithId(groupDto);

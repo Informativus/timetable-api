@@ -4,10 +4,11 @@ import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { Inject, InternalServerErrorException } from '@nestjs/common';
 import { IGroupRepository } from './groupRepository.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
+import { RELATION_DATABASE } from 'src/config/constants';
 
 export class GroupRepository implements IGroupRepository {
   constructor(
-    @Inject('IRelationDatabase')
+    @Inject(RELATION_DATABASE)
     private readonly relationDatabase: IRelationDatabase,
   ) {}
 

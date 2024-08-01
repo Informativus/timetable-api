@@ -6,17 +6,22 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { GroupDto } from '../dto/group/group.dto';
-import { GroupService } from './group.service';
 import { GetGroupDto } from '../dto/group/getGroup.dto';
 import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  GROUP_API_TAG,
+  PATH_TO_GROUP_ID,
+  PATH_TO_GROUPS,
+} from 'src/config/constants';
+import { GroupFacade } from './groupFacade.service';
 
-@ApiTags('group')
+@ApiTags(GROUP_API_TAG)
 @Controller()
 export class GroupController {
-  constructor(private readonly groupService: GroupService) {}
+  constructor(private readonly groupService: GroupFacade) {}
 
-  @Get('/group_info')
+  @Get(PATH_TO_GROUP_ID)
   @ApiOkResponse({ type: GetGroupDto })
   @ApiOperation({ summary: 'Get group info by group id' })
   @UsePipes(new ValidationPipe({ transform: true }))
@@ -24,7 +29,7 @@ export class GroupController {
     return await this.groupService.getGroupWithId(groupData);
   }
 
-  @Get('/groups')
+  @Get(PATH_TO_GROUPS)
   @ApiOkResponse({ type: InfoAllGroupDto })
   @ApiOperation({ summary: 'Get all groups' })
   async getAllGroups(): Promise<InfoAllGroupDto> {

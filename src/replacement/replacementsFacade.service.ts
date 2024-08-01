@@ -5,35 +5,37 @@ import { IReplecementsFacade } from './IReplacementsFacade.interface';
 import { GetReplacementsWithGroup } from './ReplacementsWithGroup/getReplacementsWithGroup.service';
 import { GetReplacementsWithDate } from './ReplacementsWithDate/getReplacementsWithDate.service';
 import { SetReplacements } from './SetReplacements/setReplacementsInDb.service';
-import { Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ReplacementsFacade implements IReplecementsFacade {
   constructor(
-    @Inject()
     private readonly getReplacementsGroup: GetReplacementsWithGroup,
-    @Inject()
     private readonly getReplacementsDate: GetReplacementsWithDate,
-    @Inject()
     private readonly setReplacementsInDatabase: SetReplacements,
   ) {}
 
-  getReplacementsWithGroup(
+  async getReplacementsWithGroup(
     replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
-    return this.getReplacementsGroup.getReplacementsWithGroup(replacementsDto);
+    return await this.getReplacementsGroup.getReplacementsWithGroup(
+      replacementsDto,
+    );
   }
 
-  getReplacementsWithDate(
+  async getReplacementsWithDate(
     replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
-    return this.getReplacementsDate.getReplacementsWithDate(replacementsDto);
+    return await this.getReplacementsDate.getReplacementsWithDate(
+      replacementsDto,
+    );
   }
 
-  setReplacements(
+  async setReplacements(
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    return this.setReplacementsInDatabase.setReplacements(
+    return await this.setReplacementsInDatabase.setReplacements(
       replacementsDto,
       replacements,
     );

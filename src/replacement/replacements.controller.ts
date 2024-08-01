@@ -16,13 +16,17 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
+import {
+  PATH_TO_REPLACEMENTS,
+  REPLACEMENTS_API_TAG,
+} from 'src/config/constants';
 
-@ApiTags('replacement')
+@ApiTags(REPLACEMENTS_API_TAG)
 @Controller()
 export class ReplacementsController {
   constructor(private readonly replacementService: ReplacementsFacade) {}
 
-  @Get('/replacements')
+  @Get(PATH_TO_REPLACEMENTS)
   @ApiOperation({ summary: 'give replacements' })
   @ApiBadRequestResponse({
     description: 'Could not get replacements, the request is not correct!',

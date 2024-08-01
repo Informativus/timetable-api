@@ -7,17 +7,18 @@ import { ITimetable } from './timetable.interface';
 import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './repositories/timetableRepository.interface';
 import { GroupDto } from 'src/dto/group/group.dto';
-import { IGroupService } from 'src/group/groupService.interface';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import { ensureGroupExists } from 'src/utils/group.util';
 import { GroupId } from 'src/group/types/groupId.type';
+import { GET_GROUP_WITH_DATA } from 'src/config/constants';
+import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 @Injectable()
 export class TimetableService implements ITimetable {
   constructor(
-    @Inject('IGroupService')
-    private readonly groupService: IGroupService,
+    @Inject(GET_GROUP_WITH_DATA)
+    private readonly groupService: IGetGroupWithData,
     @Inject('ITimetableRepository')
     private readonly timetableRepository: ITimetableRepository,
   ) {}

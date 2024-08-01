@@ -3,10 +3,11 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SuccessStatusDto } from './dto/successStatus.dto';
 import { CreateReplacementDto } from './dto/replacement/createReplacement.dto';
+import { MAIN_PATH, DEFAULT_PORT, SWAGGER } from './config/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix(MAIN_PATH);
 
   const config = new DocumentBuilder()
     .setTitle('Timetable API')
@@ -18,9 +19,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: [CreateReplacementDto, SuccessStatusDto],
   });
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup(SWAGGER, app, document);
 
-  await app.listen(8080);
+  await app.listen(DEFAULT_PORT);
 }
 
 bootstrap();

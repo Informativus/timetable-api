@@ -1,18 +1,23 @@
 import { CacheService } from 'src/cache/cache.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
-import { IGroupService } from 'src/group/groupService.interface';
 import { GroupId } from 'src/group/types/groupId.type';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
 import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import {
+  GET_GROUP_WITH_DATA,
+  SET_REPLACEMENTS_IN_STORAGE,
+} from 'src/config/constants';
+import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
+@Injectable()
 export class SetReplacements {
   constructor(
-    @Inject('ISerReplaceInStorage')
+    @Inject(SET_REPLACEMENTS_IN_STORAGE)
     private readonly replacementRepository: IReplacementRepository,
-    @Inject('IGroupService')
-    private readonly groupService: IGroupService,
+    @Inject(GET_GROUP_WITH_DATA)
+    private readonly groupService: IGetGroupWithData,
     private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}
 

@@ -4,10 +4,11 @@ import { ITimetableRepository } from './timetableRepository.interface';
 import { IRelationDatabase } from '../../database/relationDatabase.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { GroupId } from 'src/group/types/groupId.type';
+import { RELATION_DATABASE } from 'src/config/constants';
 
 export class TimetableRepository implements ITimetableRepository {
   constructor(
-    @Inject('IRelationDatabase')
+    @Inject(RELATION_DATABASE)
     private readonly relationDatabase: IRelationDatabase,
   ) {}
 
