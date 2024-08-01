@@ -1,4 +1,7 @@
 // Main constants
+import { PostgresDatabaseService } from '../database/postgres-database/postgresDatabase.service';
+import { RedisDatabaseService } from '../database/redis-database/redis-database.service';
+
 export const MAIN_PATH = 'api';
 export const SWAGGER = 'api';
 export const DEFAULT_PORT = 8080;
@@ -23,7 +26,7 @@ export const PATH_TO_REPLACEMENTS = 'replacements';
 
 // Replacement interfaces constants
 
-export const REPLACEMENTS_REPOSITORY = 'IReplacementsRepository';
+export const REPLACEMENTS_REPOSITORY = 'IReplacementRepository';
 export const GET_REPLACEMENTS_WITH_GROUP = 'IGetReplaceWithGroup';
 export const GET_REPLACEMENTS_WITH_DATE = 'IGetReplaceWithDate';
 export const SET_REPLACEMENTS_IN_STORAGE = 'ISetReplaceInStorage';
@@ -33,7 +36,17 @@ export const SET_REPLACEMENTS_IN_STORAGE = 'ISetReplaceInStorage';
 export const TIMETABLE_API_TAG = 'timetable';
 export const PATH_TO_TIMETABLE = 'timetable';
 
-// Datapase constants
+// Database constants
 
 export const RELATION_DATABASE = 'IRelationDatabase';
 export const NO_RELATION_DATABASE = 'INoRelationDatabase';
+
+export const relationDatabase = {
+  provide: RELATION_DATABASE,
+  useClass: PostgresDatabaseService,
+};
+
+export const noRelationDatabase = {
+  provide: NO_RELATION_DATABASE,
+  useClass: RedisDatabaseService,
+};

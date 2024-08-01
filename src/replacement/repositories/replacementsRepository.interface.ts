@@ -2,7 +2,7 @@ import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto'
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { ISetReplaceInStorage } from './Interfaces/ISetReplaceInStorage.interface';
-import { IGetReplaceWithGroup } from './Interfaces/IGetReplacWithGroup.interface';
+import { IGetReplaceWithGroup } from './Interfaces/IGetReplaceWithGroup.interface';
 import { IGetReplaceWithDate } from './Interfaces/IGetReplaceWithDate.interface';
 
 export interface IReplacementRepository

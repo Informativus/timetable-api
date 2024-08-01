@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
 import { GetGroups } from './AllGroups/getGroups.service';
 import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
@@ -14,11 +14,8 @@ export class GroupFacade
   implements IGetGroupWithData, IGetAllGroups, ISetGroupInStorage
 {
   constructor(
-    @Inject()
     private readonly setGroupInDb: SetGroupInDbService,
-    @Inject()
     private readonly getGroupWithData: GetGroupWithData,
-    @Inject()
     private readonly getGroups: GetGroups,
   ) {}
 
