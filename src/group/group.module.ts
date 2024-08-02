@@ -7,7 +7,6 @@ import { GroupFacade } from './groupFacade.service';
 import { DatabaseModule } from 'src/database/database.module';
 import { relationDatabase } from 'src/config/constants';
 import {
-  getAllGroups,
   getGroupWithData,
   groupRepository,
   setGroupInStorage,
@@ -23,7 +22,6 @@ import {
     relationDatabase,
     groupRepository,
     getGroupWithData,
-    getAllGroups,
     setGroupInStorage,
   ],
   controllers: [GroupController],

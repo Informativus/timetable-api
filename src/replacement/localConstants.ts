@@ -32,4 +32,3 @@ export const setReplacementsInStorage = {
   provide: SET_REPLACEMENTS_IN_STORAGE,
   useClass: ReplacementsRepository,
 };
-

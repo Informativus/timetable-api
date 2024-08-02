@@ -5,14 +5,11 @@ import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
 import { IGetGroupWithData } from './Interfaces/IGetGroupWithData.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
-import { IGetAllGroups } from './Interfaces/IGetAllGroup.interface';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
 import { ISetGroupInStorage } from './Interfaces/ISetGroupInStorage.interface';
 
 @Injectable()
-export class GroupFacade
-  implements IGetGroupWithData, IGetAllGroups, ISetGroupInStorage
-{
+export class GroupFacade implements IGetGroupWithData, ISetGroupInStorage {
   constructor(
     private readonly setGroupInDb: SetGroupInDbService,
     private readonly getGroupWithData: GetGroupWithData,

@@ -1,5 +1,4 @@
 import {
-  GET_ALL_GROUPS,
   GET_GROUP_WITH_DATA,
   GROUP_REPOSITORY,
   SET_GROUP_IN_STORAGE,
@@ -15,7 +14,6 @@ export const getGroupWithData = {
   provide: GET_GROUP_WITH_DATA,
   useClass: GroupFacade,
 };
-export const getAllGroups = { provide: GET_ALL_GROUPS, useClass: GroupFacade };
 export const setGroupInStorage = {
   provide: SET_GROUP_IN_STORAGE,
   useClass: GroupFacade,

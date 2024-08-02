@@ -1,73 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GroupService } from './group.service';
-import { IGroupRepository } from './repository/groupRepository.interface';
-import { GetGroupDto } from '../dto/group/getGroup.dto';
-import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
-import { GroupDto } from '../dto/group/group.dto';
+import { SetGroupInDbService } from './setGroupInDb.service';
+import { IGroupRepository } from '../repository/groupRepository.interface';
+import { GetGroupDto } from 'src/dto/group/getGroup.dto';
+import { GroupDto } from 'src/dto/group/group.dto';
 
-describe('GroupService', () => {
-  let service: GroupService;
+describe('SetGroupInDbService', () => {
+  let service: SetGroupInDbService;
   let mockGroupRepository: Partial<IGroupRepository>;
 
   beforeEach(async () => {
     mockGroupRepository = {
-      getAllGroups: jest.fn(),
-      getGroupWithId: jest.fn(),
       setGroup: jest.fn(),
     };
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GroupService,
+        SetGroupInDbService,
         { provide: 'IGroupRepository', useValue: mockGroupRepository },
       ],
     }).compile();
 
-    service = module.get<GroupService>(GroupService);
-  });
-
-  describe('getAllGroups', () => {
-    it('should get all groups from database', async () => {
-      const mockGroup: GetGroupDto[] = [
-        {
-          group_id: 1,
-          id: '1I-1-23',
-          title: 'mock group',
-        },
-      ];
-      const mockAllGroups: InfoAllGroupDto = {
-        groups: mockGroup,
-      };
-      mockGroupRepository.getAllGroups = jest.fn().mockResolvedValue(mockGroup);
-
-      const result = await service.getAllGroups();
-      expect(result).toEqual(mockAllGroups);
-    });
-  });
-
-  describe('getGroupWithId', () => {
-    it('should be get group info from database', async () => {
-      const mockGroups: GetGroupDto[] = [
-        {
-          group_id: 1,
-          id: '1I-1-23',
-          title: 'mock group',
-        },
-      ];
-
-      mockGroupRepository.getGroupWithId = jest
-        .fn()
-        .mockResolvedValue(mockGroups);
-
-      const mockGroup: GroupDto = {
-        id: '1I-1-23',
-      };
-      const result: GetGroupDto = await service.getGroupWithId(mockGroup);
-      expect(result).toEqual(mockGroups[0]);
-      expect(mockGroupRepository.getGroupWithId).toHaveBeenCalledTimes(1);
-      expect(mockGroupRepository.getGroupWithId).toHaveBeenCalledWith(
-        mockGroup,
-      );
-    });
+    service = module.get<SetGroupInDbService>(SetGroupInDbService);
   });
 
   describe('setGroup', () => {
