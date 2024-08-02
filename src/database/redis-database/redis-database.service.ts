@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import Redis from 'ioredis';
 import { ConfigService } from '../../config/config.service';
 import { INoRelationDatabase } from '../noRelationDatabase.interface';
@@ -22,7 +22,7 @@ export class RedisDatabaseService implements INoRelationDatabase {
       await this.redis.set(key, value);
     } catch (error) {
       console.error(error);
-      throw new Error(`Redis method set returned error: ${error}`);
+      throw new InternalServerErrorException('Redis method set returned error');
     }
   }
 
@@ -31,20 +31,16 @@ export class RedisDatabaseService implements INoRelationDatabase {
       return this.redis.get(key);
     } catch (error) {
       console.error(error);
-      throw new Error(`Redis method get returned error: ${error}`);
+      throw new InternalServerErrorException('Redis method get returned error');
     }
   }
 
   async delete(key: string): Promise<void> {
     try {
-      await this.redis.del(key, (error) => {
-        if (error) {
-          throw new Error(`Redis method delete returned error: ${error}`);
-        }
-      });
+      await this.redis.del(key);
     } catch (error) {
       console.error(error);
-      throw new Error(`Redis method delete returned error: ${error}`);
+      throw new InternalServerErrorException('Redis method del returned error');
     }
   }
 }

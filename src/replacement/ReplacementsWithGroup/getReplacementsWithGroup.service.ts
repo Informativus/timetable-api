@@ -27,12 +27,20 @@ export class GetReplacementsWithGroup {
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     await ensureGroupExists(this.groupService, { id: replacementsDto.group });
 
-    const cacheKey = replacementsDto.group;
-    const cachedReplacements: CreateReplacementDto =
-      await this.cacheService.get(cacheKey);
+    const lastUdates = (
+      await this.replacementRepository.getLastReplacementsUpdate()
+    )[0].replacement_date;
 
-    if (cachedReplacements) {
-      return cachedReplacements;
+    const lastUpdate: string = new Date(lastUdates).toISOString().split('T')[0];
+
+    if (this.isSameDate(lastUpdate)) {
+      const cacheKey = replacementsDto.group;
+      const cachedReplacements: CreateReplacementDto =
+        await this.cacheService.get(cacheKey);
+
+      if (cachedReplacements) {
+        return cachedReplacements;
+      }
     }
 
     const replacements: CreateReplacementDto[] =
@@ -47,5 +55,10 @@ export class GetReplacementsWithGroup {
     return {
       success: false,
     };
+  }
+
+  isSameDate(date1: string) {
+    const date: Date = new Date();
+    return date1 === date.toDateString();
   }
 }

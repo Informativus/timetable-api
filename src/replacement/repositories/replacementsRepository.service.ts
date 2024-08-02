@@ -34,6 +34,19 @@ export class ReplacementsRepository implements IReplacementRepository {
     }
   }
 
+  async getLastReplacementsUpdate(): Promise<{ replacement_date: string }[]> {
+    try {
+      return await this.relationDatabase.sendQuery({
+        text: 'SELECT replacement_date FROM replacements ORDER BY replacement_date DESC LIMIT 1',
+      });
+    } catch (error) {
+      console.error('Error getting last replacements update: ', error);
+      throw new InternalServerErrorException(
+        'Failed to get last replacements update',
+      );
+    }
+  }
+
   async getReplacementWithDate(
     replacementDto: GetReplacementDto,
   ): Promise<CreateReplacementDto[]> {

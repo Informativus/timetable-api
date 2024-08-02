@@ -6,6 +6,7 @@ import { TimetableModule } from './timetable/timetable.module';
 import { CacheModule } from './cache/cache.module';
 import { AppController } from './app.controller';
 import { ReplacementsModule } from './replacement/replacements.module';
+import { ReplacementsUpdateListenerModule } from './replacements-update-listener/replacements-update-listener.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ReplacementsModule } from './replacement/replacements.module';
     TimetableModule,
     CacheModule,
     ReplacementsModule,
+    ReplacementsUpdateListenerModule,
   ],
   controllers: [AppController],
 })
