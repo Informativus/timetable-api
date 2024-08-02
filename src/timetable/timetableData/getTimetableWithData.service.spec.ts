@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   GET_GROUP_WITH_DATA,
   TIMETABLE_REPOSITORY,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 

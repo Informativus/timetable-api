@@ -5,7 +5,7 @@ import { ITimetableRepository } from '../repositories/timetableRepository.interf
 import {
   GET_GROUP_WITH_DATA,
   TIMETABLE_REPOSITORY,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { GroupId } from 'src/group/types/groupId.type';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 import { GroupDto } from 'src/dto/group/group.dto';

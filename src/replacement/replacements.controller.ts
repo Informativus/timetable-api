@@ -19,7 +19,7 @@ import {
 import {
   PATH_TO_REPLACEMENTS,
   REPLACEMENTS_API_TAG,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 
 @ApiTags(REPLACEMENTS_API_TAG)
 @Controller()

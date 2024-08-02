@@ -8,7 +8,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   GET_GROUP_WITH_DATA,
   SET_REPLACEMENTS_IN_STORAGE,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 @Injectable()

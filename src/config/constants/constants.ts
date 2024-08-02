@@ -1,6 +1,4 @@
 // Main constants
-import { PostgresDatabaseService } from '../database/postgres-database/postgresDatabase.service';
-import { RedisDatabaseService } from '../database/redis-database/redis-database.service';
 
 export const MAIN_PATH = 'api';
 export const SWAGGER = 'api';
@@ -38,11 +36,8 @@ export const PATH_TO_TIMETABLE = 'timetable';
 // Timetable interfaces constants
 
 export const TIMETABLE_REPOSITORY = 'ITimetableRepository';
-//export const GET_TIMETABLE_WITH_DATA = 'IGetTimetableWithData';
-//export const SET_TIMETABLE_IN_STORAGE = 'ISetTimetableInStorage';
 
 // Database constants
 
 export const RELATION_DATABASE = 'IRelationDatabase';
 export const NO_RELATION_DATABASE = 'INoRelationDatabase';
-

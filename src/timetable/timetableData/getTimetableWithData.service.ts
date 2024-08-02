@@ -6,7 +6,7 @@ import {
 import {
   GET_GROUP_WITH_DATA,
   TIMETABLE_REPOSITORY,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { ITimetableRepository } from '../repositories/timetableRepository.interface';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 import { ensureGroupExists } from 'src/utils/group.util';

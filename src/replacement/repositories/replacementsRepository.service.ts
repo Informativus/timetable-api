@@ -6,7 +6,7 @@ import { formatDateToSql } from 'src/utils/date.util';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
-import { RELATION_DATABASE } from 'src/config/constants';
+import { RELATION_DATABASE } from 'src/config/constants/constants';
 
 export class ReplacementsRepository implements IReplacementRepository {
   constructor(

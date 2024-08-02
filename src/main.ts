@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SuccessStatusDto } from './dto/successStatus.dto';
 import { CreateReplacementDto } from './dto/replacement/createReplacement.dto';
-import { MAIN_PATH, DEFAULT_PORT, SWAGGER } from './config/constants';
+import { MAIN_PATH, DEFAULT_PORT, SWAGGER } from './config/constants/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

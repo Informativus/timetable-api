@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import {
   GET_GROUP_WITH_DATA,
   TIMETABLE_REPOSITORY,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { ITimetableRepository } from '../repositories/timetableRepository.interface';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
 import { GroupDto } from 'src/dto/group/group.dto';

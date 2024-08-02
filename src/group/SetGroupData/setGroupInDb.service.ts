@@ -4,7 +4,7 @@ import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.val
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
-import { GROUP_REPOSITORY } from 'src/config/constants';
+import { GROUP_REPOSITORY } from 'src/config/constants/constants';
 
 @Injectable()
 export class SetGroupInDbService {

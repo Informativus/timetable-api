@@ -8,7 +8,7 @@ import { DatabaseModule } from 'src/database/database.module';
 import {
   getGroupWithData,
   relationDatabase,
-} from 'src/config/provideConstants';
+} from 'src/config/constants/provideConstants';
 import { groupRepository, setGroupInStorage } from './localConstants';
 
 @Module({

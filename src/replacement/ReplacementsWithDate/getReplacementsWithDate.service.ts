@@ -8,7 +8,7 @@ import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import {
   GET_GROUP_WITH_DATA,
   GET_REPLACEMENTS_WITH_DATE,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 export class GetReplacementsWithDate {

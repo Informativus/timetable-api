@@ -7,7 +7,7 @@ import { IGroupRepository } from '../repository/groupRepository.interface';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
-import { GROUP_REPOSITORY } from 'src/config/constants';
+import { GROUP_REPOSITORY } from 'src/config/constants/constants';
 
 @Injectable()
 export class GetGroups {

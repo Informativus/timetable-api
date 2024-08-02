@@ -4,7 +4,7 @@ import {
   GET_REPLACEMENTS_WITH_GROUP,
   REPLACEMENTS_REPOSITORY,
   SET_REPLACEMENTS_IN_STORAGE,
-} from '../config/constants';
+} from '../config/constants/constants';
 import { GroupFacade } from '../group/groupFacade.service';
 import { ReplacementsRepository } from './repositories/replacementsRepository.service';
 

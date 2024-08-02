@@ -9,7 +9,7 @@ import { TimetableFacade } from './timetableFacade.service';
 import { CreateTimetableDto } from '../dto/timetable/CreateTimetable.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GroupDto } from '../dto/group/group.dto';
-import { PATH_TO_TIMETABLE, TIMETABLE_API_TAG } from 'src/config/constants';
+import { PATH_TO_TIMETABLE, TIMETABLE_API_TAG } from 'src/config/constants/constants';
 
 @ApiTags(TIMETABLE_API_TAG)
 @Controller()

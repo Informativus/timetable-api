@@ -13,7 +13,7 @@ import {
   GROUP_API_TAG,
   PATH_TO_GROUP_ID,
   PATH_TO_GROUPS,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 import { GroupFacade } from './groupFacade.service';
 
 @ApiTags(GROUP_API_TAG)

@@ -18,7 +18,7 @@ import {
   getGroupWithData,
   noRelationDatabase,
   relationDatabase,
-} from '../config/provideConstants';
+} from '../config/constants/provideConstants';
 
 @Module({
   imports: [GroupModule, CacheModule, DatabaseModule],

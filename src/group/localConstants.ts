@@ -1,7 +1,7 @@
 import {
   GROUP_REPOSITORY,
   SET_GROUP_IN_STORAGE,
-} from '../config/constants';
+} from '../config/constants/constants';
 import { GroupRepository } from './repository/groupRepository.service';
 import { GroupFacade } from './groupFacade.service';
 

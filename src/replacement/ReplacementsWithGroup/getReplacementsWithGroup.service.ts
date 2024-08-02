@@ -10,7 +10,7 @@ import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interf
 import {
   GET_GROUP_WITH_DATA,
   GET_REPLACEMENTS_WITH_GROUP,
-} from 'src/config/constants';
+} from 'src/config/constants/constants';
 
 @Injectable()
 export class GetReplacementsWithGroup {
