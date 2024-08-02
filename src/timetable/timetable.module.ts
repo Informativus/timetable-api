@@ -1,34 +1,25 @@
 import { Module } from '@nestjs/common';
-import { TimetableService } from './timetable.service';
 import { TimetableController } from './timetable.controller';
 import { DatabaseModule } from '../database/database.module';
-import { PostgresDatabaseService } from '../database/postgres-database/postgresDatabase.service';
 import { TimetableRepository } from './repositories/timetableRepository.service';
 import { GroupModule } from 'src/group/group.module';
-import { GroupRepository } from '../group/repository/groupRepository.service';
-import { GroupFacade } from 'src/group/groupFacade.service';
-import {
-  GET_GROUP_WITH_DATA,
-  GROUP_REPOSITORY,
-  RELATION_DATABASE,
-} from 'src/config/constants';
-import { GetGroups } from 'src/group/AllGroups/getGroups.service';
-import { SetGroupInDbService } from 'src/group/SetGroupData/setGroupInDb.service';
-import { GetGroupWithData } from 'src/group/GroupWithData/getGroupWithData.service';
+import { TIMETABLE_REPOSITORY } from 'src/config/constants';
+import { GetTimetableWithData } from './timetableData/getTimetableWithData.service';
+import { TimetableFacade } from './timetableFacade.service';
+import { SetTimetableInDb } from './timetableStorage/setTimetableInDb.service';
+import { getGroupWithData, relationDatabase } from '../config/provideConstants';
 
 @Module({
   imports: [DatabaseModule, GroupModule],
   controllers: [TimetableController],
   providers: [
-    TimetableService,
-    GetGroups,
-    SetGroupInDbService,
-    GetGroupWithData,
-    { provide: RELATION_DATABASE, useClass: PostgresDatabaseService },
-    { provide: GET_GROUP_WITH_DATA, useClass: GroupFacade },
-    { provide: GROUP_REPOSITORY, useClass: GroupRepository },
-    { provide: 'ITimetableRepository', useClass: TimetableRepository },
+    TimetableFacade,
+    GetTimetableWithData,
+    SetTimetableInDb,
+    relationDatabase,
+    getGroupWithData,
+    { provide: TIMETABLE_REPOSITORY, useClass: TimetableRepository },
   ],
-  exports: [TimetableService],
+  exports: [TimetableFacade],
 })
 export class TimetableModule {}

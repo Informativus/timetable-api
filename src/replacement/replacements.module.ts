@@ -11,11 +11,14 @@ import { GroupModule } from 'src/group/group.module';
 import {
   getReplacementsWithDate,
   getReplacementsWithGroup,
-  groupFacade,
   replacementsRepository,
   setReplacementsInStorage,
 } from './localConstants';
-import { noRelationDatabase, relationDatabase } from '../config/constants';
+import {
+  getGroupWithData,
+  noRelationDatabase,
+  relationDatabase,
+} from '../config/provideConstants';
 
 @Module({
   imports: [GroupModule, CacheModule, DatabaseModule],
@@ -31,7 +34,7 @@ import { noRelationDatabase, relationDatabase } from '../config/constants';
     getReplacementsWithGroup,
     getReplacementsWithDate,
     setReplacementsInStorage,
-    groupFacade,
+    getGroupWithData,
     CacheService,
   ],
   exports: [ReplacementsFacade],

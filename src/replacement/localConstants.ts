@@ -8,11 +8,6 @@ import {
 import { GroupFacade } from '../group/groupFacade.service';
 import { ReplacementsRepository } from './repositories/replacementsRepository.service';
 
-export const groupFacade = {
-  provide: GET_GROUP_WITH_DATA,
-  useExisting: GroupFacade,
-};
-
 export const replacementsRepository = {
   provide: REPLACEMENTS_REPOSITORY,
   useClass: ReplacementsRepository,

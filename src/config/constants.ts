@@ -35,17 +35,14 @@ export const SET_REPLACEMENTS_IN_STORAGE = 'ISetReplaceInStorage';
 export const TIMETABLE_API_TAG = 'timetable';
 export const PATH_TO_TIMETABLE = 'timetable';
 
+// Timetable interfaces constants
+
+export const TIMETABLE_REPOSITORY = 'ITimetableRepository';
+//export const GET_TIMETABLE_WITH_DATA = 'IGetTimetableWithData';
+//export const SET_TIMETABLE_IN_STORAGE = 'ISetTimetableInStorage';
+
 // Database constants
 
 export const RELATION_DATABASE = 'IRelationDatabase';
 export const NO_RELATION_DATABASE = 'INoRelationDatabase';
 
-export const relationDatabase = {
-  provide: RELATION_DATABASE,
-  useClass: PostgresDatabaseService,
-};
-
-export const noRelationDatabase = {
-  provide: NO_RELATION_DATABASE,
-  useClass: RedisDatabaseService,
-};

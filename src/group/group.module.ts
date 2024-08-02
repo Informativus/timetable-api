@@ -5,12 +5,11 @@ import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
 import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
 import { GroupFacade } from './groupFacade.service';
 import { DatabaseModule } from 'src/database/database.module';
-import { relationDatabase } from 'src/config/constants';
 import {
   getGroupWithData,
-  groupRepository,
-  setGroupInStorage,
-} from './localConstants';
+  relationDatabase,
+} from 'src/config/provideConstants';
+import { groupRepository, setGroupInStorage } from './localConstants';
 
 @Module({
   imports: [DatabaseModule],
