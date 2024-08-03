@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ReplacementsFacade } from './replacementsFacade.service';
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from '../dto/replacement/getReplacementDto';
+import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
 import {
   ApiBadRequestResponse,

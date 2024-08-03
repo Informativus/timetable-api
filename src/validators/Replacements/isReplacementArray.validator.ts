@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ReplacementDto } from '../dto/replacement/replacement.dto';
+import { ReplacementDto } from '../../dto/replacement/replacement.dto';
 import { validate } from 'class-validator';
 
 @ValidatorConstraint({ async: true })

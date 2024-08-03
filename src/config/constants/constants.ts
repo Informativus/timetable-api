@@ -24,6 +24,7 @@ export const PATH_TO_REPLACEMENTS = 'replacements';
 // Replacement interfaces constants
 
 export const REPLACEMENTS_REPOSITORY = 'IReplacementRepository';
+export const REPLACEMENTS_FACADE = 'IReplacementFacade';
 export const GET_REPLACEMENTS_WITH_GROUP = 'IGetReplaceWithGroup';
 export const GET_REPLACEMENTS_WITH_DATE = 'IGetReplaceWithDate';
 export const SET_REPLACEMENTS_IN_STORAGE = 'ISetReplaceInStorage';
@@ -41,3 +42,7 @@ export const TIMETABLE_REPOSITORY = 'ITimetableRepository';
 
 export const RELATION_DATABASE = 'IRelationDatabase';
 export const NO_RELATION_DATABASE = 'INoRelationDatabase';
+
+// gRPC constants
+
+export const REPLACEMENTS_PACKAGE = 'REPLACEMENTS_PACKAGE';

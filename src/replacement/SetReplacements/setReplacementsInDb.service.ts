@@ -1,8 +1,8 @@
 import { CacheService } from 'src/cache/cache.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
-import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
 import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import {
@@ -22,26 +22,26 @@ export class SetReplacements {
   ) {}
 
   @ValidateAndMapDto(GetReplacementDto, CreateReplacementDto)
-  async setReplacements(
+  async setReplacementsWithDate(
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    let group: GroupId;
+    const group: GroupId = await this.getGroupId(replacementsDto);
+
+    await this.replacementRepository.setReplacementWithDate(
+      group,
+      replacements,
+      replacementsDto.date,
+    );
+  }
+
+  async getGroupId(replacementsDto: GetReplacementDto): Promise<GroupId> {
     try {
-      group = <GroupId>await this.groupService.getGroupWithId({
+      return <GroupId>await this.groupService.getGroupWithId({
         id: replacementsDto.group,
       });
-    } catch (error) {}
-
-    const cacheKey: string = replacementsDto.group;
-
-    await this.cacheService.set(cacheKey, replacements);
-
-    await this.replacementRepository.setReplacement(
-      {
-        group_id: group.group_id,
-      },
-      replacements,
-    );
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

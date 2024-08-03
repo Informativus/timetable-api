@@ -1,6 +1,6 @@
 import { IsArray, IsBoolean, IsNotEmpty } from 'class-validator';
 import { ReplacementDto } from './replacement.dto';
-import { IsReplacementArray } from '../../validators/isReplacementArray.validator';
+import { IsReplacementArray } from '../../validators/Replacements/isReplacementArray.validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateReplacementDto {

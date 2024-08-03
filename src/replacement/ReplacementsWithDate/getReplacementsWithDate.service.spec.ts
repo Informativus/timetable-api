@@ -3,7 +3,7 @@ import { GetReplacementsWithDate } from './getReplacementsWithDate.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IGetReplaceWithDate } from '../repositories/Interfaces/IGetReplaceWithDate.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 
 describe('GetReplacementsWithDate', () => {
   let service: GetReplacementsWithDate;

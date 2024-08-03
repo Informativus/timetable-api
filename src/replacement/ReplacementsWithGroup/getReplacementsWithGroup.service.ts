@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CacheService } from 'src/cache/cache.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { ensureGroupExists } from 'src/utils/group.util';
 import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
@@ -11,6 +11,7 @@ import {
   GET_GROUP_WITH_DATA,
   GET_REPLACEMENTS_WITH_GROUP,
 } from 'src/config/constants/constants';
+import { isSameDate } from 'src/utils/isSamedate.util';
 
 @Injectable()
 export class GetReplacementsWithGroup {
@@ -33,7 +34,7 @@ export class GetReplacementsWithGroup {
 
     const lastUpdate: string = new Date(lastUdates).toISOString().split('T')[0];
 
-    if (this.isSameDate(lastUpdate)) {
+    if (isSameDate(lastUpdate)) {
       const cacheKey = replacementsDto.group;
       const cachedReplacements: CreateReplacementDto =
         await this.cacheService.get(cacheKey);
@@ -55,10 +56,5 @@ export class GetReplacementsWithGroup {
     return {
       success: false,
     };
-  }
-
-  isSameDate(date1: string) {
-    const date: Date = new Date();
-    return date1 === date.toDateString();
   }
 }

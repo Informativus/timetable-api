@@ -1,5 +1,5 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 import { IReplecementsFacade } from './IReplacementsFacade.interface';
 import { GetReplacementsWithGroup } from './ReplacementsWithGroup/getReplacementsWithGroup.service';
@@ -14,7 +14,6 @@ export class ReplacementsFacade implements IReplecementsFacade {
     private readonly getReplacementsDate: GetReplacementsWithDate,
     private readonly setReplacementsInDatabase: SetReplacements,
   ) {}
-
   async getReplacementsWithGroup(
     replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
@@ -31,11 +30,11 @@ export class ReplacementsFacade implements IReplecementsFacade {
     );
   }
 
-  async setReplacements(
+  async setReplacementsWithDate(
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    return await this.setReplacementsInDatabase.setReplacements(
+    return await this.setReplacementsInDatabase.setReplacementsWithDate(
       replacementsDto,
       replacements,
     );

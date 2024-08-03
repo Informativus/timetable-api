@@ -4,7 +4,7 @@ import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto'
 import { ISetReplaceInStorage } from '../repositories/Interfaces/ISetReplaceInStorage.interface';
 import { IGroupService } from 'src/group/groupService.interface';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 

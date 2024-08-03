@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 import { ensureGroupExists } from 'src/utils/group.util';

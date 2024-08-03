@@ -1,5 +1,5 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 
 export interface IReplecementsFacade {
@@ -9,7 +9,7 @@ export interface IReplecementsFacade {
   getReplacementsWithDate(
     replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto>;
-  setReplacements(
+  setReplacementsWithDate(
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void>;

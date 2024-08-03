@@ -1,8 +1,8 @@
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
-import { InternalServerErrorException } from '@nestjs/common';
+import { status, Metadata, ServiceError } from '@grpc/grpc-js';
 
-export function ValidateAndMapDto(...dtoClasses: (new () => object)[]) {
+export function ValidateAndMapDtoGrpc(...dtoClasses: (new () => object)[]) {
   return function (
     target: any,
     propertyName: string,
@@ -14,9 +14,14 @@ export function ValidateAndMapDto(...dtoClasses: (new () => object)[]) {
       console.log('Arguments before validation:', args);
 
       if (args.length !== dtoClasses.length) {
-        throw new InternalServerErrorException(
-          'Number of arguments does not match number of DTOs',
-        );
+        const error: ServiceError = {
+          code: status.INVALID_ARGUMENT,
+          message: 'Number of arguments does not match number of DTOs',
+          name: 'BadRequestError',
+          details: 'Validation Error',
+          metadata: new Metadata(),
+        };
+        throw error;
       }
 
       for (let i = 0; i < args.length; i++) {
@@ -29,9 +34,15 @@ export function ValidateAndMapDto(...dtoClasses: (new () => object)[]) {
           const errorMessages: string = errors
             .map((error) => Object.values(error.constraints).join(', '))
             .join('; ');
-          throw new InternalServerErrorException(
-            `Validation failed for ${dtoClass.name}: ${errorMessages}`,
-          );
+
+          const error: ServiceError = {
+            code: status.INVALID_ARGUMENT,
+            message: `Validation failed for ${dtoClass.name}: ${errorMessages}`,
+            name: 'BadRequestError',
+            details: 'Validation Error',
+            metadata: new Metadata(),
+          };
+          throw error;
         }
 
         args[i] = dto;

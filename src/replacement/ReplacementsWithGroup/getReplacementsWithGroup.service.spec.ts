@@ -3,7 +3,7 @@ import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto'
 import { IGroupService } from 'src/group/groupService.interface';
 import { GetReplacementsWithGroup } from './getReplacementsWithGroup.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { BadRequestException } from '@nestjs/common';
 import { IGetReplaceWithGroup } from '../repositories/Interfaces/IGetReplacWithGroup.interface';
 

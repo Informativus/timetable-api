@@ -3,7 +3,7 @@ import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { IReplacementRepository } from './replacementsRepository.interface';
 import { formatDateToSql } from 'src/utils/date.util';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { RELATION_DATABASE } from 'src/config/constants/constants';
@@ -13,7 +13,6 @@ export class ReplacementsRepository implements IReplacementRepository {
     @Inject(RELATION_DATABASE)
     private readonly relationDatabase: IRelationDatabase,
   ) {}
-
   async getReplacementWithGroup(
     groupTextId: string,
   ): Promise<CreateReplacementDto[]> {
@@ -52,7 +51,7 @@ export class ReplacementsRepository implements IReplacementRepository {
   ): Promise<CreateReplacementDto[]> {
     try {
       const result = await this.relationDatabase.sendQuery({
-        text: 'SELECT replacement FROM data_on_year WHERE date = $1 AND id = $2',
+        text: 'SELECT replacement FROM data_on_year WHERE date = $1 AND id = $2 LIMIT 1',
         values: [formatDateToSql(replacementDto.date), replacementDto.group],
       });
 
@@ -69,14 +68,15 @@ export class ReplacementsRepository implements IReplacementRepository {
     }
   }
 
-  async setReplacement(
+  async setReplacementWithDate(
     group: GroupId,
     replacement: CreateReplacementDto,
+    date: string,
   ): Promise<void> {
     try {
       await this.relationDatabase.sendQuery({
-        text: 'INSERT INTO replacements (group_id, replacement) VALUES ($1, $2)',
-        values: [group.group_id, JSON.stringify(replacement)],
+        text: 'INSERT INTO replacements (group_id, replacement, replacement_date) VALUES ($1, $2, $3)',
+        values: [group.group_id, JSON.stringify(replacement), date],
       });
     } catch (error) {
       console.log('Error inserting replacement: ', error);

@@ -4,7 +4,7 @@ import {
   TIMETABLE_REPOSITORY,
 } from 'src/config/constants/constants';
 import { ITimetableRepository } from '../repositories/timetableRepository.interface';
-import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 import { GroupId } from 'src/group/types/groupId.type';

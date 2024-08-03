@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package replacements;
+import "google/protobuf/empty.proto";
+
+service UpdateReplacementsListener {
+  rpc UpdateReplacements(PostReplacementsUpdate)
+      returns (google.protobuf.Empty) {}
+}
+
+message PostReplacementsUpdate {
+  UpdateReplacementsDataDto date = 1;
+}
+
+message UpdateReplacementsDataDto {
+  string day = 1;
+  string month = 2;
+  string year = 3;
+  repeated ReplacementsInfoDto subst = 4;
+}
+
+message ReplacementsInfoDto {
+  string absent = 1;
+  string lesson = 2;
+  string subject = 3;
+  string forms = 4;
+  string groups = 5;
+  string substituting = 6;
+  string subst_type = 7;
+  string cancelled = 8;
+  string note = 9;
+  string room = 10;
+}
+

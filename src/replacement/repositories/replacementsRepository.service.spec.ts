@@ -3,7 +3,7 @@ import { ReplacementsRepository } from './replacementsRepository.service';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacementDto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { formatDateToSql } from 'src/utils/date.util';
 
 jest.mock('src/utils/validateAndMapDto.util');

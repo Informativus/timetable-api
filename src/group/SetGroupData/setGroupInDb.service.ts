@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { IGroupRepository } from '../repository/groupRepository.interface';
-import { ValidateAndMapDto } from 'src/validators/validateAndMapDtoDecorator.validator';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';

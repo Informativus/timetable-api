@@ -6,7 +6,10 @@ import { TimetableModule } from './timetable/timetable.module';
 import { CacheModule } from './cache/cache.module';
 import { AppController } from './app.controller';
 import { ReplacementsModule } from './replacement/replacements.module';
-import { ReplacementsUpdateListenerModule } from './replacements-update-listener/replacements-update-listener.module';
+import { ClientsModule } from '@nestjs/microservices';
+import { grpcOptions } from './grpc.options';
+import { REPLACEMENTS_PACKAGE } from './config/constants/constants';
+import { UpdateReplacementsListenerModule } from './updateReplacementsListener/UpdateReplacementsListener.module';
 
 @Module({
   imports: [
@@ -16,7 +19,13 @@ import { ReplacementsUpdateListenerModule } from './replacements-update-listener
     TimetableModule,
     CacheModule,
     ReplacementsModule,
-    ReplacementsUpdateListenerModule,
+    UpdateReplacementsListenerModule,
+    ClientsModule.register([
+      {
+        name: REPLACEMENTS_PACKAGE,
+        ...grpcOptions,
+      },
+    ]),
   ],
   controllers: [AppController],
 })
