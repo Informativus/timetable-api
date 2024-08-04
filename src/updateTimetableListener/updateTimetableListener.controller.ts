@@ -73,6 +73,7 @@ export class UpdateTimetableListenerController {
           period: card.period,
           weeks: card.weeks,
           days: card.days,
+          classroomids: card.classroomids,
         })),
       },
     };

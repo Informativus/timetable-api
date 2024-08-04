@@ -12,4 +12,7 @@ export class CardArray {
 
   @IsString()
   days: string;
+
+  @IsString()
+  classroomids: string;
 }

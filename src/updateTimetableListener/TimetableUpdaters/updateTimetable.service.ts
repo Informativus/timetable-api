@@ -6,7 +6,6 @@ import { UpdateTimetableDto } from 'src/dto/timetable/UpdateTimetable/UpdateTime
 import { ISetTimetableInStorage } from 'src/timetable/Interfaces/ISetTimetableInStorage.intervace';
 import { lessonsData } from './Types/lessonsData.type';
 import { LessonArray } from 'src/dto/timetable/UpdateTimetable/lessons/lessonArray.dto';
-import { ClassroomsData } from 'src/dto/timetable/UpdateTimetable/classrooms/classroomsData.dto';
 import { SubjectsData } from 'src/dto/timetable/UpdateTimetable/subjects/subjectsData.dto';
 import { TeachersData } from 'src/dto/timetable/UpdateTimetable/teachers/teachersData.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
@@ -63,7 +62,7 @@ export class UpdateTimetable {
     for (const lesson of lessonsArray) {
       lessons.push([
         this.getSubjects(lesson.subjectid, timetableData.subjects),
-        this.getClassroom(lesson.classroomids, timetableData.classrooms),
+        this.getClassroom(lesson.id, timetableData),
         this.getTeacher(lesson.teacherids, timetableData.teachers),
         '',
       ]);
@@ -72,17 +71,17 @@ export class UpdateTimetable {
     return { lessonsIds: lessonsArray.map((lesson) => lesson.id), lessons };
   }
 
-  getClassroom(classroomId: string, classroomData: ClassroomsData): string {
-    console.log('\n', classroomId, '\n');
-    const classroomName: string = classroomData.classroom.find((classroom) => {
-      return classroom.id === classroomId;
-    }).short;
+  getClassroom(lessonId: string, timetableData: UpdateTimetableDto): string {
+    console.debug(lessonId);
+    const card: CardArray = timetableData.cards.card.find(
+      (card) => lessonId === card.lessonid,
+    );
 
-    if (classroomName === undefined) {
-      return '';
-    }
+    console.debug('\n', card, '\n');
 
-    return classroomName;
+    return timetableData.classrooms.classroom.find(
+      (classroom) => card.classroomids === classroom.id,
+    ).short;
   }
 
   getSubjects(subjectId: string, subjectData: SubjectsData): string {
@@ -184,10 +183,7 @@ export class UpdateTimetable {
       const endTime: string[] = period.endtime.split(':');
 
       if (startTime.length === 2 && endTime.length === 2) {
-        times.push([
-          startTime[0] + ':' + startTime[1],
-          endTime[0] + ':' + endTime[1],
-        ]);
+        times.push([startTime[0], startTime[1], endTime[0], endTime[1]);
       } else {
         throw new Error('Invalid time format');
       }

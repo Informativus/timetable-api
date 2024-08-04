@@ -3,8 +3,8 @@
 export const MAIN_PATH = 'api';
 export const SWAGGER = 'api';
 export const DEFAULT_PORT = 8080;
-export const REPLACEMENTS_GRPC_PATH = 'localhost:8083';
-export const TIMETABLE_GRPC_PATH = 'localhost:8084';
+export const REPLACEMENTS_GRPC_PATH = 'localhost:8081';
+export const TIMETABLE_GRPC_PATH = 'localhost:8082';
 
 // Group constants
 
