@@ -3,9 +3,10 @@ import { GetTimetableWithData } from './timetableData/getTimetableWithData.servi
 import { GroupDto } from 'src/dto/group/group.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 import { SetTimetableInDb } from './timetableStorage/setTimetableInDb.service';
+import { ISetTimetableInStorage } from './Interfaces/ISetTimetableInStorage.intervace';
 
 @Injectable()
-export class TimetableFacade {
+export class TimetableFacade implements ISetTimetableInStorage {
   constructor(
     private readonly timetableWithData: GetTimetableWithData,
     private readonly TimetableInDb: SetTimetableInDb,

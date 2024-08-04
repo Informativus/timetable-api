@@ -14,6 +14,6 @@ export class UpdateReplacementsListenerController {
   async updateReplacementsListener(
     request: PostReplacementsUpdate,
   ): Promise<Empty> {
-    return this.updateReplaceListener.updateReplacementsListener(request);
+    return await this.updateReplaceListener.updateReplacementsListener(request);
   }
 }

@@ -8,7 +8,7 @@ import { IReplecementsFacade } from 'src/replacement/IReplacementsFacade.interfa
 import { REPLACEMENTS_FACADE } from 'src/config/constants/constants';
 import { ReplacementDto } from 'src/dto/replacement/replacement.dto';
 import { ReplacementsInfoDto } from 'src/dto/replacement/updateReplacementsListener/replacementsInfo.dto';
-//TODO подумать над удалением из пришедшего объекта данных которые уже использовались
+
 export class UpdateReplacementsInStorage {
   constructor(
     @Inject(REPLACEMENTS_FACADE)
@@ -24,7 +24,13 @@ export class UpdateReplacementsInStorage {
       day: replacementsDto.date.day,
     });
 
+    const cacheFormsData: Set<string> = new Set();
     for (const item of replacementsDto.date.subst) {
+      if (cacheFormsData.has(item.forms)) {
+        continue;
+      }
+
+      cacheFormsData.add(item.forms);
       const getReplacementsDto: GetReplacementDto = {
         group: this.getGroupTextId(item.forms),
         date,
@@ -99,7 +105,7 @@ export class UpdateReplacementsInStorage {
     replacementsDto: ReplacementsInfoDto[],
     group: string,
   ): ReplacementDto[] {
-    const replacements: ReplacementDto[] = replacementsDto
+    return replacementsDto
       .filter((item) => item.forms === group)
       .map((item) => ({
         index: Number(item.lesson), // Преобразование `lesson` в число
@@ -109,12 +115,10 @@ export class UpdateReplacementsInStorage {
         title: item.subject,
         class: item.forms,
       }));
-
-    return replacements;
   }
 
   getCancelled(item: ReplacementsInfoDto): boolean {
-    return item.cancelled ? true : false;
+    return !!item.cancelled;
   }
 
   getSubstituting(item: ReplacementsInfoDto): string {

@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 import { ReplacementsInfoDto } from './replacementsInfo.dto';
-import { IsReplacementsInfoArray } from '../../../validators/Replacements/isReplacementsInfoDto.validator';
+import { IsValidArrayDto } from '../../../validators/isValidArrayDto.validator';
 
 export class UpdateReplacementsDataDto {
   @IsString()
@@ -12,6 +12,6 @@ export class UpdateReplacementsDataDto {
   @IsString()
   year: string;
 
-  @IsReplacementsInfoArray()
+  @IsValidArrayDto(ReplacementsInfoDto)
   subst: ReplacementsInfoDto[];
 }

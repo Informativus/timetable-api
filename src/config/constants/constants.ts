@@ -3,6 +3,8 @@
 export const MAIN_PATH = 'api';
 export const SWAGGER = 'api';
 export const DEFAULT_PORT = 8080;
+export const REPLACEMENTS_GRPC_PATH = 'localhost:8083';
+export const TIMETABLE_GRPC_PATH = 'localhost:8084';
 
 // Group constants
 
@@ -37,6 +39,7 @@ export const PATH_TO_TIMETABLE = 'timetable';
 // Timetable interfaces constants
 
 export const TIMETABLE_REPOSITORY = 'ITimetableRepository';
+export const SET_TIMETABLE_IN_STORAGE = 'ISetTimetableInStorage';
 
 // Database constants
 
@@ -46,3 +49,4 @@ export const NO_RELATION_DATABASE = 'INoRelationDatabase';
 // gRPC constants
 
 export const REPLACEMENTS_PACKAGE = 'REPLACEMENTS_PACKAGE';
+export const TIMETABLE_PACKAGE = 'TIMETABLE_PACKAGE';

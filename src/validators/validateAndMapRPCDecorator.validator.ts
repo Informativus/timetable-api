@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
-import { status, Metadata, ServiceError } from '@grpc/grpc-js';
+import { Metadata, ServiceError, status } from '@grpc/grpc-js';
 
 export function ValidateAndMapDtoGrpc(...dtoClasses: (new () => object)[]) {
   return function (
@@ -11,7 +11,7 @@ export function ValidateAndMapDtoGrpc(...dtoClasses: (new () => object)[]) {
     const method = descriptor.value;
 
     descriptor.value = async function (...args: any[]) {
-      console.log('Arguments before validation:', args);
+      console.log('Arguments before validation:', JSON.stringify(args));
 
       if (args.length !== dtoClasses.length) {
         const error: ServiceError = {
@@ -35,14 +35,13 @@ export function ValidateAndMapDtoGrpc(...dtoClasses: (new () => object)[]) {
             .map((error) => Object.values(error.constraints).join(', '))
             .join('; ');
 
-          const error: ServiceError = {
+          throw {
             code: status.INVALID_ARGUMENT,
             message: `Validation failed for ${dtoClass.name}: ${errorMessages}`,
             name: 'BadRequestError',
             details: 'Validation Error',
             metadata: new Metadata(),
           };
-          throw error;
         }
 
         args[i] = dto;

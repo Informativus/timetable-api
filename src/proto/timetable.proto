@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package timetable;
+import "google/protobuf/empty.proto";
+
+service UpdateTimetableListener {
+  rpc UpdateTimetable(PostUpdateTimetable) returns (google.protobuf.Empty) {}
+}
+
+message PostUpdateTimetable {
+  PeriodsData periods = 1;
+  SubjectsData subjects = 2;
+  TeachersData teachers = 3;
+  ClassroomsData classrooms = 4;
+  ClassesData classes = 5;
+  GroupsData groups = 6;
+  LessonsData lessons = 7;
+  CardsData cards = 8;
+}
+
+message PeriodsData { repeated PeriodArray period = 1; }
+message SubjectsData { repeated SubjectArray subject = 1; }
+message TeachersData { repeated TeacherArray teacher = 1; }
+message ClassroomsData { repeated ClassroomArray classroom = 1; }
+message ClassesData { repeated ClassArray class = 1; }
+message GroupsData { repeated GroupArray group = 1; }
+message LessonsData { repeated LessonArray lesson = 1; }
+message CardsData { repeated CardArray card = 1; }
+
+message PeriodArray {
+  string name = 1;
+  string short = 2;
+  string period = 3;
+  string starttime = 4;
+  string endtime = 5;
+}
+
+message SubjectArray {
+  string id = 1;
+  string name = 2;
+  string short = 3;
+  string partner_id = 4;
+}
+
+message TeacherArray {
+  string id = 1;
+  string name = 2;
+  string short = 3;
+  string gender = 4;
+  string color = 5;
+  string email = 6;
+  string mobile = 7;
+  string partner_id = 8;
+  string firstname = 9;
+  string lastname = 10;
+}
+
+message ClassroomArray {
+  string id = 1;
+  string name = 2;
+  string short = 3;
+  string capacity = 4;
+  string buildingid = 5;
+  string partner_id = 6;
+}
+
+message ClassArray {
+  string id = 1;
+  string name = 2;
+  string short = 3;
+  string classroomids = 4;
+  string teacherid = 5;
+  string grade = 6;
+  string partner_id = 7;
+}
+
+message GroupArray {
+  string id = 1;
+  string name = 2;
+}
+
+message LessonArray {
+  string id = 1;
+  string classids = 2;
+  string subjectid = 3;
+  string teacherids = 4;
+  string classroomids = 5;
+  string groupids = 6;
+  string periodspercard = 7;
+  string periodsperweek = 8;
+  string capacity = 9;
+  string seminargroup = 10;
+  string termsdefid = 11;
+  string weeksdefid = 12;
+  string daysdefid = 13;
+  string partner_id = 14;
+}
+
+message CardArray {
+  string lessonid = 1;
+  string period = 2;
+  string weeks = 3;
+  string days = 4;
+  string terms = 5;
+  string classroomids = 6;
+}

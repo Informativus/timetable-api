@@ -7,12 +7,13 @@ import { UpdateReplacementsInStorage } from './ReplacementsUpdater/updateReplace
 @Injectable()
 export class UpdateReplacementsListener {
   constructor(
-    private readonly updateReplaceInSorage: UpdateReplacementsInStorage,
+    private readonly updateReplaceInStorage: UpdateReplacementsInStorage,
   ) {}
+
   @ValidateAndMapDtoGrpc(UpdateReplacementsDto)
   async updateReplacementsListener(
     request: UpdateReplacementsDto,
   ): Promise<Empty> {
-    return await this.updateReplaceInSorage.updateReplacements(request);
+    return await this.updateReplaceInStorage.updateReplacements(request);
   }
 }

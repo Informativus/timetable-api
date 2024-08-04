@@ -1,7 +1,7 @@
-import { IsArray, IsBoolean, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { ReplacementDto } from './replacement.dto';
-import { IsReplacementArray } from '../../validators/Replacements/isReplacementArray.validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsValidArrayDto } from '../../validators/isValidArrayDto.validator';
 
 export class CreateReplacementDto {
   @ApiProperty({ example: false })
@@ -23,8 +23,7 @@ export class CreateReplacementDto {
     ],
     type: [ReplacementDto],
   })
-  @IsArray()
-  @IsReplacementArray({
+  @IsValidArrayDto(ReplacementDto, {
     message: 'Replacements must be an array of valid ReplacementDto objects',
   })
   replacements: ReplacementDto[];
