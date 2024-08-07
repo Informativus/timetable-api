@@ -27,50 +27,25 @@ export class UpdateTimetable {
     private readonly setGroupInStorage: ISetGroupInStorage,
     private readonly lessonCreator: LessonCreator,
     private readonly weekCreator: WeekCreator,
-  ) {
-  }
+  ) {}
 
   async updateTimetable(
     updateTimetableDto: UpdateTimetableDto,
   ): Promise<Empty> {
     const times: string[][] = this.getTimes(updateTimetableDto.periods);
-    //let res: any[];
 
     for (const group of updateTimetableDto.classes.class) {
-      if (group.id !== '3C4AED479522F517') {
-        continue;
-      }
-
       const subgroups: GroupArray[] = updateTimetableDto.groups.group.filter(
         (item) => item.classid === group.id,
       );
-      const subgroupsIds: subgroupIds[] = [];
+      const subgroupsIds: subgroupIds[] = this.getSubgroupsIds(
+        subgroups,
+        updateTimetableDto,
+      );
 
-      for (const subgroup of subgroups) {
-        if (subgroup.name === 'Весь класс') {
-          subgroupsIds.push({
-            subgroupIds: subgroup.id,
-            subgroupName: subgroup.name,
-          });
-          continue;
-        }
-
-        const lessonsFirstSubgroup: LessonArray =
-          updateTimetableDto.lessons.lesson.find(
-            (item) => subgroup.id === item.groupids,
-          );
-        if (lessonsFirstSubgroup) {
-          subgroupsIds.push({
-            subgroupIds: subgroup.id,
-            subgroupName: subgroup.name,
-          });
-        }
-      }
-
-      console.log(`subgroupsIds: ${JSON.stringify(subgroupsIds)}`);
       if (subgroupsIds.length <= 1) {
         const groupTextId: string = getTranslatedWord(group.name);
-        await this.checkGroupOnExisting(groupTextId, group);
+        await this.checkGroupOnExisting(groupTextId, group.name);
 
         const createTimetableData: CreateTimetableDto = this.getCreateTimetable(
           group,
@@ -79,40 +54,112 @@ export class UpdateTimetable {
           subgroupsIds,
         );
 
-        console.log('я тут');
         await this.setTimetableInStorage(createTimetableData, groupTextId);
         continue;
       }
 
-      for (const subgroup of subgroupsIds) {
-        if (subgroup.subgroupName === '1 группа') {
-          const groupTextId: string = `${getTranslatedWord(group.name)}_1`;
-          await this.checkGroupOnExisting(groupTextId, group);
-
-          const createTimetableData: CreateTimetableDto =
-            this.getCreateTimetable(
-              group,
-              updateTimetableDto,
-              times,
-              subgroupsIds.filter((item) => item.subgroupName !== '2 группа'),
-            );
-          await this.setTimetableInStorage(createTimetableData, groupTextId);
-        } else if (subgroup.subgroupName === '2 группа') {
-          const groupTextId: string = `${getTranslatedWord(group.name)}_2`;
-          await this.checkGroupOnExisting(groupTextId, group);
-
-          const createTimetableData: CreateTimetableDto =
-            this.getCreateTimetable(
-              group,
-              updateTimetableDto,
-              times,
-              subgroupsIds.filter((item) => item.subgroupName !== '1 группа'),
-            );
-          await this.setTimetableInStorage(createTimetableData, groupTextId);
-        }
-      }
+      await this.setTimetableInStorageWithSubgroup(
+        subgroupsIds,
+        group,
+        updateTimetableDto,
+        times,
+      );
     }
     return new Empty();
+  }
+
+  getTimes(periods: PeriodsData): string[][] {
+    const times: string[][] = [];
+
+    periods.period.forEach((period) => {
+      const startTime: string[] = period.starttime.split(':');
+      const endTime: string[] = period.endtime.split(':');
+
+      if (startTime.length === 2 && endTime.length === 2) {
+        times.push([startTime[0], startTime[1], endTime[0], endTime[1]]);
+      } else {
+        throw new Error('Invalid time format');
+      }
+    });
+
+    return times;
+  }
+
+  getSubgroupsIds(
+    subgroups: GroupArray[],
+    updateTimetableDto: UpdateTimetableDto,
+  ) {
+    const subgroupsIds: subgroupIds[] = [];
+    for (const subgroup of subgroups) {
+      if (subgroup.name === 'Весь класс') {
+        subgroupsIds.push({
+          subgroupIds: subgroup.id,
+          subgroupName: subgroup.name,
+        });
+        continue;
+      }
+
+      const lessonsSubgroup: LessonArray =
+        updateTimetableDto.lessons.lesson.find(
+          (item) => subgroup.id === item.groupids,
+        );
+      if (lessonsSubgroup) {
+        subgroupsIds.push({
+          subgroupIds: subgroup.id,
+          subgroupName: subgroup.name,
+        });
+      }
+    }
+    return subgroupsIds;
+  }
+
+  async setTimetableInStorageWithSubgroup(
+    subgroupsIds: subgroupIds[],
+    group: ClassArray,
+    updateTimetableDto: UpdateTimetableDto,
+    times: string[][],
+  ) {
+    for (const subgroup of subgroupsIds) {
+      if (subgroup.subgroupName === '1 группа') {
+        const groupTextId: string = `${getTranslatedWord(group.name)}_1`;
+        await this.checkGroupOnExisting(
+          groupTextId,
+          `${group.name} (1 группа)`,
+        );
+
+        const createTimetableData: CreateTimetableDto = this.getCreateTimetable(
+          group,
+          updateTimetableDto,
+          times,
+          subgroupsIds.filter((item) => item.subgroupName !== '2 группа'),
+        );
+        await this.setTimetableInStorage(createTimetableData, groupTextId);
+      } else if (subgroup.subgroupName === '2 группа') {
+        const groupTextId: string = `${getTranslatedWord(group.name)}_2`;
+        await this.checkGroupOnExisting(groupTextId, `${group.name}_2`);
+
+        const createTimetableData: CreateTimetableDto = this.getCreateTimetable(
+          group,
+          updateTimetableDto,
+          times,
+          subgroupsIds.filter((item) => item.subgroupName !== '1 группа'),
+        );
+        await this.setTimetableInStorage(createTimetableData, groupTextId);
+      }
+    }
+  }
+
+  async checkGroupOnExisting(groupTextId: string, groupTitle: string) {
+    if (
+      !(await this.checkGroupData.isExistsGroup({
+        id: groupTextId,
+      }))
+    ) {
+      await this.setGroupInStorage.setGroup({
+        id: groupTextId,
+        title: groupTitle,
+      });
+    }
   }
 
   getCreateTimetable(
@@ -147,36 +194,6 @@ export class UpdateTimetable {
       odd: odd,
       times: times,
     };
-  }
-
-  getTimes(periods: PeriodsData): string[][] {
-    const times: string[][] = [];
-
-    periods.period.forEach((period) => {
-      const startTime: string[] = period.starttime.split(':');
-      const endTime: string[] = period.endtime.split(':');
-
-      if (startTime.length === 2 && endTime.length === 2) {
-        times.push([startTime[0], startTime[1], endTime[0], endTime[1]]);
-      } else {
-        throw new Error('Invalid time format');
-      }
-    });
-
-    return times;
-  }
-
-  async checkGroupOnExisting(groupTextId: string, group: ClassArray) {
-    if (
-      !(await this.checkGroupData.isExistsGroup({
-        id: groupTextId,
-      }))
-    ) {
-      await this.setGroupInStorage.setGroup({
-        id: groupTextId,
-        title: group.name,
-      });
-    }
   }
 
   async setTimetableInStorage(

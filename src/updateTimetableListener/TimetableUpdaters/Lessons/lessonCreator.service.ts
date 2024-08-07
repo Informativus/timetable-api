@@ -12,7 +12,6 @@ export class LessonCreator {
     timetableData: UpdateTimetableDto,
     subgroups: subgroupIds[],
   ): lessonsData {
-    console.log(subgroups);
     const lessonsArray: LessonArray[] = timetableData.lessons.lesson.filter(
       (lesson) => {
         return (
@@ -22,23 +21,31 @@ export class LessonCreator {
       },
     );
 
-    console.log(lessonsArray);
-
-    const subjectNames: Set<string> = new Set();
+    const subjectDatas: Set<string> = new Set();
     const lessonsValidIds: string[] = [];
     const repeatIds: any = {};
 
     const lessons: string[][] = [['', '', '', '']];
 
     for (const lesson of lessonsArray) {
-      const subjects: string = this.getSubjects(
+      const subject: string = this.getSubjects(
         lesson.subjectid,
         timetableData.subjects,
       );
 
-      if (subjectNames.has(subjects)) {
+      const teacher: string = this.getTeacher(
+        lesson.teacherids,
+        timetableData.teachers,
+      );
+
+      const subjectDataStr = JSON.stringify({
+        name: subject,
+        teacher: teacher,
+      });
+
+      if (subjectDatas.has(subjectDataStr)) {
         const subjectIds: string[] = timetableData.subjects.subject
-          .filter((sub) => sub.name === subjects)
+          .filter((sub) => sub.name === subject)
           .map((sub) => sub.id);
 
         const lessonsIds: string[] = lessonsArray
@@ -53,13 +60,13 @@ export class LessonCreator {
         continue;
       }
 
-      subjectNames.add(subjects);
+      subjectDatas.add(subjectDataStr);
       lessonsValidIds.push(lesson.id);
 
       lessons.push([
-        subjects,
+        subject,
         this.getClassroom(lesson.id, timetableData),
-        this.getTeacher(lesson.teacherids, timetableData.teachers),
+        teacher,
         '',
       ]);
     }
