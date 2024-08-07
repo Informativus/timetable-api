@@ -36,7 +36,7 @@ export function ValidateAndMapDtoGrpc(...dtoClasses: (new () => object)[]) {
             .join('; ');
 
           throw {
-            code: status.INVALID_ARGUMENT,
+            code: 6,
             message: `Validation failed for ${dtoClass.name}: ${errorMessages}`,
             name: 'BadRequestError',
             details: 'Validation Error',

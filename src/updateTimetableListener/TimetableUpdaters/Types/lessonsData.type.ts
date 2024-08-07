@@ -1,4 +1,6 @@
 export type lessonsData = {
-  lessonsIds: string[];
+  lessonsAllIds: string[];
+  lessonsValidIds: string[];
+  repeatIds: any;
   lessons: string[][];
 };

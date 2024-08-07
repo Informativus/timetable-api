@@ -8,6 +8,7 @@ import { IReplecementsFacade } from 'src/replacement/IReplacementsFacade.interfa
 import { REPLACEMENTS_FACADE } from 'src/config/constants/constants';
 import { ReplacementDto } from 'src/dto/replacement/replacement.dto';
 import { ReplacementsInfoDto } from 'src/dto/replacement/updateReplacementsListener/replacementsInfo.dto';
+import { getTranslatedWord } from 'src/utils/wordTranslator.util';
 
 export class UpdateReplacementsInStorage {
   constructor(
@@ -32,7 +33,7 @@ export class UpdateReplacementsInStorage {
 
       cacheFormsData.add(item.forms);
       const getReplacementsDto: GetReplacementDto = {
-        group: this.getGroupTextId(item.forms),
+        group: getTranslatedWord(item.forms),
         date,
       };
 
@@ -55,50 +56,6 @@ export class UpdateReplacementsInStorage {
 
   getDate(date: dataParams): string {
     return `${date.year}-${date.month}-${date.day}`;
-  }
-
-  getGroupTextId(group: string): string {
-    const russianEnglishDictionary = {
-      А: 'A',
-      Б: 'B',
-      В: 'V',
-      Г: 'G',
-      Д: 'D',
-      Е: 'E',
-      Ж: 'ZH',
-      З: 'Z',
-      И: 'I',
-      К: 'K',
-      Л: 'L',
-      М: 'M',
-      Н: 'N',
-      О: 'O',
-      П: 'P',
-      Р: 'R',
-      С: 'S',
-      Т: 'T',
-      У: 'U',
-      Ф: 'F',
-      Х: 'H',
-      Ц: 'C',
-      Ч: 'CH',
-      Ш: 'SH',
-      Щ: "SH'",
-      Ы: 'Y',
-      Э: 'E',
-      Ю: 'YU',
-      Я: 'YA',
-    };
-
-    const translatedGroup: string = group
-      .split('')
-      .map((item) => {
-        return russianEnglishDictionary[item] || item;
-      })
-      .join('');
-
-    console.debug(translatedGroup);
-    return translatedGroup;
   }
 
   getReplacementsArray(

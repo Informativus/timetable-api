@@ -6,4 +6,7 @@ export class GroupArray {
 
   @IsString()
   name: string;
+
+  @IsString()
+  classid: string;
 }

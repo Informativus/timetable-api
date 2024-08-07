@@ -7,12 +7,17 @@ import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
 import { ISetGroupInStorage } from './Interfaces/ISetGroupInStorage.interface';
+import { CheckGroupData } from './CheckGroupData/checkGroupData.service';
+import { ICheckGroupData } from './Interfaces/ICheckGroupData.interface';
 
 @Injectable()
-export class GroupFacade implements IGetGroupWithData, ISetGroupInStorage {
+export class GroupFacade
+  implements IGetGroupWithData, ISetGroupInStorage, ICheckGroupData
+{
   constructor(
     private readonly setGroupInDb: SetGroupInDbService,
     private readonly getGroupWithData: GetGroupWithData,
+    private readonly checkData: CheckGroupData,
     private readonly getGroups: GetGroups,
   ) {}
 
@@ -30,5 +35,9 @@ export class GroupFacade implements IGetGroupWithData, ISetGroupInStorage {
 
   async setGroup(groupDto: GetGroupDto): Promise<void> {
     return await this.setGroupInDb.setGroup(groupDto);
+  }
+
+  async isExistsGroup(groupData: GroupDto): Promise<boolean> {
+    return await this.checkData.isExistsGroup(groupData);
   }
 }

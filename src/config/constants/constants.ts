@@ -17,6 +17,7 @@ export const PATH_TO_GROUP_ID = 'group_info';
 export const GROUP_REPOSITORY = 'IGroupRepository';
 export const GET_GROUP_WITH_DATA = 'IGetGroupWithData';
 export const SET_GROUP_IN_STORAGE = 'ISetGroupInStorage';
+export const CHECK_GROUP_DATA = 'ICheckGroupData';
 
 // Replacement constants
 

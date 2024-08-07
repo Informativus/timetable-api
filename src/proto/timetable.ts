@@ -103,6 +103,7 @@ export interface ClassArray {
 export interface GroupArray {
   id: string;
   name: string;
+  classid: string;
 }
 
 export interface LessonArray {
@@ -1508,7 +1509,7 @@ export const ClassArray = {
 };
 
 function createBaseGroupArray(): GroupArray {
-  return { id: "", name: "" };
+  return { id: "", name: "", classid: "" };
 }
 
 export const GroupArray = {
@@ -1518,6 +1519,9 @@ export const GroupArray = {
     }
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
+    }
+    if (message.classid !== "") {
+      writer.uint32(26).string(message.classid);
     }
     return writer;
   },
@@ -1543,6 +1547,13 @@ export const GroupArray = {
 
           message.name = reader.string();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.classid = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1556,6 +1567,7 @@ export const GroupArray = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
+      classid: isSet(object.classid) ? globalThis.String(object.classid) : "",
     };
   },
 
@@ -1567,6 +1579,9 @@ export const GroupArray = {
     if (message.name !== "") {
       obj.name = message.name;
     }
+    if (message.classid !== "") {
+      obj.classid = message.classid;
+    }
     return obj;
   },
 
@@ -1577,6 +1592,7 @@ export const GroupArray = {
     const message = createBaseGroupArray();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
+    message.classid = object.classid ?? "";
     return message;
   },
 };

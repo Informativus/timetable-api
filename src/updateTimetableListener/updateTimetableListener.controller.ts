@@ -55,6 +55,7 @@ export class UpdateTimetableListenerController {
         group: request.groups.group.map((group) => ({
           id: group.id,
           name: group.name,
+          classid: group.classid,
         })),
       },
       lessons: {

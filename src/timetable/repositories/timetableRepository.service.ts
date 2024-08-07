@@ -17,7 +17,7 @@ export class TimetableRepository implements ITimetableRepository {
   ): Promise<CreateTimetableDto[]> {
     try {
       const result = await this.relationDatabase.sendQuery({
-        text: 'SELECT timetable FROM data_on_year where id = $1 order by date DESC LIMIT 1',
+        text: 'SELECT timetable FROM data_on_year where group_id = $1 order by date DESC LIMIT 1',
         values: [groupTextId],
       });
 
@@ -38,7 +38,7 @@ export class TimetableRepository implements ITimetableRepository {
   ): Promise<void> {
     try {
       await this.relationDatabase.sendQuery({
-        text: 'INSERT INTO timetables (id, timetable) VALUES ($1, $2)',
+        text: 'INSERT INTO timetables (group_id, timetable) VALUES ($1, $2)',
         values: [groupId.group_id, JSON.stringify(timetable)],
       });
     } catch (error) {

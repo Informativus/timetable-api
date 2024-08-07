@@ -1,178 +1,152 @@
 import { Inject } from '@nestjs/common';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { SET_TIMETABLE_IN_STORAGE } from 'src/config/constants/constants';
+import * as constants from 'src/config/constants/constants';
 import { PeriodsData } from 'src/dto/timetable/UpdateTimetable/periods/periodsData.dto';
 import { UpdateTimetableDto } from 'src/dto/timetable/UpdateTimetable/UpdateTimetable.dto';
 import { ISetTimetableInStorage } from 'src/timetable/Interfaces/ISetTimetableInStorage.intervace';
 import { lessonsData } from './Types/lessonsData.type';
-import { LessonArray } from 'src/dto/timetable/UpdateTimetable/lessons/lessonArray.dto';
-import { SubjectsData } from 'src/dto/timetable/UpdateTimetable/subjects/subjectsData.dto';
-import { TeachersData } from 'src/dto/timetable/UpdateTimetable/teachers/teachersData.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
-import { CardArray } from 'src/dto/timetable/UpdateTimetable/cards/cardArray.dto';
-import { weekData } from './Types/weekData.type';
+import { LessonCreator } from './Lessons/lessonCreator.service';
+import { WeekCreator } from './WeekTimetable/weekTimetable.service';
+import { ICheckGroupData } from 'src/group/Interfaces/ICheckGroupData.interface';
+import { getTranslatedWord } from 'src/utils/wordTranslator.util';
+import { ISetGroupInStorage } from 'src/group/Interfaces/ISetGroupInStorage.interface';
+import { Metadata } from '@grpc/grpc-js';
+import { ClassArray } from 'src/dto/timetable/UpdateTimetable/classes/classArray.dto';
+import { GroupArray } from '../../dto/timetable/UpdateTimetable/groups/groupArray.dto';
+import { LessonArray } from '../../dto/timetable/UpdateTimetable/lessons/lessonArray.dto';
+import { subgroupIds } from './Types/subgroupIds.type';
 
 export class UpdateTimetable {
   constructor(
-    @Inject(SET_TIMETABLE_IN_STORAGE)
-    private readonly setTimetableInStorage: ISetTimetableInStorage,
-  ) {}
+    @Inject(constants.SET_TIMETABLE_IN_STORAGE)
+    private readonly setTimetable: ISetTimetableInStorage,
+    @Inject(constants.CHECK_GROUP_DATA)
+    private readonly checkGroupData: ICheckGroupData,
+    @Inject(constants.SET_GROUP_IN_STORAGE)
+    private readonly setGroupInStorage: ISetGroupInStorage,
+    private readonly lessonCreator: LessonCreator,
+    private readonly weekCreator: WeekCreator,
+  ) {
+  }
 
   async updateTimetable(
     updateTimetableDto: UpdateTimetableDto,
   ): Promise<Empty> {
     const times: string[][] = this.getTimes(updateTimetableDto.periods);
+    //let res: any[];
 
     for (const group of updateTimetableDto.classes.class) {
-      const lessonsData: lessonsData = this.getLessons(
-        group.id,
-        updateTimetableDto,
-      );
+      if (group.id !== '3C4AED479522F517') {
+        continue;
+      }
 
-      const even: number[][] = this.getEven(
-        lessonsData.lessonsIds,
-        updateTimetableDto,
+      const subgroups: GroupArray[] = updateTimetableDto.groups.group.filter(
+        (item) => item.classid === group.id,
       );
-      const odd: number[][] = this.getOdd(
-        lessonsData.lessonsIds,
-        updateTimetableDto,
-      );
+      const subgroupsIds: subgroupIds[] = [];
 
-      const createTimetableData: CreateTimetableDto = {
-        lessons: lessonsData.lessons,
-        even: even,
-        odd: odd,
-        times: times,
-      };
-      console.log(createTimetableData);
+      for (const subgroup of subgroups) {
+        if (subgroup.name === 'Весь класс') {
+          subgroupsIds.push({
+            subgroupIds: subgroup.id,
+            subgroupName: subgroup.name,
+          });
+          continue;
+        }
+
+        const lessonsFirstSubgroup: LessonArray =
+          updateTimetableDto.lessons.lesson.find(
+            (item) => subgroup.id === item.groupids,
+          );
+        if (lessonsFirstSubgroup) {
+          subgroupsIds.push({
+            subgroupIds: subgroup.id,
+            subgroupName: subgroup.name,
+          });
+        }
+      }
+
+      console.log(`subgroupsIds: ${JSON.stringify(subgroupsIds)}`);
+      if (subgroupsIds.length <= 1) {
+        const groupTextId: string = getTranslatedWord(group.name);
+        await this.checkGroupOnExisting(groupTextId, group);
+
+        const createTimetableData: CreateTimetableDto = this.getCreateTimetable(
+          group,
+          updateTimetableDto,
+          times,
+          subgroupsIds,
+        );
+
+        console.log('я тут');
+        await this.setTimetableInStorage(createTimetableData, groupTextId);
+        continue;
+      }
+
+      for (const subgroup of subgroupsIds) {
+        if (subgroup.subgroupName === '1 группа') {
+          const groupTextId: string = `${getTranslatedWord(group.name)}_1`;
+          await this.checkGroupOnExisting(groupTextId, group);
+
+          const createTimetableData: CreateTimetableDto =
+            this.getCreateTimetable(
+              group,
+              updateTimetableDto,
+              times,
+              subgroupsIds.filter((item) => item.subgroupName !== '2 группа'),
+            );
+          await this.setTimetableInStorage(createTimetableData, groupTextId);
+        } else if (subgroup.subgroupName === '2 группа') {
+          const groupTextId: string = `${getTranslatedWord(group.name)}_2`;
+          await this.checkGroupOnExisting(groupTextId, group);
+
+          const createTimetableData: CreateTimetableDto =
+            this.getCreateTimetable(
+              group,
+              updateTimetableDto,
+              times,
+              subgroupsIds.filter((item) => item.subgroupName !== '1 группа'),
+            );
+          await this.setTimetableInStorage(createTimetableData, groupTextId);
+        }
+      }
     }
     return new Empty();
   }
 
-  // Получение расписания
-  getLessons(groupId: string, timetableData: UpdateTimetableDto): lessonsData {
-    const lessonsArray: LessonArray[] = timetableData.lessons.lesson.filter(
-      (lesson) => {
-        return lesson.classids === groupId;
-      },
+  getCreateTimetable(
+    group: ClassArray,
+    updateTimetableDto: UpdateTimetableDto,
+    times: string[][],
+    subgroupIds: subgroupIds[],
+  ): CreateTimetableDto {
+    const lessonsData: lessonsData = this.lessonCreator.getLessons(
+      group.id,
+      updateTimetableDto,
+      subgroupIds,
     );
 
-    const lessons: string[][] = [['', '', '', '']];
-
-    for (const lesson of lessonsArray) {
-      lessons.push([
-        this.getSubjects(lesson.subjectid, timetableData.subjects),
-        this.getClassroom(lesson.id, timetableData),
-        this.getTeacher(lesson.teacherids, timetableData.teachers),
-        '',
-      ]);
-    }
-
-    return { lessonsIds: lessonsArray.map((lesson) => lesson.id), lessons };
-  }
-
-  getClassroom(lessonId: string, timetableData: UpdateTimetableDto): string {
-    console.debug(lessonId);
-    const card: CardArray = timetableData.cards.card.find(
-      (card) => lessonId === card.lessonid,
+    const even: number[][] = this.weekCreator.getEven(
+      lessonsData.lessonsAllIds,
+      lessonsData.lessonsValidIds,
+      lessonsData.repeatIds,
+      updateTimetableDto,
     );
 
-    console.debug('\n', card, '\n');
-
-    return timetableData.classrooms.classroom.find(
-      (classroom) => card.classroomids === classroom.id,
-    ).short;
-  }
-
-  getSubjects(subjectId: string, subjectData: SubjectsData): string {
-    return subjectData.subject.find((subject) => {
-      return subject.id === subjectId;
-    }).name;
-  }
-
-  getTeacher(teacherId: string, teacherData: TeachersData): string {
-    const teacherName: string = teacherData.teacher.find((teacher) => {
-      return teacher.id === teacherId;
-    }).name;
-
-    return teacherName.replace(' ', '.').replace(/\./g, '|');
-  }
-
-  // Заполнение расписания на четную неделю
-  getEven(lessonsIds: string[], timetableData: UpdateTimetableDto): number[][] {
-    const weekArray: weekData[] = [];
-    const evenLessonsArray: CardArray[] = timetableData.cards.card.filter(
-      (card) => {
-        return lessonsIds.includes(card.lessonid) && card.weeks !== '01';
-      },
+    const odd: number[][] = this.weekCreator.getOdd(
+      lessonsData.lessonsAllIds,
+      lessonsData.lessonsValidIds,
+      lessonsData.repeatIds,
+      updateTimetableDto,
     );
 
-    lessonsIds.forEach((lessonId, index) => {
-      const card: CardArray = evenLessonsArray.find((card) => {
-        return card.lessonid === lessonId;
-      });
-
-      if (card) {
-        weekArray.push({
-          day: card.days,
-          period: card.period,
-          lessonNumber: index + 1,
-        });
-      }
-    });
-
-    const getSortedPeriods = (day: string) => {
-      return weekArray
-        .filter((week) => week.day === day)
-        .sort((a, b) => parseInt(a.period) - parseInt(b.period))
-        .map((week) => week.lessonNumber);
+    return {
+      lessons: lessonsData.lessons,
+      even: even,
+      odd: odd,
+      times: times,
     };
-
-    const mon: number[] = getSortedPeriods('10000');
-    const tue: number[] = getSortedPeriods('01000');
-    const wed: number[] = getSortedPeriods('00100');
-    const thu: number[] = getSortedPeriods('00010');
-    const fri: number[] = getSortedPeriods('00001');
-
-    return [mon, tue, wed, thu, fri];
-  }
-
-  getOdd(lessonsIds: string[], timetableData: UpdateTimetableDto): number[][] {
-    const weekArray: weekData[] = [];
-    const evenLessonsArray: CardArray[] = timetableData.cards.card.filter(
-      (card) => {
-        return lessonsIds.includes(card.lessonid) && card.weeks !== '10';
-      },
-    );
-
-    lessonsIds.forEach((lessonId, index) => {
-      const card: CardArray = evenLessonsArray.find((card) => {
-        return card.lessonid === lessonId;
-      });
-
-      if (card) {
-        weekArray.push({
-          day: card.days,
-          period: card.period,
-          lessonNumber: index + 1,
-        });
-      }
-    });
-
-    const getSortedPeriods = (day: string) => {
-      return weekArray
-        .filter((week) => week.day === day)
-        .sort((a, b) => parseInt(a.period) - parseInt(b.period))
-        .map((week) => week.lessonNumber);
-    };
-
-    const mon: number[] = getSortedPeriods('10000');
-    const tue: number[] = getSortedPeriods('01000');
-    const wed: number[] = getSortedPeriods('00100');
-    const thu: number[] = getSortedPeriods('00010');
-    const fri: number[] = getSortedPeriods('00001');
-
-    return [mon, tue, wed, thu, fri];
   }
 
   getTimes(periods: PeriodsData): string[][] {
@@ -183,12 +157,47 @@ export class UpdateTimetable {
       const endTime: string[] = period.endtime.split(':');
 
       if (startTime.length === 2 && endTime.length === 2) {
-        times.push([startTime[0], startTime[1], endTime[0], endTime[1]);
+        times.push([startTime[0], startTime[1], endTime[0], endTime[1]]);
       } else {
         throw new Error('Invalid time format');
       }
     });
 
     return times;
+  }
+
+  async checkGroupOnExisting(groupTextId: string, group: ClassArray) {
+    if (
+      !(await this.checkGroupData.isExistsGroup({
+        id: groupTextId,
+      }))
+    ) {
+      await this.setGroupInStorage.setGroup({
+        id: groupTextId,
+        title: group.name,
+      });
+    }
+  }
+
+  async setTimetableInStorage(
+    createTimetableData: CreateTimetableDto,
+    groupTextId: string,
+  ) {
+    try {
+      await this.setTimetable.setTimetableInDb(
+        {
+          id: groupTextId,
+        },
+        createTimetableData,
+      );
+    } catch (error) {
+      throw {
+        code: 13,
+        message: `Error: ${error}`,
+        name: 'Internal Server Error',
+        details: 'Validation Error',
+        metadata: new Metadata(),
+      };
+    }
   }
 }
