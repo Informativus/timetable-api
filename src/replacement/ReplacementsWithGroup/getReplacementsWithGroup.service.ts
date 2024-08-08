@@ -28,13 +28,11 @@ export class GetReplacementsWithGroup {
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     await ensureGroupExists(this.groupService, { id: replacementsDto.group });
 
-    const lastUdates = (
+    const lastUpdates: Date = (
       await this.replacementRepository.getLastReplacementsUpdate()
     )[0].replacement_date;
 
-    const lastUpdate: string = new Date(lastUdates).toISOString().split('T')[0];
-
-    if (isSameDate(lastUpdate)) {
+    if (isSameDate(lastUpdates)) {
       const cacheKey = replacementsDto.group;
       const cachedReplacements: CreateReplacementDto =
         await this.cacheService.get(cacheKey);

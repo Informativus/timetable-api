@@ -5,15 +5,21 @@ import { UpdateReplacementsDto } from 'src/dto/replacement/updateReplacementsLis
 import { dataParams } from './Types/dateParam.type';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { IReplecementsFacade } from 'src/replacement/IReplacementsFacade.interface';
-import { REPLACEMENTS_FACADE } from 'src/config/constants/constants';
+import {
+  GET_GROUP_WITH_DATA,
+  REPLACEMENTS_FACADE,
+} from 'src/config/constants/constants';
 import { ReplacementDto } from 'src/dto/replacement/replacement.dto';
 import { ReplacementsInfoDto } from 'src/dto/replacement/updateReplacementsListener/replacementsInfo.dto';
 import { getTranslatedWord } from 'src/utils/wordTranslator.util';
+import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 export class UpdateReplacementsInStorage {
   constructor(
     @Inject(REPLACEMENTS_FACADE)
     private readonly replacementsFacade: IReplecementsFacade,
+    @Inject(GET_GROUP_WITH_DATA)
+    private readonly getGroupWithData: IGetGroupWithData,
   ) {}
 
   async updateReplacements(
@@ -32,9 +38,16 @@ export class UpdateReplacementsInStorage {
       }
 
       cacheFormsData.add(item.forms);
+
+      const translatedGroup: string = (
+        await this.getGroupWithData.getGroupWithPartId(
+          this.getTranslatedGroup(item.groups, item),
+        )
+      ).id;
+
       const getReplacementsDto: GetReplacementDto = {
-        group: getTranslatedWord(item.forms),
-        date,
+        group: translatedGroup,
+        date: date,
       };
 
       const createReplacements: CreateReplacementDto = {
@@ -54,6 +67,17 @@ export class UpdateReplacementsInStorage {
     return new Empty();
   }
 
+  getTranslatedGroup(subgroup: string, replacementsInfo: ReplacementsInfoDto) {
+    const translatedGroup: string = getTranslatedWord(replacementsInfo.forms);
+    return subgroup === 'Весь класс'
+      ? translatedGroup
+      : `${translatedGroup}${this.getSubgroup(subgroup)}`;
+  }
+
+  getSubgroup(subgroup: string): string {
+    return subgroup === '1 группа' ? '_1' : '_2';
+  }
+
   getDate(date: dataParams): string {
     return `${date.year}-${date.month}-${date.day}`;
   }
@@ -65,7 +89,7 @@ export class UpdateReplacementsInStorage {
     return replacementsDto
       .filter((item) => item.forms === group)
       .map((item) => ({
-        index: Number(item.lesson), // Преобразование `lesson` в число
+        index: Number(item.lesson),
         cancelled: this.getCancelled(item),
         teacher: this.getSubstituting(item),
         room: this.getRoom(item),

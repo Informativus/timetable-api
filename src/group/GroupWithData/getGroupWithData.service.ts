@@ -20,4 +20,16 @@ export class GetGroupWithData {
 
     return group[0];
   }
+
+  async getGroupWithPartId(partGroupId: string): Promise<GroupDto> {
+    const group: GroupDto[] = await this.groupRe.getGroupWithPartId(
+      `${partGroupId}%`,
+    );
+
+    if (!isDataNotEmpty(group[0])) {
+      throw new BadRequestException('Group does not exist');
+    }
+
+    return group[0];
+  }
 }

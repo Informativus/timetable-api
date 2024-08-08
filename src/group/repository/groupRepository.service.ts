@@ -29,6 +29,15 @@ export class GroupRepository implements IGroupRepository {
     return validateAndMapDto(result, GetGroupDto);
   }
 
+  async getGroupWithPartId(partGroupId: string): Promise<GroupDto[]> {
+    const result = await this.relationDatabase.sendQuery({
+      text: 'SELECT id FROM student_groups WHERE id LIKE($1)',
+      values: [partGroupId],
+    });
+
+    return validateAndMapDto(result, GroupDto);
+  }
+
   async getAllGroups(): Promise<GetGroupDto[]> {
     const result = await this.relationDatabase.sendQuery({
       text: 'SELECT id, title FROM student_groups',

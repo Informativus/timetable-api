@@ -26,10 +26,12 @@ export class SetReplacements {
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    const group: GroupId = await this.getGroupId(replacementsDto);
+    const groupId: GroupId = await this.getGroupId(replacementsDto);
+
+    await this.cacheService.set(replacementsDto.group, replacements);
 
     await this.replacementRepository.setReplacementWithDate(
-      group,
+      groupId,
       replacements,
       replacementsDto.date,
     );

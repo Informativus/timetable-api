@@ -38,7 +38,7 @@ export class TimetableRepository implements ITimetableRepository {
   ): Promise<void> {
     try {
       await this.relationDatabase.sendQuery({
-        text: 'INSERT INTO timetables (id, timetable) VALUES ($1, $2)',
+        text: 'INSERT INTO timetables (group_id, timetable) VALUES ($1, $2)',
         values: [groupId.group_id, JSON.stringify(timetable)],
       });
     } catch (error) {

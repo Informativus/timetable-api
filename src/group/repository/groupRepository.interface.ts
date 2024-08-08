@@ -6,6 +6,8 @@ export interface IGroupRepository {
 
   getGroupsWithExistsTimetable(): Promise<GetGroupDto[]>;
 
+  getGroupWithPartId(partGroupId: string): Promise<GroupDto[]>;
+
   getAllGroups(): Promise<GetGroupDto[]>;
 
   setGroup(groupDto: GetGroupDto): Promise<void>;

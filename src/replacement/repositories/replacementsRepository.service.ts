@@ -7,6 +7,7 @@ import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { RELATION_DATABASE } from 'src/config/constants/constants';
+import { replacementsDate } from '../Types/replacementsDate.type';
 
 export class ReplacementsRepository implements IReplacementRepository {
   constructor(
@@ -33,10 +34,10 @@ export class ReplacementsRepository implements IReplacementRepository {
     }
   }
 
-  async getLastReplacementsUpdate(): Promise<{ replacement_date: string }[]> {
+  async getLastReplacementsUpdate(): Promise<replacementsDate[]> {
     try {
       return await this.relationDatabase.sendQuery({
-        text: 'SELECT replacement_date FROM replacements ORDER BY replacement_date DESC LIMIT 1',
+        text: 'SELECT replacement_date FROM replacements ORDER BY replacement_date ASC LIMIT 1',
       });
     } catch (error) {
       console.error('Error getting last replacements update: ', error);

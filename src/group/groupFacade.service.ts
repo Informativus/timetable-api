@@ -29,6 +29,10 @@ export class GroupFacade
     return await this.getGroups.getGroupsWithExistsTimetable();
   }
 
+  async getGroupWithPartId(partGroupId: string): Promise<GroupDto> {
+    return await this.getGroupWithData.getGroupWithPartId(partGroupId);
+  }
+
   async getAllGroups(): Promise<InfoAllGroupDto> {
     return await this.getGroups.getAllGroups();
   }

@@ -136,7 +136,10 @@ export class UpdateTimetable {
         await this.setTimetableInStorage(createTimetableData, groupTextId);
       } else if (subgroup.subgroupName === '2 группа') {
         const groupTextId: string = `${getTranslatedWord(group.name)}_2`;
-        await this.checkGroupOnExisting(groupTextId, `${group.name}_2`);
+        await this.checkGroupOnExisting(
+          groupTextId,
+          `${group.name} (2 группа)`,
+        );
 
         const createTimetableData: CreateTimetableDto = this.getCreateTimetable(
           group,
