@@ -1,6 +1,8 @@
+import { repeatIds } from './repeatIds.type';
+
 export type lessonsData = {
   lessonsAllIds: string[];
   lessonsValidIds: string[];
-  repeatIds: any;
+  repeatIds: repeatIds;
   lessons: string[][];
 };

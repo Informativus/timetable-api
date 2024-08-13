@@ -5,6 +5,7 @@ import { CardArray } from '../../../dto/timetable/UpdateTimetable/cards/cardArra
 import { SubjectsData } from '../../../dto/timetable/UpdateTimetable/subjects/subjectsData.dto';
 import { TeachersData } from '../../../dto/timetable/UpdateTimetable/teachers/teachersData.dto';
 import { subgroupIds } from '../Types/subgroupIds.type';
+import { repeatIds } from '../Types/repeatIds.type';
 
 export class LessonCreator {
   getLessons(
@@ -23,7 +24,7 @@ export class LessonCreator {
 
     const subjectDatas: Set<string> = new Set();
     const lessonsValidIds: string[] = [];
-    const repeatIds: any = {};
+    const repeatIds: repeatIds = {};
 
     const lessons: string[][] = [['', '', '', '']];
 

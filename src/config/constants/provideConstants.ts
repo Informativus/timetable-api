@@ -1,12 +1,12 @@
 import { PostgresDatabaseService } from '../../database/postgres-database/postgresDatabase.service';
 import { RedisDatabaseService } from '../../database/redis-database/redis-database.service';
+import { GroupFacade } from '../../group/groupFacade.service';
 import {
   CHECK_GROUP_DATA,
   GET_GROUP_WITH_DATA,
   NO_RELATION_DATABASE,
   RELATION_DATABASE,
 } from './constants';
-import { GroupFacade } from '../../group/groupFacade.service';
 
 export const relationDatabase = {
   provide: RELATION_DATABASE,

@@ -1,5 +1,6 @@
 import { UpdateTimetableDto } from '../../../dto/timetable/UpdateTimetable/UpdateTimetable.dto';
 import { CardArray } from '../../../dto/timetable/UpdateTimetable/cards/cardArray.dto';
+import { repeatIds } from '../Types/repeatIds.type';
 
 export class WeekCreator {
   constructor() {}
@@ -7,7 +8,7 @@ export class WeekCreator {
   getEven(
     lessonsAllIds: string[],
     lessonsValidIds: string[],
-    repeatIds: any,
+    repeatIds: repeatIds,
     timetableData: UpdateTimetableDto,
   ): number[][] {
     const validCardsArray: CardArray[] = timetableData.cards.card
@@ -22,7 +23,7 @@ export class WeekCreator {
   getOdd(
     lessonsAllIds: string[],
     lessonsValidIds: string[],
-    repeatIds: any,
+    repeatIds: repeatIds,
     timetableData: UpdateTimetableDto,
   ): number[][] {
     const validCardsArray: CardArray[] = timetableData.cards.card
@@ -39,7 +40,7 @@ export class WeekCreator {
     maxPeriods: number,
     validCardsArray: CardArray[],
     lessonsValidIds: string[],
-    repeatIds: any,
+    repeatIds: repeatIds,
   ): number[] {
     const dayCards: CardArray[] = validCardsArray.filter((card) => {
       return card.days === day;
@@ -58,7 +59,7 @@ export class WeekCreator {
   getWeekArray(
     validCardsArray: CardArray[],
     lessonsValidIds: string[],
-    repeatIds: any,
+    repeatIds: repeatIds,
   ) {
     const mon: number[] = this.getDayArray(
       '10000',

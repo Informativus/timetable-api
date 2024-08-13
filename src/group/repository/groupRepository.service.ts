@@ -1,10 +1,10 @@
+import { Inject, InternalServerErrorException } from '@nestjs/common';
+import { RELATION_DATABASE } from 'src/config/constants/constants';
+import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
-import { IRelationDatabase } from 'src/database/relationDatabase.interface';
-import { Inject, InternalServerErrorException } from '@nestjs/common';
-import { IGroupRepository } from './groupRepository.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
-import { RELATION_DATABASE } from 'src/config/constants/constants';
+import { IGroupRepository } from './groupRepository.interface';
 
 export class GroupRepository implements IGroupRepository {
   constructor(

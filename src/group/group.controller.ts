@@ -5,15 +5,15 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { GroupDto } from '../dto/group/group.dto';
-import { GetGroupDto } from '../dto/group/getGroup.dto';
-import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   GROUP_API_TAG,
   PATH_TO_GROUP_ID,
   PATH_TO_GROUPS,
 } from 'src/config/constants/constants';
+import { GetGroupDto } from '../dto/group/getGroup.dto';
+import { GroupDto } from '../dto/group/group.dto';
+import { InfoAllGroupDto } from '../dto/group/infoAllGroup.dto';
 import { GroupFacade } from './groupFacade.service';
 
 @ApiTags(GROUP_API_TAG)

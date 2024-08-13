@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
-import { GetGroups } from './AllGroups/getGroups.service';
-import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
-import { IGetGroupWithData } from './Interfaces/IGetGroupWithData.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
-import { ISetGroupInStorage } from './Interfaces/ISetGroupInStorage.interface';
+import { GetGroups } from './AllGroups/getGroups.service';
 import { CheckGroupData } from './CheckGroupData/checkGroupData.service';
+import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
 import { ICheckGroupData } from './Interfaces/ICheckGroupData.interface';
+import { IGetGroupWithData } from './Interfaces/IGetGroupWithData.interface';
+import { ISetGroupInStorage } from './Interfaces/ISetGroupInStorage.interface';
+import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
 
 @Injectable()
 export class GroupFacade
