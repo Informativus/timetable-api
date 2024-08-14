@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetGroups } from './getGroups.service';
+import { GetGroups } from './groupList.service';
 import { IGroupRepository } from '../repository/groupRepository.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';

@@ -8,7 +8,7 @@ import { lessonsData } from './Types/lessonsData.type';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 import { LessonCreator } from './Lessons/lessonCreator.service';
 import { WeekCreator } from './WeekTimetable/weekTimetable.service';
-import { ICheckGroupData } from 'src/group/Interfaces/ICheckGroupData.interface';
+import { ICheckGroupOnExists } from 'src/group/Interfaces/ICheckGroupOnExists.interface';
 import { getTranslatedWord } from 'src/utils/wordTranslator.util';
 import { ISetGroupInStorage } from 'src/group/Interfaces/ISetGroupInStorage.interface';
 import { Metadata } from '@grpc/grpc-js';
@@ -22,7 +22,7 @@ export class UpdateTimetable {
     @Inject(constants.SET_TIMETABLE_IN_STORAGE)
     private readonly setTimetable: ISetTimetableInStorage,
     @Inject(constants.CHECK_GROUP_DATA)
-    private readonly checkGroupData: ICheckGroupData,
+    private readonly checkGroupData: ICheckGroupOnExists,
     @Inject(constants.SET_GROUP_IN_STORAGE)
     private readonly setGroupInStorage: ISetGroupInStorage,
     private readonly lessonCreator: LessonCreator,

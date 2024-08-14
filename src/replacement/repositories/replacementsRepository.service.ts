@@ -1,18 +1,19 @@
 import { Inject, InternalServerErrorException } from '@nestjs/common';
+import { CacheService } from 'src/cache/cache.service';
+import { RELATION_DATABASE } from 'src/config/constants/constants';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { IReplacementRepository } from './replacementsRepository.interface';
-import { formatDateToSql } from 'src/utils/date.util';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { GroupId } from 'src/group/types/groupId.type';
+import { formatDateToSql } from 'src/utils/date.util';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
-import { RELATION_DATABASE } from 'src/config/constants/constants';
-import { replacementsDate } from '../Types/replacementsDate.type';
+import { IReplacementRepository } from './replacementsRepository.interface';
 
 export class ReplacementsRepository implements IReplacementRepository {
   constructor(
     @Inject(RELATION_DATABASE)
     private readonly relationDatabase: IRelationDatabase,
+    private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}
   async getReplacementWithGroup(
     groupTextId: string,
@@ -31,19 +32,6 @@ export class ReplacementsRepository implements IReplacementRepository {
     } catch (error) {
       console.error('Error getting replacement: ', error);
       throw new InternalServerErrorException('Failed to get replacement');
-    }
-  }
-
-  async getLastReplacementsUpdate(): Promise<replacementsDate[]> {
-    try {
-      return await this.relationDatabase.sendQuery({
-        text: 'SELECT replacement_date FROM replacements ORDER BY replacement_date ASC LIMIT 1',
-      });
-    } catch (error) {
-      console.error('Error getting last replacements update: ', error);
-      throw new InternalServerErrorException(
-        'Failed to get last replacements update',
-      );
     }
   }
 
@@ -79,6 +67,18 @@ export class ReplacementsRepository implements IReplacementRepository {
         text: 'INSERT INTO replacements (group_id, replacement, replacement_date) VALUES ($1, $2, $3)',
         values: [group.group_id, JSON.stringify(replacement), date],
       });
+    } catch (error) {
+      console.log('Error inserting replacement: ', error);
+      throw new InternalServerErrorException('Failed to set replacement');
+    }
+  }
+
+  async setReplacementInCache(
+    key: string,
+    value: CreateReplacementDto,
+  ): Promise<void> {
+    try {
+      await this.cacheService.set(key, value);
     } catch (error) {
       console.log('Error inserting replacement: ', error);
       throw new InternalServerErrorException('Failed to set replacement');

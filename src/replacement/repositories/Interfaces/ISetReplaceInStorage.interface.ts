@@ -7,4 +7,9 @@ export interface ISetReplaceInStorage {
     replacement: CreateReplacementDto,
     date: string,
   ): Promise<void>;
+
+  setReplacementInCache(
+    key: string,
+    value: CreateReplacementDto,
+  ): Promise<void>;
 }
