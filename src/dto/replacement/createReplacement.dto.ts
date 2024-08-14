@@ -1,7 +1,7 @@
-import { IsBoolean, IsNotEmpty } from 'class-validator';
-import { ReplacementDto } from './replacement.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsNotEmpty } from 'class-validator';
 import { IsValidArrayDto } from '../../validators/isValidArrayDto.validator';
+import { ReplacementDto } from './replacement.dto';
 
 export class CreateReplacementDto {
   @ApiProperty({ example: false })
@@ -18,7 +18,6 @@ export class CreateReplacementDto {
         room: '101',
         title: 'Математика',
         class: '10А',
-        teacher_original: 'Иванов|Иван',
       },
     ],
     type: [ReplacementDto],

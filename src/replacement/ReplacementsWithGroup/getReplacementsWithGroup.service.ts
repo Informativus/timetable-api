@@ -1,17 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { format } from 'date-fns';
 import { CacheService } from 'src/cache/cache.service';
-import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { ensureGroupExists } from 'src/utils/group.util';
-import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
-import { SuccessStatusDto } from 'src/dto/successStatus.dto';
-import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
-import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 import {
   GET_GROUP_WITH_DATA,
   GET_REPLACEMENTS_WITH_GROUP,
 } from 'src/config/constants/constants';
+import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
+import { SuccessStatusDto } from 'src/dto/successStatus.dto';
+import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
+import { ensureGroupExists } from 'src/utils/group.util';
+import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import { isSameDate } from 'src/utils/isSamedate.util';
+import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
+import { IInserterReplacementInCache } from '../SetReplacements/IInserterRepalcementInCache.interface';
+import { SetReplacements } from '../SetReplacements/setReplacementsInDb.service';
+import { TReplacementData } from '../Types/replacementData.type';
 
 @Injectable()
 export class GetReplacementsWithGroup {
@@ -20,6 +24,8 @@ export class GetReplacementsWithGroup {
     private readonly replacementRepository: IReplacementRepository,
     @Inject(GET_GROUP_WITH_DATA)
     private readonly groupService: IGetGroupWithData,
+    @Inject(SetReplacements)
+    private readonly setReplacements: IInserterReplacementInCache,
     private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}
 
@@ -28,27 +34,32 @@ export class GetReplacementsWithGroup {
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     await ensureGroupExists(this.groupService, { id: replacementsDto.group });
 
-    const lastUpdates: Date = (
-      await this.replacementRepository.getLastReplacementsUpdate()
-    )[0].replacement_date;
+    const currentDate: string = format(new Date(), 'yyyy-MM-dd');
 
-    if (isSameDate(lastUpdates)) {
-      const cacheKey = replacementsDto.group;
-      const cachedReplacements: CreateReplacementDto =
-        await this.cacheService.get(cacheKey);
+    const cacheKey: string = `${replacementsDto.group}|${currentDate}`;
+    const replacementInCache = await this.cacheService.get(cacheKey);
+    console.log(replacementInCache);
 
-      if (cachedReplacements) {
-        return cachedReplacements;
-      }
+    if (isDataNotEmpty(replacementInCache)) {
+      console.debug('Get replace from cache');
+      return replacementInCache;
     }
 
-    const replacements: CreateReplacementDto[] =
+    const replacements: TReplacementData[] =
       await this.replacementRepository.getReplacementWithGroup(
         replacementsDto.group,
       );
 
     if (isDataNotEmpty(replacements[0])) {
-      return replacements[0];
+      if (isSameDate(replacements[0].date)) {
+        console.debug('Set replace in cache');
+        await this.setReplacements.setReplacementInCache(
+          replacements[0].replacement,
+          cacheKey,
+        );
+      }
+
+      return replacements[0].replacement;
     }
 
     return {

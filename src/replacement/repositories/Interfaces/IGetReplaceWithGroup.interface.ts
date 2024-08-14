@@ -1,8 +1,5 @@
-import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { replacementsDate } from 'src/replacement/Types/replacementsDate.type';
+import { TReplacementData } from 'src/replacement/Types/replacementData.type';
 
 export interface IGetReplaceWithGroup {
-  getReplacementWithGroup(group: string): Promise<CreateReplacementDto[]>;
-
-  getLastReplacementsUpdate(): Promise<replacementsDate[]>;
+  getReplacementWithGroup(group: string): Promise<TReplacementData[]>;
 }

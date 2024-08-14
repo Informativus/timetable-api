@@ -1,24 +1,23 @@
-import { CacheService } from 'src/cache/cache.service';
-import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { GroupId } from 'src/group/types/groupId.type';
-import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
-import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import {
   GET_GROUP_WITH_DATA,
   SET_REPLACEMENTS_IN_STORAGE,
 } from 'src/config/constants/constants';
+import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
+import { GroupId } from 'src/group/types/groupId.type';
+import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
+import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
+import { IInserterReplacementInCache } from './IInserterRepalcementInCache.interface';
 
 @Injectable()
-export class SetReplacements {
+export class SetReplacements implements IInserterReplacementInCache {
   constructor(
     @Inject(SET_REPLACEMENTS_IN_STORAGE)
     private readonly replacementRepository: IReplacementRepository,
     @Inject(GET_GROUP_WITH_DATA)
     private readonly groupService: IGetGroupWithData,
-    private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}
 
   @ValidateAndMapDto(GetReplacementDto, CreateReplacementDto)
@@ -28,13 +27,22 @@ export class SetReplacements {
   ): Promise<void> {
     const groupId: GroupId = await this.getGroupId(replacementsDto);
 
-    await this.cacheService.set(replacementsDto.group, replacements);
-
     await this.replacementRepository.setReplacementWithDate(
       groupId,
       replacements,
       replacementsDto.date,
     );
+  }
+
+  async setReplacementInCache(
+    replacement: CreateReplacementDto,
+    key: string,
+  ): Promise<void> {
+    try {
+      await this.replacementRepository.setReplacementInCache(key, replacement);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getGroupId(replacementsDto: GetReplacementDto): Promise<GroupId> {
