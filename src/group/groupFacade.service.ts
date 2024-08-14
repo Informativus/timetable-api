@@ -2,20 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
-import { GetGroups } from './GroupList/groupList.service';
-import { CheckGroupData } from './GroupDataValidator/groupDataValidator.service';
-import { GetGroupWithData } from './GroupDetails/groupDetails.service';
-import { ICheckGroupOnExists } from './Interfaces/ICheckGroupOnExists.interface';
+import { GetGroups } from './AllGroups/getGroups.service';
+import { CheckGroupData } from './CheckGroupData/checkGroupData.service';
+import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
+import { ICheckGroupData } from './Interfaces/ICheckGroupData.interface';
 import { IGetGroupWithData } from './Interfaces/IGetGroupWithData.interface';
 import { ISetGroupInStorage } from './Interfaces/ISetGroupInStorage.interface';
-import { GroupDataStorageService } from './GroupDataStorage/groupDataStorage.service';
+import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
 
 @Injectable()
 export class GroupFacade
-  implements IGetGroupWithData, ISetGroupInStorage, ICheckGroupOnExists
+  implements IGetGroupWithData, ISetGroupInStorage, ICheckGroupData
 {
   constructor(
-    private readonly setGroupInDb: GroupDataStorageService,
+    private readonly setGroupInDb: SetGroupInDbService,
     private readonly getGroupWithData: GetGroupWithData,
     private readonly checkData: CheckGroupData,
     private readonly getGroups: GetGroups,

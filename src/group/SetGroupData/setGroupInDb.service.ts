@@ -2,11 +2,11 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { GROUP_REPOSITORY } from 'src/config/constants/constants';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
-import { CheckGroupData } from '../GroupDataValidator/groupDataValidator.service';
+import { CheckGroupData } from '../CheckGroupData/checkGroupData.service';
 import { IGroupRepository } from '../repository/groupRepository.interface';
 
 @Injectable()
-export class GroupDataStorageService {
+export class SetGroupInDbService {
   constructor(
     @Inject(GROUP_REPOSITORY) private readonly groupRe: IGroupRepository,
     private readonly checkGroupData: CheckGroupData,

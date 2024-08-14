@@ -1,5 +1,5 @@
 import { CacheService } from 'src/cache/cache.service';
-import { ReplacementStorageInserter } from './replacementStorageInserter.service';
+import { SetReplacements } from './setReplacementsInDb.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { ISetReplaceInStorage } from '../repositories/Interfaces/ISetReplaceInStorage.interface';
 import { IGroupService } from 'src/group/groupService.interface';
@@ -9,7 +9,7 @@ import { GroupId } from 'src/group/types/groupId.type';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 
 describe('SetReplacements', () => {
-  let service: ReplacementStorageInserter;
+  let service: SetReplacements;
 
   let mockCacheService: Partial<CacheService<CreateReplacementDto>>;
   let mockReplacementRepository: Partial<ISetReplaceInStorage>;
@@ -30,7 +30,7 @@ describe('SetReplacements', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ReplacementStorageInserter,
+        SetReplacements,
         { provide: CacheService, useValue: mockCacheService },
         {
           provide: 'ISetReplaceInStorage',
@@ -40,7 +40,7 @@ describe('SetReplacements', () => {
       ],
     }).compile();
 
-    service = module.get<ReplacementStorageInserter>(ReplacementStorageInserter);
+    service = module.get<SetReplacements>(SetReplacements);
   });
 
   describe('setReplacement', () => {

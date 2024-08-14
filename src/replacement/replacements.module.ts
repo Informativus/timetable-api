@@ -4,7 +4,7 @@ import { CacheService } from 'src/cache/cache.service';
 import { CacheModule } from 'src/cache/cache.module';
 import { ReplacementsController } from './replacements.controller';
 import { ReplacementsFacade } from './replacementsFacade.service';
-import { ReplacementStorageInserter } from './SetReplacements/replacementStorageInserter.service';
+import { SetReplacements } from './SetReplacements/setReplacementsInDb.service';
 import { GetReplacementsWithGroup } from './ReplacementsWithGroup/getReplacementsWithGroup.service';
 import { GetReplacementsWithDate } from './ReplacementsWithDate/getReplacementsWithDate.service';
 import { GroupModule } from 'src/group/group.module';
@@ -27,7 +27,7 @@ import {
     ReplacementsFacade,
     GetReplacementsWithGroup,
     GetReplacementsWithDate,
-    ReplacementStorageInserter,
+    SetReplacements,
     relationDatabase,
     noRelationDatabase,
     replacementsRepository,

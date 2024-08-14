@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
-import { CheckGroupData } from '../GroupDataValidator/groupDataValidator.service';
+import { CheckGroupData } from '../CheckGroupData/checkGroupData.service';
 import { IGroupRepository } from '../repository/groupRepository.interface';
-import { GroupDataStorageService } from './groupDataStorage.service';
+import { SetGroupInDbService } from './setGroupInDb.service';
 
 describe('SetGroupInDbService', () => {
-  let service: GroupDataStorageService;
+  let service: SetGroupInDbService;
   let mockGroupRepository: Partial<IGroupRepository>;
   let mockCheckGroupData: Partial<CheckGroupData>;
 
@@ -18,13 +18,13 @@ describe('SetGroupInDbService', () => {
     };
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GroupDataStorageService,
+        SetGroupInDbService,
         CheckGroupData,
         { provide: 'IGroupRepository', useValue: mockGroupRepository },
       ],
     }).compile();
 
-    service = module.get<GroupDataStorageService>(GroupDataStorageService);
+    service = module.get<SetGroupInDbService>(SetGroupInDbService);
   });
 
   describe('setGroup', () => {
