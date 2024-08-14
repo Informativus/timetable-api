@@ -1,5 +1,5 @@
 import { GroupDto } from 'src/dto/group/group.dto';
 
-export interface ICheckGroupData {
+export interface ICheckGroupOnExists {
   isExistsGroup(groupData: GroupDto): Promise<boolean>;
 }

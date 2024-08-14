@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetGroups } from './getGroups.service';
+import { GroupList } from './groupList.service';
 import { IGroupRepository } from '../repository/groupRepository.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
 
 describe('GetGroups', () => {
-  let service: GetGroups;
+  let service: GroupList;
   let mockGroupRepository: Partial<IGroupRepository>;
 
   beforeEach(async () => {
@@ -14,12 +14,12 @@ describe('GetGroups', () => {
     };
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GetGroups,
+        GroupList,
         { provide: 'IGroupRepository', useValue: mockGroupRepository },
       ],
     }).compile();
 
-    service = module.get<GetGroups>(GetGroups);
+    service = module.get<GroupList>(GroupList);
   });
 
   describe('getAllGroups', () => {

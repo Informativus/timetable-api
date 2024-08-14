@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GroupController } from './group.controller';
-import { GetGroups } from './AllGroups/getGroups.service';
-import { GetGroupWithData } from './GroupWithData/getGroupWithData.service';
+import { GroupList } from './GroupList/groupList.service';
+import { GroupDetail } from './GroupDetail/groupDetail.service';
 import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
 import { GroupFacade } from './groupFacade.service';
 import { DatabaseModule } from 'src/database/database.module';
@@ -11,16 +11,16 @@ import {
   relationDatabase,
 } from 'src/config/constants/provideConstants';
 import { groupRepository, setGroupInStorage } from './localConstants';
-import { CheckGroupData } from './CheckGroupData/checkGroupData.service';
+import { GroupDataValidator } from './GroupDataValidate/groupDataValidator.service';
 
 @Module({
   imports: [DatabaseModule],
   providers: [
     GroupFacade,
-    GetGroupWithData,
-    GetGroups,
+    GroupDetail,
+    GroupList,
     SetGroupInDbService,
-    CheckGroupData,
+    GroupDataValidator,
     relationDatabase,
     groupRepository,
     getGroupWithData,

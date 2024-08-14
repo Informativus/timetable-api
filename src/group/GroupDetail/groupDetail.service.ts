@@ -6,7 +6,7 @@ import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import { IGroupRepository } from '../repository/groupRepository.interface';
 
 @Injectable()
-export class GetGroupWithData {
+export class GroupDetail {
   constructor(
     @Inject(GROUP_REPOSITORY) private readonly groupRe: IGroupRepository,
   ) {}
