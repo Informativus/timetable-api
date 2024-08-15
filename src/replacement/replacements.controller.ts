@@ -5,10 +5,6 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ReplacementsFacade } from './replacementsFacade.service';
-import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
-import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
-import { SuccessStatusDto } from '../dto/successStatus.dto';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
@@ -20,6 +16,10 @@ import {
   PATH_TO_REPLACEMENTS,
   REPLACEMENTS_API_TAG,
 } from 'src/config/constants/constants';
+import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
+import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
+import { SuccessStatusDto } from '../dto/successStatus.dto';
+import { ReplacementsFacade } from './replacementsFacade.service';
 
 @ApiTags(REPLACEMENTS_API_TAG)
 @Controller()
