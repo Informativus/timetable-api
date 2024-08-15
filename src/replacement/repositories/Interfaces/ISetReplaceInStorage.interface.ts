@@ -1,9 +1,9 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { GroupId } from 'src/group/types/groupId.type';
+import { TGroupId } from 'src/group/types/groupId.type';
 
 export interface ISetReplaceInStorage {
   setReplacementWithDate(
-    group: GroupId,
+    group: TGroupId,
     replacement: CreateReplacementDto,
     date: string,
   ): Promise<void>;

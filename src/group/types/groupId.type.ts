@@ -1,3 +1,3 @@
-export type GroupId = {
+export type TGroupId = {
   group_id: number;
 };

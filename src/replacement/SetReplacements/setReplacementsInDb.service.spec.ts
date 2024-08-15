@@ -5,7 +5,7 @@ import { ISetReplaceInStorage } from '../repositories/Interfaces/ISetReplaceInSt
 import { IGroupService } from 'src/group/groupService.interface';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { GroupId } from 'src/group/types/groupId.type';
+import { TGroupId } from 'src/group/types/groupId.type';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 
 describe('SetReplacements', () => {
@@ -51,7 +51,7 @@ describe('SetReplacements', () => {
         title: 'mock group',
       };
 
-      const mockGroupId: GroupId = {
+      const mockGroupId: TGroupId = {
         group_id: 1,
       };
 

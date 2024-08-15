@@ -4,7 +4,7 @@ import { RELATION_DATABASE } from 'src/config/constants/constants';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { GroupId } from 'src/group/types/groupId.type';
+import { TGroupId } from 'src/group/types/groupId.type';
 import { formatDateToSql } from 'src/utils/date.util';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { IReplacementRepository } from './replacementsRepository.interface';
@@ -60,7 +60,7 @@ export class ReplacementsRepository implements IReplacementRepository {
   }
 
   async setReplacementWithDate(
-    group: GroupId,
+    group: TGroupId,
     replacement: CreateReplacementDto,
     date: string,
   ): Promise<void> {

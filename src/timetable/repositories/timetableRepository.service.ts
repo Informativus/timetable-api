@@ -3,7 +3,7 @@ import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './timetableRepository.interface';
 import { IRelationDatabase } from '../../database/relationDatabase.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
-import { GroupId } from 'src/group/types/groupId.type';
+import { TGroupId } from 'src/group/types/groupId.type';
 import { RELATION_DATABASE } from 'src/config/constants/constants';
 
 export class TimetableRepository implements ITimetableRepository {
@@ -33,7 +33,7 @@ export class TimetableRepository implements ITimetableRepository {
   }
 
   async setTimetable(
-    groupId: GroupId,
+    groupId: TGroupId,
     timetable: CreateTimetableDto,
   ): Promise<void> {
     try {

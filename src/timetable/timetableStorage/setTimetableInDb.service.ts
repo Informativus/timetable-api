@@ -7,7 +7,7 @@ import { ITimetableRepository } from '../repositories/timetableRepository.interf
 import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
-import { GroupId } from 'src/group/types/groupId.type';
+import { TGroupId } from 'src/group/types/groupId.type';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 
 export class SetTimetableInDb {
@@ -23,7 +23,7 @@ export class SetTimetableInDb {
     groupDto: GroupDto,
     timetable: CreateTimetableDto,
   ): Promise<void> {
-    const groupId: GroupId = <GroupId>(
+    const groupId: TGroupId = <TGroupId>(
       await this.groupService.getGroupWithId(groupDto)
     );
 

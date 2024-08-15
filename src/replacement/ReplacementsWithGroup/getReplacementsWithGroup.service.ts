@@ -37,8 +37,8 @@ export class GetReplacementsWithGroup {
     const currentDate: string = format(new Date(), 'yyyy-MM-dd');
 
     const cacheKey: string = `${replacementsDto.group}|${currentDate}`;
-    const replacementInCache = await this.cacheService.get(cacheKey);
-    console.log(replacementInCache);
+    const replacementInCache: CreateReplacementDto =
+      await this.cacheService.get(cacheKey);
 
     if (isDataNotEmpty(replacementInCache)) {
       console.debug('Get replace from cache');

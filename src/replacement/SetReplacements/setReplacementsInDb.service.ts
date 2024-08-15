@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import {
   GET_GROUP_WITH_DATA,
   SET_REPLACEMENTS_IN_STORAGE,
@@ -6,7 +10,7 @@ import {
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
-import { GroupId } from 'src/group/types/groupId.type';
+import { TGroupId } from 'src/group/types/groupId.type';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
 import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
 import { IInserterReplacementInCache } from './IInserterRepalcementInCache.interface';
@@ -25,7 +29,7 @@ export class SetReplacements implements IInserterReplacementInCache {
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    const groupId: GroupId = await this.getGroupId(replacementsDto);
+    const groupId: TGroupId = await this.getGroupId(replacementsDto);
 
     await this.replacementRepository.setReplacementWithDate(
       groupId,
@@ -45,13 +49,15 @@ export class SetReplacements implements IInserterReplacementInCache {
     }
   }
 
-  async getGroupId(replacementsDto: GetReplacementDto): Promise<GroupId> {
+  private async getGroupId(
+    replacementsDto: GetReplacementDto,
+  ): Promise<TGroupId> {
     try {
-      return <GroupId>await this.groupService.getGroupWithId({
+      return (await this.groupService.getGroupWithId({
         id: replacementsDto.group,
-      });
+      })) as TGroupId;
     } catch (error) {
-      throw new Error(error);
+      throw new InternalServerErrorException('Failed to get group');
     }
   }
 }
