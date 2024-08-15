@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GroupList } from './groupList.service';
-import { IGroupRepository } from '../repository/groupRepository.interface';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
+import { IGroupRepository } from '../repository/groupRepository.interface';
+import { GroupList } from './groupList.service';
 
 describe('GetGroups', () => {
   let service: GroupList;

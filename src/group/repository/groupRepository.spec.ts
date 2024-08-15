@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GroupRepository } from './groupRepository.service';
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
-import { GroupDto } from 'src/dto/group/group.dto';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
+import { GroupDto } from 'src/dto/group/group.dto';
+import { GroupRepository } from './groupRepository.service';
 
 describe('GroupRepository', () => {
   let service: GroupRepository;
