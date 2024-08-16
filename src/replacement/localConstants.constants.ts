@@ -3,7 +3,7 @@ import {
   REPLACEMENTS_REPOSITORY,
   SET_REPLACEMENTS_IN_STORAGE,
 } from '../config/constants/constants';
-import { ReplacementsRepository } from './repositories/replacementsRepository.service';
+import { ReplacementsRepository } from './ReplacementsComponent/ReplacementsRepository/replacementsRepository.service';
 
 export const replacementsRepository = {
   provide: REPLACEMENTS_REPOSITORY,

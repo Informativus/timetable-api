@@ -9,9 +9,9 @@ import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 import * as ensureGroupExistsModule from 'src/utils/group.util';
 import * as isTodayDateModule from 'src/utils/isTodayDate.util';
-import { IGetReplaceWithDate } from '../repositories/Interfaces/IGetReplaceWithDate.interface';
-import { IInserterReplacementInCache } from '../SetReplacements/IInserterRepalcementInCache.interface';
-import { SetReplacements } from '../SetReplacements/setReplacementsInDb.service';
+import { IGetReplaceWithDate } from '../ReplacementsRepository/Interfaces/IGetReplaceWithDate.interface';
+import { IInserterReplacementInCache } from '../SetReplacements/InserterReplacementInCache.interface';
+import { ReplacementPersistenceLayer } from '../SetReplacements/replacementPersistenceLayer.service';
 import { TReplacementData } from '../Types/replacementData.type';
 import { ReplacementData } from './replacementData.service';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
@@ -45,7 +45,7 @@ describe('ReplacementData', () => {
       providers: [
         ReplacementData,
         { provide: CacheService, useValue: mockCacheService },
-        { provide: SetReplacements, useValue: mockSetReplacements },
+        { provide: ReplacementPersistenceLayer, useValue: mockSetReplacements },
         {
           provide: GET_REPLACEMENTS_WITH_DATE,
           useValue: mockReplaceRepoWithDate,

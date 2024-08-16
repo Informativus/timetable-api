@@ -1,19 +1,19 @@
 import { CacheService } from 'src/cache/cache.service';
-import { SetReplacements } from './setReplacementsInDb.service';
+import { ReplacementPersistenceLayer } from './replacementPersistenceLayer.service';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { ISetReplaceInStorage } from '../repositories/Interfaces/ISetReplaceInStorage.interface';
-import { IGroupService } from 'src/group/groupService.interface';
+import { ISetReplaceInStorage } from '../ReplacementsRepository/Interfaces/ISetReplaceInStorage.interface';
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { TGroupId } from 'src/group/types/groupId.type';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
+import { IGetGroupWithData } from '../../../group/Interfaces/IGetGroupWithData.interface';
 
-describe('SetReplacements', () => {
-  let service: SetReplacements;
+describe('ReplacementPersistenceLayer', () => {
+  let service: ReplacementPersistenceLayer;
 
   let mockCacheService: Partial<CacheService<CreateReplacementDto>>;
   let mockReplacementRepository: Partial<ISetReplaceInStorage>;
-  let mockGroupService: Partial<IGroupService>;
+  let mockGroupService: Partial<IGetGroupWithData>;
 
   beforeEach(async () => {
     mockCacheService = {
@@ -21,7 +21,7 @@ describe('SetReplacements', () => {
     };
 
     mockReplacementRepository = {
-      setReplacement: jest.fn(),
+      setReplacementWithDate: jest.fn(),
     };
 
     mockGroupService = {
@@ -30,7 +30,7 @@ describe('SetReplacements', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SetReplacements,
+        ReplacementPersistenceLayer,
         { provide: CacheService, useValue: mockCacheService },
         {
           provide: 'ISetReplaceInStorage',
@@ -40,7 +40,9 @@ describe('SetReplacements', () => {
       ],
     }).compile();
 
-    service = module.get<SetReplacements>(SetReplacements);
+    service = module.get<ReplacementPersistenceLayer>(
+      ReplacementPersistenceLayer,
+    );
   });
 
   describe('setReplacement', () => {
@@ -77,7 +79,10 @@ describe('SetReplacements', () => {
         mockGroup,
       );
 
-      await service.setReplacements(mockReplacementDto, mockReplacement);
+      await service.setReplacementsWithDate(
+        mockReplacementDto,
+        mockReplacement,
+      );
 
       expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith({
         id: mockReplacementDto.group,
@@ -89,11 +94,12 @@ describe('SetReplacements', () => {
         mockReplacement,
       );
 
-      expect(mockReplacementRepository.setReplacement).toHaveBeenCalledTimes(1);
-      expect(mockReplacementRepository.setReplacement).toHaveBeenCalledWith(
-        mockGroupId,
-        mockReplacement,
-      );
+      expect(
+        mockReplacementRepository.setReplacementWithDate,
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        mockReplacementRepository.setReplacementWithDate,
+      ).toHaveBeenCalledWith(mockGroupId, mockReplacement);
     });
   });
 });

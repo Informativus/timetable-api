@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UpdateReplacementsListenerController } from './updateReplacementsListener.controller';
 import { UpdateReplacementsListener } from './updateReplacementsListener.service';
 import { GET_GROUP_WITH_DATA, REPLACEMENTS_FACADE } from 'src/config/constants/constants';
-import { ReplacementsFacade } from 'src/replacement/replacementsFacade.service';
+import { ReplacementsFacade } from 'src/replacement/ReplacementsComponent/replacementsFacade.service';
 import { ReplacementsModule } from 'src/replacement/replacements.module';
 import { UpdateReplacementsInStorage } from './ReplacementsUpdater/updateReplacements.service';
 import { GroupModule } from '../group/group.module';

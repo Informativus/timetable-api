@@ -3,15 +3,15 @@ import { DatabaseModule } from 'src/database/database.module';
 import { CacheService } from 'src/cache/cache.service';
 import { CacheModule } from 'src/cache/cache.module';
 import { ReplacementsController } from './replacements.controller';
-import { ReplacementsFacade } from './replacementsFacade.service';
-import { SetReplacements } from './SetReplacements/setReplacementsInDb.service';
-import { ReplacementData } from './ReplacementData/replacementData.service';
+import { ReplacementsFacade } from './ReplacementsComponent/replacementsFacade.service';
+import { ReplacementPersistenceLayer } from './ReplacementsComponent/SetReplacements/replacementPersistenceLayer.service';
+import { ReplacementData } from './ReplacementsComponent/ReplacementData/replacementData.service';
 import { GroupModule } from 'src/group/group.module';
 import {
   getReplacementsWithDate,
   replacementsRepository,
   setReplacementsInStorage,
-} from './localConstants';
+} from './localConstants.constants';
 import {
   getGroupWithData,
   noRelationDatabase,
@@ -24,7 +24,7 @@ import {
   providers: [
     ReplacementsFacade,
     ReplacementData,
-    SetReplacements,
+    ReplacementPersistenceLayer,
     relationDatabase,
     noRelationDatabase,
     replacementsRepository,

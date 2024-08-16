@@ -19,7 +19,7 @@ import {
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
-import { ReplacementsFacade } from './replacementsFacade.service';
+import { ReplacementsFacade } from './ReplacementsComponent/replacementsFacade.service';
 import { formatDateToSql } from 'src/utils/date.util';
 import { format } from 'date-fns';
 

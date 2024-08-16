@@ -11,9 +11,9 @@ import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interf
 import { ensureGroupExists } from 'src/utils/group.util';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import { isTodayDate } from 'src/utils/isTodayDate.util';
-import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
-import { IInserterReplacementInCache } from '../SetReplacements/IInserterRepalcementInCache.interface';
-import { SetReplacements } from '../SetReplacements/setReplacementsInDb.service';
+import { IReplacementRepository } from '../ReplacementsRepository/replacementsRepository.interface';
+import { IInserterReplacementInCache } from '../SetReplacements/InserterReplacementInCache.interface';
+import { ReplacementPersistenceLayer } from '../SetReplacements/replacementPersistenceLayer.service';
 import { TReplacementData } from '../Types/replacementData.type';
 
 export class ReplacementData {
@@ -22,7 +22,7 @@ export class ReplacementData {
     private readonly replacementRepository: IReplacementRepository,
     @Inject(GET_GROUP_WITH_DATA)
     private readonly groupService: IGetGroupWithData,
-    @Inject(SetReplacements)
+    @Inject(ReplacementPersistenceLayer)
     private readonly setReplacements: IInserterReplacementInCache,
     private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}

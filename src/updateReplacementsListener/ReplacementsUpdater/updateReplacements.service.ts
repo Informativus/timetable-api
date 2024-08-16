@@ -4,7 +4,7 @@ import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto'
 import { UpdateReplacementsDto } from 'src/dto/replacement/updateReplacementsListener/updateReplacements.dto';
 import { dataParams } from './Types/dateParam.type';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { IReplacementsFacade } from 'src/replacement/IReplacementsFacade.interface';
+import { IReplacementsFacade } from 'src/replacement/ReplacementsComponent/IReplacementsFacade.interface';
 import {
   GET_GROUP_WITH_DATA,
   REPLACEMENTS_FACADE,

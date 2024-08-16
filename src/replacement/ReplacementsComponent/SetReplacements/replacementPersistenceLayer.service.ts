@@ -12,11 +12,13 @@ import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
 import { TGroupId } from 'src/group/types/groupId.type';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
-import { IReplacementRepository } from '../repositories/replacementsRepository.interface';
-import { IInserterReplacementInCache } from './IInserterRepalcementInCache.interface';
+import { IReplacementRepository } from '../ReplacementsRepository/replacementsRepository.interface';
+import { IInserterReplacementInCache } from './InserterReplacementInCache.interface';
 
 @Injectable()
-export class SetReplacements implements IInserterReplacementInCache {
+export class ReplacementPersistenceLayer
+  implements IInserterReplacementInCache
+{
   constructor(
     @Inject(SET_REPLACEMENTS_IN_STORAGE)
     private readonly replacementRepository: IReplacementRepository,

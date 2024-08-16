@@ -3,14 +3,14 @@ import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 import { IReplacementsFacade } from './IReplacementsFacade.interface';
 import { ReplacementData } from './ReplacementData/replacementData.service';
-import { SetReplacements } from './SetReplacements/setReplacementsInDb.service';
+import { ReplacementPersistenceLayer } from './SetReplacements/replacementPersistenceLayer.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ReplacementsFacade implements IReplacementsFacade {
   constructor(
     private readonly getReplacementsDate: ReplacementData,
-    private readonly setReplacementsInDatabase: SetReplacements,
+    private readonly setReplacementsInDatabase: ReplacementPersistenceLayer,
   ) {}
   async getReplacementsWithDate(
     replacementsDto: GetReplacementDto,
