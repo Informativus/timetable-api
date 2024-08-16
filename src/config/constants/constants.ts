@@ -28,7 +28,6 @@ export const PATH_TO_REPLACEMENTS = 'replacements';
 
 export const REPLACEMENTS_REPOSITORY = 'IReplacementRepository';
 export const REPLACEMENTS_FACADE = 'IReplacementFacade';
-export const GET_REPLACEMENTS_WITH_GROUP = 'IGetReplaceWithGroup';
 export const GET_REPLACEMENTS_WITH_DATE = 'IGetReplaceWithDate';
 export const SET_REPLACEMENTS_IN_STORAGE = 'ISetReplaceInStorage';
 
