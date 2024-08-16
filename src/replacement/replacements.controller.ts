@@ -20,6 +20,8 @@ import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
 import { ReplacementsFacade } from './replacementsFacade.service';
+import { formatDateToSql } from 'src/utils/date.util';
+import { format } from 'date-fns';
 
 @ApiTags(REPLACEMENTS_API_TAG)
 @Controller()
@@ -45,13 +47,15 @@ export class ReplacementsController {
     @Query() replacementsDto: GetReplacementDto,
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     if (replacementsDto.date) {
+      replacementsDto.date = formatDateToSql(replacementsDto.date);
+      return await this.replacementService.getReplacementsWithDate(
+        replacementsDto,
+      );
+    } else {
+      replacementsDto.date = format(new Date(), 'yyyy-MM-dd');
       return await this.replacementService.getReplacementsWithDate(
         replacementsDto,
       );
     }
-
-    return await this.replacementService.getReplacementsWithGroup(
-      replacementsDto,
-    );
   }
 }

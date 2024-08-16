@@ -5,10 +5,9 @@ import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { TGroupId } from 'src/group/types/groupId.type';
-import { formatDateToSql } from 'src/utils/date.util';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
-import { IReplacementRepository } from './replacementsRepository.interface';
 import { TReplacementData } from '../Types/replacementData.type';
+import { IReplacementRepository } from './replacementsRepository.interface';
 
 export class ReplacementsRepository implements IReplacementRepository {
   constructor(
@@ -43,7 +42,7 @@ export class ReplacementsRepository implements IReplacementRepository {
     try {
       const result = await this.relationDatabase.sendQuery({
         text: 'SELECT replacement FROM data_on_year WHERE date = $1 AND id = $2 LIMIT 1',
-        values: [formatDateToSql(replacementDto.date), replacementDto.group],
+        values: [replacementDto.date, replacementDto.group],
       });
 
       const replacement = result.map(
