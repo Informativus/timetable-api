@@ -1,8 +1,8 @@
-import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
+import { TReplacementData } from 'src/replacement/Types/replacementData.type';
 
 export interface IGetReplaceWithDate {
   getReplacementWithDate(
     replacementDto: GetReplacementDto,
-  ): Promise<CreateReplacementDto[]>;
+  ): Promise<TReplacementData[]>;
 }

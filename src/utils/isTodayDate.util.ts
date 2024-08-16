@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-export function isSameDate(date1: Date): boolean {
+export function isTodayDate(date1: Date): boolean {
   try {
     const today: Date = new Date();
 

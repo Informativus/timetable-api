@@ -4,7 +4,7 @@ import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto'
 import { UpdateReplacementsDto } from 'src/dto/replacement/updateReplacementsListener/updateReplacements.dto';
 import { dataParams } from './Types/dateParam.type';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { IReplecementsFacade } from 'src/replacement/IReplacementsFacade.interface';
+import { IReplacementsFacade } from 'src/replacement/IReplacementsFacade.interface';
 import {
   GET_GROUP_WITH_DATA,
   REPLACEMENTS_FACADE,
@@ -17,7 +17,7 @@ import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interf
 export class UpdateReplacementsInStorage {
   constructor(
     @Inject(REPLACEMENTS_FACADE)
-    private readonly replacementsFacade: IReplecementsFacade,
+    private readonly replacementsFacade: IReplacementsFacade,
     @Inject(GET_GROUP_WITH_DATA)
     private readonly getGroupWithData: IGetGroupWithData,
   ) {}

@@ -5,7 +5,6 @@ import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { TGroupId } from 'src/group/types/groupId.type';
-import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { TReplacementData } from '../Types/replacementData.type';
 import { IReplacementRepository } from './replacementsRepository.interface';
 
@@ -15,13 +14,13 @@ export class ReplacementsRepository implements IReplacementRepository {
     private readonly relationDatabase: IRelationDatabase,
     private readonly cacheService: CacheService<CreateReplacementDto>,
   ) {}
-  async getReplacementWithGroup(
-    groupTextId: string,
+  async getReplacementWithDate(
+    replacementDto: GetReplacementDto,
   ): Promise<TReplacementData[]> {
     try {
       const result = await this.relationDatabase.sendQuery({
-        text: 'SELECT replacement, date FROM data_on_year WHERE id = $1 AND date = current_date',
-        values: [groupTextId],
+        text: 'SELECT replacement, date FROM data_on_year WHERE date = $1 AND id = $2 LIMIT 1',
+        values: [replacementDto.date, replacementDto.group],
       });
 
       return result.map(
@@ -30,26 +29,6 @@ export class ReplacementsRepository implements IReplacementRepository {
           replacement: data.replacement,
         }),
       );
-    } catch (error) {
-      console.error('Error getting replacement: ', error);
-      throw new InternalServerErrorException('Failed to get replacement');
-    }
-  }
-
-  async getReplacementWithDate(
-    replacementDto: GetReplacementDto,
-  ): Promise<CreateReplacementDto[]> {
-    try {
-      const result = await this.relationDatabase.sendQuery({
-        text: 'SELECT replacement FROM data_on_year WHERE date = $1 AND id = $2 LIMIT 1',
-        values: [replacementDto.date, replacementDto.group],
-      });
-
-      const replacement = result.map(
-        (data: { replacement: CreateReplacementDto }) => data.replacement,
-      );
-
-      return validateAndMapDto(replacement, CreateReplacementDto);
     } catch (error) {
       console.error('Error getting replacement with date: ', error);
       throw new InternalServerErrorException(

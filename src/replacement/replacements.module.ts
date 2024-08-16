@@ -5,12 +5,10 @@ import { CacheModule } from 'src/cache/cache.module';
 import { ReplacementsController } from './replacements.controller';
 import { ReplacementsFacade } from './replacementsFacade.service';
 import { SetReplacements } from './SetReplacements/setReplacementsInDb.service';
-import { GetReplacementsWithGroup } from './ReplacementsWithGroup/getReplacementsWithGroup.service';
-import { GetReplacementsWithDate } from './ReplacementsWithDate/getReplacementsWithDate.service';
+import { ReplacementData } from './ReplacementData/replacementData.service';
 import { GroupModule } from 'src/group/group.module';
 import {
   getReplacementsWithDate,
-  getReplacementsWithGroup,
   replacementsRepository,
   setReplacementsInStorage,
 } from './localConstants';
@@ -25,13 +23,11 @@ import {
   controllers: [ReplacementsController],
   providers: [
     ReplacementsFacade,
-    GetReplacementsWithGroup,
-    GetReplacementsWithDate,
+    ReplacementData,
     SetReplacements,
     relationDatabase,
     noRelationDatabase,
     replacementsRepository,
-    getReplacementsWithGroup,
     getReplacementsWithDate,
     setReplacementsInStorage,
     getGroupWithData,
