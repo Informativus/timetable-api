@@ -1,18 +1,18 @@
 import { Inject } from '@nestjs/common';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { UpdateReplacementsDto } from 'src/dto/replacement/updateReplacementsListener/updateReplacements.dto';
-import { dataParams } from './Types/dateParam.type';
-import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
-import { IReplacementsFacade } from 'src/replacement/ReplacementsComponent/IReplacementsFacade.interface';
 import {
   GET_GROUP_WITH_DATA,
   REPLACEMENTS_FACADE,
 } from 'src/config/constants/constants';
+import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
+import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { ReplacementDto } from 'src/dto/replacement/replacement.dto';
 import { ReplacementsInfoDto } from 'src/dto/replacement/updateReplacementsListener/replacementsInfo.dto';
-import { getTranslatedWord } from 'src/utils/wordTranslator.util';
+import { UpdateReplacementsDto } from 'src/dto/replacement/updateReplacementsListener/updateReplacements.dto';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
+import { IReplacementsFacade } from 'src/replacement/ReplacementsComponent/IReplacementsFacade.interface';
+import { getTranslatedWord } from 'src/utils/wordTranslator.util';
+import { TDataParams } from './Types/dateParam.type';
 
 export class UpdateReplacementsInStorage {
   constructor(
@@ -78,7 +78,7 @@ export class UpdateReplacementsInStorage {
     return subgroup === '1 группа' ? '_1' : '_2';
   }
 
-  getDate(date: dataParams): string {
+  getDate(date: TDataParams): string {
     return `${date.year}-${date.month}-${date.day}`;
   }
 

@@ -3,7 +3,6 @@ import { PostgresDatabaseService } from '../../database/postgres-database/postgr
 import { RedisDatabaseService } from '../../database/redis-database/redis-database.service';
 import { GroupFacade } from '../../group/groupFacade.service';
 import {
-  CHECK_GROUP_DATA,
   GET_GROUP_WITH_DATA,
   NO_RELATION_DATABASE,
   RELATION_DATABASE,
@@ -25,12 +24,7 @@ export const getGroupWithData = {
   useExisting: GroupFacade,
 };
 
-export const checkGroupData = {
-  provide: CHECK_GROUP_DATA,
-  useClass: GroupFacade,
-};
-
 export const replacementFacade = {
   provide: REPLACEMENTS_FACADE,
-  useClass: ReplacementsFacade,
+  useExisting: ReplacementsFacade,
 };

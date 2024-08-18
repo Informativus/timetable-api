@@ -1,4 +1,4 @@
-export type dataParams = {
+export type TDataParams = {
   year: string;
   month: string;
   day: string;

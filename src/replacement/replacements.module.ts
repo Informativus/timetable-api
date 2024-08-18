@@ -7,10 +7,10 @@ import {
   getGroupWithData,
   noRelationDatabase,
   relationDatabase,
-  replacementFacade,
 } from '../config/constants/provideConstants';
 import {
   getReplacementsWithDate,
+  replacementFacade,
   replacementsRepository,
   setReplacementsInStorage,
 } from './localConstants.constants';

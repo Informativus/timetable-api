@@ -6,11 +6,14 @@ import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
 import { GroupFacade } from './groupFacade.service';
 import { DatabaseModule } from 'src/database/database.module';
 import {
-  checkGroupData,
   getGroupWithData,
   relationDatabase,
 } from 'src/config/constants/provideConstants';
-import { groupRepository, setGroupInStorage } from './localConstants';
+import {
+  checkGroupData,
+  groupRepository,
+  setGroupInStorage,
+} from './localConstants';
 import { GroupDataValidator } from './GroupDataValidate/groupDataValidator.service';
 
 @Module({
