@@ -13,7 +13,7 @@ import {
   REPLACEMENTS_PACKAGE,
   TIMETABLE_PACKAGE,
 } from './config/constants/constants';
-import { UpdateReplacementsListenerModule } from './updateReplacementsListener/UpdateReplacementsListener.module';
+import { UpdateReplacementsListenerModule } from './updateReplacementsListener/updateReplacementsListener.module';
 import { UpdateTimetableListenerModule } from './updateTimetableListener/updateTimetableListener.module';
 
 @Module({

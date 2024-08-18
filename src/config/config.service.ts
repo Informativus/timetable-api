@@ -1,4 +1,4 @@
-import { Injectable, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { IConfigService } from './config.interface';
 import { config, DotenvParseOutput } from 'dotenv';
 import { ConfigDto } from '../dto/config.dto';
@@ -18,7 +18,6 @@ export class ConfigService implements IConfigService {
     this.config = parsed;
   }
 
-  @UsePipes(new ValidationPipe())
   get(key: ConfigDto): string {
     const res = this.config[key.property];
 
