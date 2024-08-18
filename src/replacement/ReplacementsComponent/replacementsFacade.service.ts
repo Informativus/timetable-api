@@ -3,7 +3,7 @@ import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 import { IReplacementsFacade } from './IReplacementsFacade.interface';
 import { ReplacementData } from './ReplacementData/replacementData.service';
-import { ReplacementPersistenceLayer } from './SetReplacements/replacementPersistenceLayer.service';
+import { ReplacementPersistenceLayer } from './ReplacementPersistence/replacementPersistenceLayer.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

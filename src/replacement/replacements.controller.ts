@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Inject,
   Query,
   UsePipes,
   ValidationPipe,
@@ -12,21 +13,25 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
+import { format } from 'date-fns';
 import {
   PATH_TO_REPLACEMENTS,
   REPLACEMENTS_API_TAG,
+  REPLACEMENTS_FACADE,
 } from 'src/config/constants/constants';
+import { formatDateToSql } from 'src/utils/date.util';
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
-import { ReplacementsFacade } from './ReplacementsComponent/replacementsFacade.service';
-import { formatDateToSql } from 'src/utils/date.util';
-import { format } from 'date-fns';
+import { IReplacementsFacade } from './ReplacementsComponent/IReplacementsFacade.interface';
 
 @ApiTags(REPLACEMENTS_API_TAG)
 @Controller()
 export class ReplacementsController {
-  constructor(private readonly replacementService: ReplacementsFacade) {}
+  constructor(
+    @Inject(REPLACEMENTS_FACADE)
+    private readonly replacementService: IReplacementsFacade,
+  ) {}
 
   @Get(PATH_TO_REPLACEMENTS)
   @ApiOperation({ summary: 'give replacements' })

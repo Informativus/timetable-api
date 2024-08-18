@@ -12,8 +12,8 @@ import { ensureGroupExists } from 'src/utils/group.util';
 import { isDataNotEmpty } from 'src/utils/isDataNotEmpty.util';
 import { isTodayDate } from 'src/utils/isTodayDate.util';
 import { IReplacementRepository } from '../ReplacementsRepository/replacementsRepository.interface';
-import { IInserterReplacementInCache } from '../SetReplacements/InserterReplacementInCache.interface';
-import { ReplacementPersistenceLayer } from '../SetReplacements/replacementPersistenceLayer.service';
+import { IInserterReplacementInCache } from '../ReplacementPersistence/InserterReplacementInCache.interface';
+import { ReplacementPersistenceLayer } from '../ReplacementPersistence/replacementPersistenceLayer.service';
 import { TReplacementData } from '../Types/replacementData.type';
 
 export class ReplacementData {

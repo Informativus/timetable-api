@@ -10,8 +10,8 @@ import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interf
 import * as ensureGroupExistsModule from 'src/utils/group.util';
 import * as isTodayDateModule from 'src/utils/isTodayDate.util';
 import { IGetReplaceWithDate } from '../ReplacementsRepository/Interfaces/IGetReplaceWithDate.interface';
-import { IInserterReplacementInCache } from '../SetReplacements/InserterReplacementInCache.interface';
-import { ReplacementPersistenceLayer } from '../SetReplacements/replacementPersistenceLayer.service';
+import { IInserterReplacementInCache } from '../ReplacementPersistence/InserterReplacementInCache.interface';
+import { ReplacementPersistenceLayer } from '../ReplacementPersistence/replacementPersistenceLayer.service';
 import { TReplacementData } from '../Types/replacementData.type';
 import { ReplacementData } from './replacementData.service';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';

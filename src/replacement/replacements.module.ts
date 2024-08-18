@@ -1,22 +1,23 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from 'src/database/database.module';
-import { CacheService } from 'src/cache/cache.service';
 import { CacheModule } from 'src/cache/cache.module';
-import { ReplacementsController } from './replacements.controller';
-import { ReplacementsFacade } from './ReplacementsComponent/replacementsFacade.service';
-import { ReplacementPersistenceLayer } from './ReplacementsComponent/SetReplacements/replacementPersistenceLayer.service';
-import { ReplacementData } from './ReplacementsComponent/ReplacementData/replacementData.service';
+import { CacheService } from 'src/cache/cache.service';
+import { DatabaseModule } from 'src/database/database.module';
 import { GroupModule } from 'src/group/group.module';
+import {
+  getGroupWithData,
+  noRelationDatabase,
+  relationDatabase,
+  replacementFacade,
+} from '../config/constants/provideConstants';
 import {
   getReplacementsWithDate,
   replacementsRepository,
   setReplacementsInStorage,
 } from './localConstants.constants';
-import {
-  getGroupWithData,
-  noRelationDatabase,
-  relationDatabase,
-} from '../config/constants/provideConstants';
+import { ReplacementsController } from './replacements.controller';
+import { ReplacementData } from './ReplacementsComponent/ReplacementData/replacementData.service';
+import { ReplacementPersistenceLayer } from './ReplacementsComponent/ReplacementPersistence/replacementPersistenceLayer.service';
+import { ReplacementsFacade } from './ReplacementsComponent/replacementsFacade.service';
 
 @Module({
   imports: [GroupModule, CacheModule, DatabaseModule],
@@ -25,13 +26,14 @@ import {
     ReplacementsFacade,
     ReplacementData,
     ReplacementPersistenceLayer,
+    CacheService,
     relationDatabase,
     noRelationDatabase,
     replacementsRepository,
     getReplacementsWithDate,
     setReplacementsInStorage,
     getGroupWithData,
-    CacheService,
+    replacementFacade,
   ],
   exports: [ReplacementsFacade],
 })
