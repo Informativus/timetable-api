@@ -23,16 +23,16 @@ export class UpdateReplacementsInStorage {
   ) {}
 
   async updateReplacements(
-    replacementsDto: UpdateReplacementsDto,
+    updateReplacementsDto: UpdateReplacementsDto,
   ): Promise<Empty> {
     const date: string = this.getDate({
-      year: replacementsDto.date.year,
-      month: replacementsDto.date.month,
-      day: replacementsDto.date.day,
+      year: updateReplacementsDto.date.year,
+      month: updateReplacementsDto.date.month,
+      day: updateReplacementsDto.date.day,
     });
 
     const cacheFormsData: Set<string> = new Set();
-    for (const item of replacementsDto.date.subst) {
+    for (const item of updateReplacementsDto.date.subst) {
       if (cacheFormsData.has(item.forms)) {
         continue;
       }
@@ -53,7 +53,7 @@ export class UpdateReplacementsInStorage {
       const createReplacements: CreateReplacementDto = {
         success: true,
         replacements: this.getReplacementsArray(
-          replacementsDto.date.subst,
+          updateReplacementsDto.date.subst,
           item.forms,
         ),
       };
@@ -67,6 +67,10 @@ export class UpdateReplacementsInStorage {
     return new Empty();
   }
 
+  getDate(date: TDataParams): string {
+    return `${date.year}-${date.month}-${date.day}`;
+  }
+
   getTranslatedGroup(subgroup: string, replacementsInfo: ReplacementsInfoDto) {
     const translatedGroup: string = getTranslatedWord(replacementsInfo.forms);
     return subgroup === 'Весь класс'
@@ -78,15 +82,11 @@ export class UpdateReplacementsInStorage {
     return subgroup === '1 группа' ? '_1' : '_2';
   }
 
-  getDate(date: TDataParams): string {
-    return `${date.year}-${date.month}-${date.day}`;
-  }
-
   getReplacementsArray(
-    replacementsDto: ReplacementsInfoDto[],
+    replacementsInfoDto: ReplacementsInfoDto[],
     group: string,
   ): ReplacementDto[] {
-    return replacementsDto
+    return replacementsInfoDto
       .filter((item) => item.forms === group)
       .map((item) => ({
         index: Number(item.lesson),
