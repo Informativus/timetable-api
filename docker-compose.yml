@@ -24,7 +24,7 @@ services:
       - timetable
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init:/docker-entrypoint-initdb.d
+      - ./scheme.sql:/docker-entrypoint-initdb.d/scheme.sql
 
   redis:
     image: redis
