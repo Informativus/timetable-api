@@ -1,5 +1,16 @@
 services:
-  db:
+  timetable:
+    image: timetable-api
+    container_name: timetable
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - timetable
+
+  postgres:
     image: postgres:14.12
     restart: always
     container_name: postgres-server
@@ -9,17 +20,27 @@ services:
       POSTGRES_DB: timetable
     ports:
       - '5433:5432'
+    networks:
+      - timetable
     volumes:
-      - db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
 
   redis:
     image: redis
     container_name: redis-server
     ports:
       - "6380:6379"
+    networks:
+      - timetable
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
 
+networks:
+  timetable:
+    name: timetable
+    driver: bridge
+
 volumes:
-  db:
+  postgres_data:
