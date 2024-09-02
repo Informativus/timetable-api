@@ -51,3 +51,6 @@ export const NO_RELATION_DATABASE = 'INoRelationDatabase';
 
 export const REPLACEMENTS_PACKAGE = 'REPLACEMENTS_PACKAGE';
 export const TIMETABLE_PACKAGE = 'TIMETABLE_PACKAGE';
+
+// Hashing constants
+export const HASHING_SERVICE = 'IHashing';

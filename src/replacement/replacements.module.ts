@@ -5,7 +5,6 @@ import { DatabaseModule } from 'src/database/database.module';
 import { GroupModule } from 'src/group/group.module';
 import {
   getGroupWithData,
-  noRelationDatabase,
   relationDatabase,
 } from '../config/constants/provideConstants';
 import {
@@ -26,9 +25,7 @@ import { ReplacementsFacade } from './ReplacementsComponent/replacementsFacade.s
     ReplacementsFacade,
     ReplacementData,
     ReplacementPersistenceLayer,
-    CacheService,
     relationDatabase,
-    noRelationDatabase,
     replacementsRepository,
     getReplacementsWithDate,
     setReplacementsInStorage,

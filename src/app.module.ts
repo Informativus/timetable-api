@@ -15,6 +15,7 @@ import {
 } from './config/constants/constants';
 import { UpdateReplacementsListenerModule } from './updateReplacementsListener/updateReplacementsListener.module';
 import { UpdateTimetableListenerModule } from './updateTimetableListener/updateTimetableListener.module';
+import { HashingModule } from './hashing/hashing.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UpdateTimetableListenerModule } from './updateTimetableListener/updateT
         ...timetableGRPCOptions,
       },
     ]),
+    HashingModule,
   ],
   controllers: [AppController],
 })
