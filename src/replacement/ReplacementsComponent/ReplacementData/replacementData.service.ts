@@ -32,7 +32,11 @@ export class ReplacementData {
   ): Promise<CreateReplacementDto | SuccessStatusDto> {
     await ensureGroupExists(this.groupService, { id: replacementsDto.group });
 
-    const cacheKey: string = `${replacementsDto.group}|${replacementsDto.date}`;
+    const cacheKey: string = this.createCacheKey(
+      replacementsDto.group,
+      replacementsDto.date,
+    );
+
     const replacementInCache: CreateReplacementDto =
       await this.cacheService.get(cacheKey);
 
@@ -59,5 +63,9 @@ export class ReplacementData {
     return {
       success: false,
     };
+  }
+
+  private createCacheKey(group: string, date: string): string {
+    return `${group}|${date}`;
   }
 }
