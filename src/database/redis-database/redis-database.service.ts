@@ -19,7 +19,7 @@ export class RedisDatabaseService implements INoRelationDatabase {
   async set(key: string, value: any): Promise<void> {
     console.log(`Inserted key: ${key}, inserted value: ${value}`);
     try {
-      await this.redis.set(key, value, 'EX', 86400);
+      await this.redis.set(key, value, 'EX', 43200);
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Redis method set returned error');
