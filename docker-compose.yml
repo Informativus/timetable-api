@@ -1,6 +1,6 @@
 services:
   timetable:
-    image: timetable-api
+    image: timetable-api:1.1
     container_name: timetable
     ports:
       - "8080:8080"
