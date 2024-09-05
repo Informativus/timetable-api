@@ -23,7 +23,7 @@ import { formatDateToSql } from 'src/utils/date.util';
 import { CreateReplacementDto } from '../dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from '../dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from '../dto/successStatus.dto';
-import { IReplacementsFacade } from './ReplacementsComponent/IReplacementsFacade.interface';
+import { IReplacementsFacade } from './Interfaces/IReplacementsFacade.interface';
 
 @ApiTags(REPLACEMENTS_API_TAG)
 @Controller()

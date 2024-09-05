@@ -14,7 +14,7 @@ import { isTodayDate } from 'src/utils/isTodayDate.util';
 import { IReplacementRepository } from '../ReplacementsRepository/replacementsRepository.interface';
 import { IInserterReplacementInCache } from '../ReplacementPersistence/InserterReplacementInCache.interface';
 import { ReplacementPersistenceLayer } from '../ReplacementPersistence/replacementPersistenceLayer.service';
-import { TReplacementData } from '../Types/replacementData.type';
+import { TReplacementData } from '../../Types/replacementData.type';
 
 export class ReplacementData {
   constructor(

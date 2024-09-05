@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { GetTimetableWithData } from './timetableData/getTimetableWithData.service';
+import { GetTimetableWithData } from './TimetableComponent/timetableData/getTimetableWithData.service';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
-import { SetTimetableInDb } from './timetableStorage/setTimetableInDb.service';
+import { SetTimetableInDb } from './TimetableComponent/timetableStorage/setTimetableInDb.service';
 import { ISetTimetableInStorage } from './Interfaces/ISetTimetableInStorage.intervace';
 
 @Injectable()

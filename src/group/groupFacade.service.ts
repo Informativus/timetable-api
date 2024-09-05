@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { GroupDto } from 'src/dto/group/group.dto';
 import { InfoAllGroupDto } from 'src/dto/group/infoAllGroup.dto';
-import { GroupList } from './GroupList/groupList.service';
-import { GroupDataValidator } from './GroupDataValidate/groupDataValidator.service';
-import { GroupDetail } from './GroupDetail/groupDetail.service';
+import { GroupList } from './GroupComponent/GroupList/groupList.service';
+import { GroupDataValidator } from './GroupComponent/GroupDataValidate/groupDataValidator.service';
+import { GroupDetail } from './GroupComponent/GroupDetail/groupDetail.service';
 import { ICheckGroupOnExists } from './Interfaces/ICheckGroupOnExists.interface';
 import { IGetGroupWithData } from './Interfaces/IGetGroupWithData.interface';
 import { ISetGroupInStorage } from './Interfaces/ISetGroupInStorage.interface';
-import { SetGroupInDbService } from './SetGroupData/setGroupInDb.service';
+import { SetGroupInDbService } from './GroupComponent/SetGroupData/setGroupInDb.service';
 
 @Injectable()
 export class GroupFacade

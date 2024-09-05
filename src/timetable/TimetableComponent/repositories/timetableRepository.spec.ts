@@ -1,7 +1,7 @@
 import { IRelationDatabase } from 'src/database/relationDatabase.interface';
 import { TimetableRepository } from './timetableRepository.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { validateAndMapDto } from '../../utils/validateAndMapDto.util';
+import { validateAndMapDto } from '../../../utils/validateAndMapDto.util';
 import { CreateTimetableDto } from 'src/dto/timetable/CreateTimetable.dto';
 
 jest.mock('src/utils/validateAndMapDto.util');

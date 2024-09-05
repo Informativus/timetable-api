@@ -12,7 +12,7 @@ import * as isTodayDateModule from 'src/utils/isTodayDate.util';
 import { IGetReplaceWithDate } from '../ReplacementsRepository/Interfaces/IGetReplaceWithDate.interface';
 import { IInserterReplacementInCache } from '../ReplacementPersistence/InserterReplacementInCache.interface';
 import { ReplacementPersistenceLayer } from '../ReplacementPersistence/replacementPersistenceLayer.service';
-import { TReplacementData } from '../Types/replacementData.type';
+import { TReplacementData } from '../../Types/replacementData.type';
 import { ReplacementData } from './replacementData.service';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
 

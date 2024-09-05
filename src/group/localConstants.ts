@@ -4,7 +4,7 @@ import {
   SET_GROUP_IN_STORAGE,
 } from '../config/constants/constants';
 import { GroupFacade } from './groupFacade.service';
-import { GroupRepository } from './repository/groupRepository.service';
+import { GroupRepository } from './GroupComponent/repository/groupRepository.service';
 
 export const groupRepository = {
   provide: GROUP_REPOSITORY,
