@@ -4,7 +4,7 @@ import { IsValidArrayDto } from '../../validators/isValidArrayDto.validator';
 import { ReplacementDto } from './replacement.dto';
 
 export class CreateReplacementDto {
-  @ApiProperty({ example: false })
+  @ApiProperty({ example: true, type: Boolean })
   @IsNotEmpty()
   @IsBoolean()
   success: boolean;

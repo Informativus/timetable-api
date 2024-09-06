@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -14,6 +15,7 @@ import { TGroupId } from 'src/group/types/groupId.type';
 import { ValidateAndMapDto } from 'src/validators/validateAndMapHttpDecorator.validator';
 import { IReplacementRepository } from '../ReplacementsRepository/replacementsRepository.interface';
 import { IInserterReplacementInCache } from './InserterReplacementInCache.interface';
+import { ValidateDto } from 'src/validators/ValidateDto.validator';
 
 @Injectable()
 export class ReplacementPersistenceLayer
@@ -31,23 +33,31 @@ export class ReplacementPersistenceLayer
     replacementsDto: GetReplacementDto,
     replacements: CreateReplacementDto,
   ): Promise<void> {
-    const groupId: TGroupId = await this.getGroupId(replacementsDto);
+    try {
+      const groupId: TGroupId = await this.getGroupId(replacementsDto);
 
-    await this.replacementRepository.setReplacementWithDate(
-      groupId,
-      replacements,
-      replacementsDto.date,
-    );
+      await this.replacementRepository.setReplacementWithDate(
+        groupId,
+        replacements,
+        replacementsDto.date,
+      );
+    } catch (error) {
+      console.log(error);
+      this.handleError(error);
+    }
   }
 
   async setReplacementInCache(
-    replacement: CreateReplacementDto,
+    @ValidateDto(CreateReplacementDto) replacement: CreateReplacementDto,
     key: string,
   ): Promise<void> {
     try {
       await this.replacementRepository.setReplacementInCache(key, replacement);
     } catch (error) {
       console.log(error);
+      throw new InternalServerErrorException(
+        'Failed to set replacement in cache',
+      );
     }
   }
 
@@ -59,7 +69,20 @@ export class ReplacementPersistenceLayer
         id: replacementsDto.group,
       })) as TGroupId;
     } catch (error) {
-      throw new InternalServerErrorException('Failed to get group');
+      console.log(error);
+      throw new BadRequestException('Failed to get group');
+    }
+  }
+
+  private handleError(error: any): void {
+    // Here you can handle or log different types of errors if needed
+    if (
+      error instanceof BadRequestException ||
+      error instanceof InternalServerErrorException
+    ) {
+      throw error;
+    } else {
+      throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 }

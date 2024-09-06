@@ -62,7 +62,7 @@ export class WeekCreator {
     repeatIds: repeatIds,
   ) {
     const mon: number[] = this.getDayArray(
-      '10000',
+      '100000',
       6,
       validCardsArray,
       lessonsValidIds,
@@ -70,34 +70,40 @@ export class WeekCreator {
     );
 
     const tue: number[] = this.getDayArray(
-      '01000',
+      '010000',
       6,
       validCardsArray,
       lessonsValidIds,
       repeatIds,
     );
     const wed: number[] = this.getDayArray(
-      '00100',
+      '001000',
       6,
       validCardsArray,
       lessonsValidIds,
       repeatIds,
     );
     const thu: number[] = this.getDayArray(
-      '00010',
+      '000100',
       6,
       validCardsArray,
       lessonsValidIds,
       repeatIds,
     );
     const fri: number[] = this.getDayArray(
-      '00001',
+      '000010',
       6,
       validCardsArray,
       lessonsValidIds,
       repeatIds,
     );
-    const sat: number[] = new Array(6).fill(0);
+    const sat: number[] = this.getDayArray(
+      '000001',
+      6,
+      validCardsArray,
+      lessonsValidIds,
+      repeatIds,
+    );
     const sun: number[] = new Array(6).fill(0);
 
     return [mon, tue, wed, thu, fri, sat, sun];

@@ -5,6 +5,6 @@ COPY package.json package-lock.json ./
 
 RUN npm install --production
 COPY dist ./dist
-COPY .env .
+COPY .env.dev .env
 
 ENTRYPOINT ["npm", "run", "start:prod"]

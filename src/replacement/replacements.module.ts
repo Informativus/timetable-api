@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { CacheModule } from 'src/cache/cache.module';
-import { CacheService } from 'src/cache/cache.service';
 import { DatabaseModule } from 'src/database/database.module';
 import { GroupModule } from 'src/group/group.module';
 import {

@@ -1,7 +1,7 @@
 import { Inject, InternalServerErrorException } from '@nestjs/common';
-import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
+import { CreateTimetableDto } from '../../../dto/timetable/CreateTimetable.dto';
 import { ITimetableRepository } from './timetableRepository.interface';
-import { IRelationDatabase } from '../../database/relationDatabase.interface';
+import { IRelationDatabase } from '../../../database/relationDatabase.interface';
 import { validateAndMapDto } from 'src/utils/validateAndMapDto.util';
 import { TGroupId } from 'src/group/types/groupId.type';
 import { RELATION_DATABASE } from 'src/config/constants/constants';

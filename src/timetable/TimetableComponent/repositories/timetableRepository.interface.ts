@@ -1,4 +1,4 @@
-import { CreateTimetableDto } from '../../dto/timetable/CreateTimetable.dto';
+import { CreateTimetableDto } from '../../../dto/timetable/CreateTimetable.dto';
 import { TGroupId } from 'src/group/types/groupId.type';
 
 export interface ITimetableRepository {

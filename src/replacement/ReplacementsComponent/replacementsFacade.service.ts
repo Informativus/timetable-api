@@ -1,7 +1,7 @@
 import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { SuccessStatusDto } from 'src/dto/successStatus.dto';
-import { IReplacementsFacade } from './IReplacementsFacade.interface';
+import { IReplacementsFacade } from '../Interfaces/IReplacementsFacade.interface';
 import { ReplacementData } from './ReplacementData/replacementData.service';
 import { ReplacementPersistenceLayer } from './ReplacementPersistence/replacementPersistenceLayer.service';
 import { Injectable } from '@nestjs/common';
