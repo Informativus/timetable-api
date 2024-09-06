@@ -1,27 +1,26 @@
-import { CacheService } from 'src/cache/cache.service';
-import { ReplacementPersistenceLayer } from './replacementPersistenceLayer.service';
-import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
-import { ISetReplaceInStorage } from '../ReplacementsRepository/Interfaces/ISetReplaceInStorage.interface';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CacheService } from 'src/cache/cache.service';
+import { CreateReplacementDto } from 'src/dto/replacement/createReplacement.dto';
 import { GetReplacementDto } from 'src/dto/replacement/getReplacement.dto';
 import { TGroupId } from 'src/group/types/groupId.type';
-import { GetGroupDto } from 'src/dto/group/getGroup.dto';
 import { IGetGroupWithData } from '../../../group/Interfaces/IGetGroupWithData.interface';
+import { ISetReplaceInStorage } from '../ReplacementsRepository/Interfaces/ISetReplaceInStorage.interface';
+import { ReplacementPersistenceLayer } from './replacementPersistenceLayer.service';
 
 describe('ReplacementPersistenceLayer', () => {
   let service: ReplacementPersistenceLayer;
 
-  let mockCacheService: Partial<CacheService<CreateReplacementDto>>;
   let mockReplacementRepository: Partial<ISetReplaceInStorage>;
   let mockGroupService: Partial<IGetGroupWithData>;
 
   beforeEach(async () => {
-    mockCacheService = {
-      set: jest.fn(),
-    };
-
     mockReplacementRepository = {
       setReplacementWithDate: jest.fn(),
+      setReplacementInCache: jest.fn(),
     };
 
     mockGroupService = {
@@ -31,12 +30,11 @@ describe('ReplacementPersistenceLayer', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ReplacementPersistenceLayer,
-        { provide: CacheService, useValue: mockCacheService },
         {
           provide: 'ISetReplaceInStorage',
           useValue: mockReplacementRepository,
         },
-        { provide: 'IGroupService', useValue: mockGroupService },
+        { provide: 'IGetGroupWithData', useValue: mockGroupService },
       ],
     }).compile();
 
@@ -46,60 +44,209 @@ describe('ReplacementPersistenceLayer', () => {
   });
 
   describe('setReplacement', () => {
-    it('should set replacement in database and cache', async () => {
-      const mockGroup: GetGroupDto = {
-        group_id: 1,
-        id: '1I-1-23',
-        title: 'mock group',
+    it('should set replacement in database', async () => {
+      const replacementsDto: GetReplacementDto = {
+        group: '1',
+        date: '2022-01-01',
       };
 
-      const mockGroupId: TGroupId = {
-        group_id: 1,
-      };
-
-      const mockReplacementDto: GetReplacementDto = {
-        group: '1I-1-23',
-      };
-
-      const mockReplacement: CreateReplacementDto = {
-        success: false,
+      const replacements: CreateReplacementDto = {
+        success: true,
         replacements: [
           {
-            index: 5,
+            index: 1,
             cancelled: false,
-            teacher: 'Иванов|Иван',
-            room: '101',
-            title: 'Математика',
-            class: '1I-1-23',
+            teacher: '1',
+            room: '1',
+            title: '1',
+            class: '1',
           },
         ],
       };
 
-      (mockGroupService.getGroupWithId as jest.Mock).mockResolvedValue(
-        mockGroup,
-      );
+      const groupId: TGroupId = {
+        group_id: 1,
+      };
 
-      await service.setReplacementsWithDate(
-        mockReplacementDto,
-        mockReplacement,
-      );
+      const getGroupId = jest
+        .spyOn(service as any, 'getGroupId')
+        .mockResolvedValue(groupId);
 
-      expect(mockGroupService.getGroupWithId).toHaveBeenCalledWith({
-        id: mockReplacementDto.group,
-      });
+      jest
+        .spyOn(mockReplacementRepository, 'setReplacementWithDate')
+        .mockResolvedValue();
 
-      expect(mockCacheService.set).toHaveBeenCalledTimes(1);
-      expect(mockCacheService.set).toHaveBeenCalledWith(
-        mockGroup.id,
-        mockReplacement,
-      );
+      await service.setReplacementsWithDate(replacementsDto, replacements);
+
+      expect(getGroupId).toHaveBeenCalledTimes(1);
+      expect(getGroupId).toHaveBeenCalledWith(replacementsDto);
 
       expect(
         mockReplacementRepository.setReplacementWithDate,
       ).toHaveBeenCalledTimes(1);
       expect(
         mockReplacementRepository.setReplacementWithDate,
-      ).toHaveBeenCalledWith(mockGroupId, mockReplacement);
+      ).toHaveBeenCalledWith(groupId, replacements, replacementsDto.date);
+    });
+
+    it('should throw error if group not found', async () => {
+      const replacementsDto: GetReplacementDto = {
+        group: '1',
+        date: '2022-01-01',
+      };
+
+      const replacements: CreateReplacementDto = {
+        success: true,
+        replacements: [
+          {
+            index: 1,
+            cancelled: false,
+            teacher: '1',
+            room: '1',
+            title: '1',
+            class: '1',
+          },
+        ],
+      };
+
+      const getGroupId = jest
+        .spyOn(service as any, 'getGroupId')
+        .mockImplementation(() => {
+          throw new BadRequestException('Failed to get group');
+        });
+
+      await expect(
+        service.setReplacementsWithDate(replacementsDto, replacements),
+      ).rejects.toThrow(new BadRequestException('Failed to get group'));
+
+      expect(getGroupId).toHaveBeenCalledTimes(1);
+      expect(getGroupId).toHaveBeenCalledWith(replacementsDto);
+
+      expect(
+        mockReplacementRepository.setReplacementWithDate,
+      ).not.toHaveBeenCalled();
+    });
+    it('should throw error set replacement in database', async () => {
+      const replacementsDto: GetReplacementDto = {
+        group: '1',
+        date: '2022-01-01',
+      };
+
+      const replacements: CreateReplacementDto = {
+        success: true,
+        replacements: [
+          {
+            index: 1,
+            cancelled: false,
+            teacher: '1',
+            room: '1',
+            title: '1',
+            class: '1',
+          },
+        ],
+      };
+
+      const groupId: TGroupId = {
+        group_id: 1,
+      };
+
+      const getGroupId = jest
+        .spyOn(service as any, 'getGroupId')
+        .mockResolvedValue(groupId);
+
+      jest
+        .spyOn(mockReplacementRepository, 'setReplacementWithDate')
+        .mockImplementation(() => {
+          throw new InternalServerErrorException(
+            'Failed to set replacement in database',
+          );
+        });
+
+      await expect(
+        service.setReplacementsWithDate(replacementsDto, replacements),
+      ).rejects.toThrow(
+        new InternalServerErrorException(
+          'Failed to set replacement in database',
+        ),
+      );
+
+      expect(getGroupId).toHaveBeenCalledTimes(1);
+      expect(getGroupId).toHaveBeenCalledWith(replacementsDto);
+
+      expect(
+        mockReplacementRepository.setReplacementWithDate,
+      ).toHaveBeenCalledTimes(1);
+
+      expect(
+        mockReplacementRepository.setReplacementWithDate,
+      ).toHaveBeenCalledWith(groupId, replacements, replacementsDto.date);
+    });
+  });
+
+  describe('setReplacementInCache', () => {
+    it('should set replacement in cache', async () => {
+      const replacement: CreateReplacementDto = {
+        success: true,
+        replacements: [
+          {
+            index: 1,
+            cancelled: false,
+            teacher: '1',
+            room: '1',
+            title: '1',
+            class: '1',
+          },
+        ],
+      };
+
+      const key: string = 'key';
+
+      await service.setReplacementInCache(replacement, key);
+
+      expect(
+        mockReplacementRepository.setReplacementInCache,
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        mockReplacementRepository.setReplacementInCache,
+      ).toHaveBeenCalledWith(key, replacement);
+    });
+    it('should throw error set replacement in cache', async () => {
+      const replacement: CreateReplacementDto = {
+        success: true,
+        replacements: [
+          {
+            index: 1,
+            cancelled: false,
+            teacher: '1',
+            room: '1',
+            title: '1',
+            class: '1',
+          },
+        ],
+      };
+
+      const key: string = 'key';
+
+      jest
+        .spyOn(mockReplacementRepository, 'setReplacementInCache')
+        .mockImplementation(() => {
+          throw new InternalServerErrorException(
+            'Failed to set replacement in cache',
+          );
+        });
+
+      await expect(
+        service.setReplacementInCache(replacement, key),
+      ).rejects.toThrow(
+        new InternalServerErrorException('Failed to set replacement in cache'),
+      );
+
+      expect(
+        mockReplacementRepository.setReplacementInCache,
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        mockReplacementRepository.setReplacementInCache,
+      ).toHaveBeenCalledWith(key, replacement);
     });
   });
 });
