@@ -1,7 +1,10 @@
 services:
   timetable:
-    image: timetable-api:1.2
     container_name: timetable
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: timetable-api
     ports:
       - "8080:8080"
     depends_on:
@@ -9,6 +12,11 @@ services:
       - redis
     networks:
       - timetable
+    volumes:
+      - ./dist:/timetable-api/dist  
+      - ./package.json:/timetable-api/package.json
+      - ./package-lock.json:/timetable-api/package-lock.json
+      - ./.env.dev:/timetable-api/.env
 
   postgres:
     image: postgres:14.12
