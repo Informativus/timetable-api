@@ -10,7 +10,7 @@ import { ReplacementDto } from 'src/dto/replacement/replacement.dto';
 import { ReplacementsInfoDto } from 'src/dto/replacement/updateReplacementsListener/replacementsInfo.dto';
 import { UpdateReplacementsDto } from 'src/dto/replacement/updateReplacementsListener/updateReplacements.dto';
 import { IGetGroupWithData } from 'src/group/Interfaces/IGetGroupWithData.interface';
-import { IReplacementsFacade } from 'src/replacement/ReplacementsComponent/IReplacementsFacade.interface';
+import { IReplacementsFacade } from 'src/replacement/Interfaces/IReplacementsFacade.interface';
 import { getTranslatedWord } from 'src/utils/wordTranslator.util';
 import { TDataParams } from './Types/dateParam.type';
 
