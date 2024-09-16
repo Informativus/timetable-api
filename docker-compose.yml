@@ -21,7 +21,7 @@ services:
   postgres:
     image: postgres:14.12
     restart: always
-    container_name: postgres-server
+    container_name: postgres-timetable
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -36,7 +36,7 @@ services:
 
   redis:
     image: redis
-    container_name: redis-server
+    container_name: redis-timetable
     ports:
       - "6380:6379"
     networks:
