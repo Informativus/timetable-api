@@ -15,12 +15,14 @@ export class PostgresDatabaseService implements IRelationDatabase {
       user: this.config.get({ property: 'PSQL_USER' }),
       password: this.config.get({ property: 'PSQL_PASSWORD' }),
       host: this.config.get({ property: 'PSQL_HOST' }),
-      port: <number>(<any>this.config.get({ property: 'PSQL_PORT' })),
+      port: Number(this.config.get({ property: 'PSQL_PORT' })),
       database: this.config.get({ property: 'PSQL_DATABASE' }),
     });
   }
 
-  async sendQuery(query: RelationDatabaseDto): Promise<any> {
+  async sendQuery<T extends object, K>(
+    query: RelationDatabaseDto<K>,
+  ): Promise<T[]> {
     try {
       const { text, values } = query;
       const fullQuery = this.interpolateQuery(text, values);
@@ -32,11 +34,11 @@ export class PostgresDatabaseService implements IRelationDatabase {
     }
   }
 
-  private interpolateQuery(text: string, values: any[]): string {
+  private interpolateQuery<K>(text: string, values: K[]): string {
     let index = 0;
     return text.replace(/\$[0-9]+/g, () => {
       const value = values[index++];
-      return typeof value === 'string' ? `'${value}'` : value;
+      return typeof value === 'string' ? `'${value}'` : `'${value.toString()}'`;
     });
   }
 }

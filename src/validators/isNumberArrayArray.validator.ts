@@ -7,7 +7,8 @@ import {
 
 @ValidatorConstraint({ async: false })
 export class IsNumberArrayArrayConstraint
-  implements ValidatorConstraintInterface {
+  implements ValidatorConstraintInterface
+{
   validate(value: number[][]): boolean {
     if (!Array.isArray(value)) {
       return false;

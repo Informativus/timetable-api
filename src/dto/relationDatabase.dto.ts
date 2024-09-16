@@ -1,8 +1,8 @@
 import { IsArray, IsString } from 'class-validator';
 
-export class RelationDatabaseDto {
+export class RelationDatabaseDto<T> {
   @IsString()
   text: string;
   @IsArray()
-  values: any[];
+  values: T[];
 }
