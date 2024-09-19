@@ -34,7 +34,7 @@ export class IsStringArrayArrayConstraint
 }
 
 export function IsStringArrayArray(validationOptions?: ValidationOptions) {
-  return function(object: object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

@@ -26,7 +26,7 @@ export class RedisDatabaseService implements INoRelationDatabase {
     }
   }
 
-  async get(key: string): Promise<any | null> {
+  async get(key: string): Promise<string | null> {
     try {
       console.log(`Retrieved key: ${key}`);
       return this.redis.get(key);
